@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Pebbles – Activity Library</title>
+    <style>
+        :root {
+            --purple: #6c5ce7;
+            --purple-light: #a29bfe;
+            --purple-soft: #f0eeff;
+            --purple-mid: #ede9ff;
+            --text: #1a1a2e;
+            --text-muted: #888;
+            --surface: #ffffff;
+            --bg: #f4f3fd;
+            --border: #e8e4f8;
+            --green: #00b894;
+            --orange: #fd9644;
+            --radius: 18px;
+            --radius-sm: 10px;
+            --shadow: 0 4px 24px rgba(108,92,231,0.10);
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overscroll-behavior: none;
+        }
+
+        /* ── APP SHELL ───────────────────────────────── */
+        #app {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--bg);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ── TOP BAR ─────────────────────────────────── */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            padding: 16px 20px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-back {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            transition: transform 0.15s;
+        }
+        .topbar-back:active { transform: scale(0.93); }
+        .topbar-back svg { display: block; }
+
+        /* ── SCREENS ─────────────────────────────────── */
+        .screen {
+            display: none;
+            padding: 8px 20px 120px;
+            animation: fadeUp 0.28s ease both;
+        }
+        .screen.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── TYPOGRAPHY ──────────────────────────────── */
+        .page-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.4px;
+            margin-bottom: 6px;
+        }
+        .page-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        /* ── CARDS ───────────────────────────────────── */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--purple);
+            background: var(--purple-soft);
+            padding: 4px 10px;
+            border-radius: 99px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        /* ── AGE GRID ────────────────────────────────── */
+        .age-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .age-btn {
+            aspect-ratio: 1;
+            border-radius: 14px;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+            transition: all 0.18s;
+        }
+        .age-btn .num { font-size: 1.1rem; line-height: 1; }
+        .age-btn .lbl { font-size: 0.55rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; }
+        .age-btn:hover { border-color: var(--purple-light); background: var(--purple-soft); }
+        .age-btn.selected {
+            background: var(--purple);
+            border-color: var(--purple);
+            color: white;
+            box-shadow: 0 4px 12px rgba(108,92,231,0.35);
+        }
+        .age-btn.selected .lbl { opacity: 0.8; }
+
+        /* ── CHALLENGE CHIPS ─────────────────────────── */
+        .chip-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .chip {
+            padding: 9px 15px;
+            border-radius: 99px;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            font-size: 0.83rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.18s;
+            line-height: 1.2;
+        }
+        .chip:hover { border-color: var(--purple-light); color: var(--purple); background: var(--purple-soft); }
+        .chip.selected {
+            background: var(--purple-mid);
+            border-color: var(--purple);
+            color: var(--purple);
+            font-weight: 600;
+        }
+
+        .custom-row label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 8px;
+        }
+        .custom-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg);
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: border-color 0.2s;
+        }
+        .custom-input:focus { outline: none; border-color: var(--purple); }
+        .custom-input::placeholder { color: #ccc; }
+
+        /* ── STICKY BOTTOM CTA ───────────────────────── */
+        .bottom-cta {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            padding: 16px 20px max(16px, env(safe-area-inset-bottom));
+            background: linear-gradient(to top, var(--bg) 75%, transparent);
+            z-index: 50;
+        }
+
+        .cta-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(108,92,231,0.38);
+            transition: opacity 0.18s, transform 0.1s;
+            letter-spacing: -0.1px;
+        }
+        .cta-btn:hover { opacity: 0.93; }
+        .cta-btn:active { transform: scale(0.98); }
+        .cta-btn:disabled {
+            background: var(--border);
+            color: var(--text-muted);
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* ── ACTIVITY CARDS (results) ────────────────── */
+        .result-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 18px;
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        .result-card:hover { border-color: var(--purple-light); box-shadow: 0 4px 18px rgba(108,92,231,0.12); }
+        .result-card.selected { border-color: var(--purple); background: var(--purple-soft); }
+
+        .select-dot {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            margin-top: 2px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .result-card.selected .select-dot {
+            background: var(--purple);
+            border-color: var(--purple);
+        }
+        .select-dot::after {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: white;
+            display: none;
+        }
+        .result-card.selected .select-dot::after { display: block; }
+
+        .result-body { flex: 1; min-width: 0; }
+        .result-title { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 5px; }
+        .result-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 9px; }
+
+        .tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
+        .tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 99px;
+        }
+        .tag-type  { background: var(--purple-mid); color: var(--purple); }
+        .tag-skill { background: #fff4e0; color: #b35c00; }
+        .tag-src   { background: #f0f0f0; color: #666; }
+        .tag-time  { background: #e8fdf5; color: #00664a; display: inline-flex; align-items: center; gap: 3px; }
+
+        /* ── RESULTS FILTERS ─────────────────────────── */
+        .results-filters {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+        .filter-row { margin-bottom: 10px; }
+        .filter-row:last-child { margin-bottom: 0; }
+        .filter-row-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 7px;
+        }
+        .filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .filter-chip {
+            padding: 6px 12px;
+            border-radius: 99px;
+            border: 1.5px solid var(--border);
+            background: var(--bg);
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .filter-chip:hover { border-color: var(--purple-light); color: var(--purple); }
+        .filter-chip.active { background: var(--purple-mid); border-color: var(--purple); color: var(--purple); font-weight: 600; }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px 40px;
+            color: var(--text-muted);
+        }
+        .no-results .icon { font-size: 3rem; margin-bottom: 14px; }
+        .no-results p { font-size: 0.95rem; line-height: 1.6; }
+
+        /* ── DETAIL SCREEN ───────────────────────────── */
+        .video-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .video-header {
+            padding: 16px 18px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .video-header .eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--purple);
+        }
+        .video-header .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple-light); }
+
+        .video-aspect {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #0d0d1a;
+        }
+        .video-aspect iframe {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+        .video-placeholder {
+            position: absolute; inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e1060 0%, #4c1d95 100%);
+            color: white;
+            text-align: center;
+            padding: 24px;
+            gap: 12px;
+        }
+        .play-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-ring::after {
+            content: '';
+            border-left: 20px solid white;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+        .video-placeholder h3 { font-size: 1rem; font-weight: 700; }
+        .video-placeholder p { font-size: 0.8rem; opacity: 0.65; }
+
+        .video-caption {
+            padding: 12px 18px 18px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .detail-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 22px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+        .detail-card h2 { font-size: 1.1rem; font-weight: 700; line-height: 1.45; margin-bottom: 14px; }
+        .detail-divider { height: 1px; background: var(--border); margin: 14px 0; }
+        .detail-source { font-size: 0.82rem; color: var(--text-muted); }
+
+        .detail-section { margin-bottom: 16px; }
+        .detail-section-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--purple);
+            margin-bottom: 8px;
+        }
+        .detail-list {
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .detail-list li { font-size: 0.88rem; color: #444; line-height: 1.5; }
+        .detail-steps { counter-reset: steps; list-style: none; padding-left: 0; }
+        .detail-steps li {
+            counter-increment: steps;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .detail-steps li::before {
+            content: counter(steps);
+            min-width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--purple-mid);
+            color: var(--purple);
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .detail-tip {
+            background: var(--purple-soft);
+            border-left: 3px solid var(--purple);
+            border-radius: 0 10px 10px 0;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+        }
+        .detail-tip strong { display: block; font-size: 0.78rem; color: var(--purple); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+        .detail-tip p { font-size: 0.87rem; color: #555; line-height: 1.5; }
+
+        .open-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(108,92,231,0.3);
+            transition: opacity 0.18s;
+        }
+        .open-btn:hover { opacity: 0.9; }
+
+        .ghost-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            background: none;
+            color: var(--purple);
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        .ghost-btn:hover { background: var(--purple-soft); }
+
+        /* ── WELCOME screen ──────────────────────────── */
+        .welcome-screen {
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            background: linear-gradient(150deg, var(--purple) 0%, #9b59b6 100%);
+            padding: 52px 28px 44px;
+            color: white;
+            flex-shrink: 0;
+        }
+        .hero-pill {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.18);
+            border-radius: 99px;
+            padding: 5px 12px;
+            margin-bottom: 18px;
+        }
+        .hero h1 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 1rem;
+            opacity: 0.82;
+            line-height: 1.55;
+        }
+
+        .welcome-body {
+            padding: 28px 20px 120px;
+            flex: 1;
+        }
+
+        .feature-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 14px 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .feature-icon.purple { background: var(--purple-soft); }
+        .feature-icon.orange { background: #fff4e0; }
+        .feature-icon.green  { background: #e8fdf5; }
+        .feature-text strong { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+        .feature-text span { font-size: 0.8rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <!-- ══ SCREEN: WELCOME ══════════════════════════════════ -->
+    <div class="screen active" id="screen-welcome" style="padding:0; animation: fadeUp 0.3s ease both;">
+        <div class="welcome-screen">
+            <div class="hero">
+                <div class="hero-pill">Pebbles Activity Library</div>
+                <h1>Find the right activity for your child</h1>
+                <p>Answer two quick questions and we'll suggest activities matched to your child's needs.</p>
+            </div>
+            <div class="welcome-body">
+                <div class="feature-row">
+                    <div class="feature-item">
+                        <div class="feature-icon purple">🎯</div>
+                        <div class="feature-text">
+                            <strong>Tailored to your child</strong>
+                            <span>Filter by age and challenge area</span>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon orange">📋</div>
+                        <div class="feature-text">
+                            <strong>Curated activities</strong>
+                            <span>Research-backed SEL resources</span>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon green">▶️</div>
+                        <div class="feature-text">
+                            <strong>Video overview included</strong>
+                            <span>Understand the concept before you start</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-cta">
+            <button class="cta-btn" onclick="showScreen('filters')">Get Started →</button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: FILTERS ══════════════════════════════════ -->
+    <div class="screen" id="screen-filters">
+        <div class="topbar">
+            <button class="topbar-back" onclick="showScreen('welcome')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 3L5 8L10 13" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="page-title">Tell us about your child</div>
+        <p class="page-subtitle">We'll use this to find activities that fit.</p>
+
+        <div class="card">
+            <div class="card-label">Age</div>
+            <div class="card-title">How old is your child?</div>
+            <div class="age-grid" id="ageGrid"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-label">Challenge</div>
+            <div class="card-title">What do you want to work on today?</div>
+            <div class="chip-grid" id="challengeGrid"></div>
+            <div class="custom-row">
+                <label>Or describe it in your own words:</label>
+                <input type="text" class="custom-input" id="customChallenge" placeholder="e.g. refuses to share with siblings…">
+            </div>
+        </div>
+
+        <div class="bottom-cta">
+            <button class="cta-btn" id="findBtn" disabled onclick="showResults()">Find Activities →</button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: RESULTS ══════════════════════════════════ -->
+    <div class="screen" id="screen-results">
+        <div class="topbar">
+            <button class="topbar-back" onclick="showScreen('filters')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 3L5 8L10 13" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="page-title" id="resultsTitle">Activities for you</div>
+        <p class="page-subtitle" id="resultsSubtitle">Tap one to select it</p>
+
+        <div class="results-filters">
+            <div class="filter-row">
+                <div class="filter-row-label">SEL Skill</div>
+                <div class="filter-chips" id="skillFilterChips"></div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-row-label">Time available</div>
+                <div class="filter-chips" id="timeFilterChips"></div>
+            </div>
+        </div>
+
+        <div id="activityList"></div>
+
+        <div class="bottom-cta">
+            <button class="cta-btn" id="tryBtn" disabled onclick="showDetail()">Try This Activity →</button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: DETAIL ═══════════════════════════════════ -->
+    <div class="screen" id="screen-detail">
+        <div class="topbar">
+            <button class="topbar-back" onclick="showScreen('results')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 3L5 8L10 13" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="page-title" style="margin-bottom:6px;">Let's get started</div>
+        <p class="page-subtitle">Watch the quick intro, then open the activity.</p>
+
+        <div class="video-card">
+            <div class="video-header">
+                <div class="dot"></div>
+                <div class="eyebrow">Before you begin</div>
+            </div>
+            <div class="video-aspect" id="videoEmbed"></div>
+            <div class="video-caption" id="videoCaption"></div>
+        </div>
+
+        <div class="detail-card" id="activityDetail"></div>
+
+        <a href="#" target="_blank" class="open-btn" id="openActivityBtn">
+            Open Full Activity
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3h7m0 0v7m0-7L6 10M3 5v8h8" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+        <button class="ghost-btn" onclick="showScreen('results')">← Try a different activity</button>
+        <div style="height:20px;"></div>
+    </div>
+
+</div><!-- #app -->
+
+<script>
+// ── DATA loaded from activities.json ─────────────────────────────────────────
+
+let ACTIVITIES = [];
+
+async function loadActivities() {
+    try {
+        const res = await fetch('./activities.json');
+        ACTIVITIES = await res.json();
+    } catch (e) {
+        console.error('Could not load activities.json — make sure you are running a local server (npx serve .)', e);
+    }
+    init();
+}
+
+loadActivities();
+
+
+const AGE_GRADES = {
+    3: ["K"], 4: ["K"], 5: ["K","1"], 6: ["1","2"], 7: ["2","3"], 8: ["3"],
+};
+
+const CHALLENGES = [
+    { id: "naming",      label: "Trouble naming feelings",             skills: ["Identifying emotions"] },
+    { id: "meltdowns",   label: "Big reactions or meltdowns",          skills: ["Identifying emotions", "Accurate self-perception"] },
+    { id: "transitions", label: "Tantrums during transitions",         skills: ["Identifying emotions", "Accurate self-perception"] },
+    { id: "anxiety",     label: "Worry or anxiety",                    skills: ["Identifying emotions"] },
+    { id: "calming",     label: "Hard to calm down",                   skills: ["Identifying emotions"] },
+    { id: "anger",       label: "Anger or frustration",                skills: ["Identifying emotions"] },
+    { id: "confidence",  label: "Low confidence or self-doubt",        skills: ["Self-confidence", "Self-efficacy", "Recognizing strengths", "Accurate self-perception"] },
+    { id: "selfaware",   label: "Doesn't understand their own feelings", skills: ["Accurate self-perception", "Identifying emotions"] },
+];
+
+// Set videoUrl to a YouTube embed URL once you have videos.
+const CONCEPT_VIDEOS = {
+    "Identifying emotions": {
+        videoUrl: null,
+        title: "Understanding Emotions",
+        description: "Why helping kids name their feelings is one of the most powerful things a parent can do — and how this activity uses that idea.",
+    },
+    "Accurate self-perception": {
+        videoUrl: null,
+        title: "Building Self-Awareness",
+        description: "How self-awareness develops in young children, and how the activity you chose builds that muscle.",
+    },
+    "Self-confidence": {
+        videoUrl: null,
+        title: "Nurturing Confidence",
+        description: "A quick look at how confidence forms in early childhood — and how you can actively support it.",
+    },
+    "default": {
+        videoUrl: null,
+        title: "The Skill Behind This Activity",
+        description: "A short overview of the social-emotional concept behind the activity you chose.",
+    },
+};
+
+const TIME_BUCKETS = [
+    { id: "under10", label: "Under 10 min" },
+    { id: "10to20",  label: "10–20 min" },
+    { id: "20to30",  label: "20–30 min" },
+    { id: "30plus",  label: "30+ min" },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let selectedAge = null;
+let selectedChallenges = new Set();
+let selectedActivity = null;
+let filteredActivities = [];
+let resultSkillFilter = 'all';
+let resultTimeFilter  = 'all';
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+function init() {
+    buildAgeGrid();
+    buildChallengeGrid();
+    document.getElementById('customChallenge').addEventListener('input', updateFindBtn);
+}
+
+function buildAgeGrid() {
+    const grid = document.getElementById('ageGrid');
+    [3,4,5,6,7,8].forEach(age => {
+        const btn = document.createElement('button');
+        btn.className = 'age-btn';
+        btn.innerHTML = `<span class="num">${age}</span><span class="lbl">yrs</span>`;
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedAge = age;
+            updateFindBtn();
+        });
+        grid.appendChild(btn);
+    });
+}
+
+function buildChallengeGrid() {
+    const grid = document.getElementById('challengeGrid');
+    CHALLENGES.forEach(ch => {
+        const chip = document.createElement('button');
+        chip.className = 'chip';
+        chip.textContent = ch.label;
+        chip.addEventListener('click', () => {
+            chip.classList.toggle('selected');
+            selectedChallenges[chip.classList.contains('selected') ? 'add' : 'delete'](ch.id);
+            updateFindBtn();
+        });
+        grid.appendChild(chip);
+    });
+}
+
+function updateFindBtn() {
+    const hasAge = selectedAge !== null;
+    const hasChallenge = selectedChallenges.size > 0 || document.getElementById('customChallenge').value.trim().length > 0;
+    document.getElementById('findBtn').disabled = !(hasAge && hasChallenge);
+}
+
+// ── SCREENS ───────────────────────────────────────────────────────────────────
+function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('screen-' + name);
+    target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function showResults() {
+    const grades = AGE_GRADES[selectedAge] || [];
+    const relevantSkills = new Set();
+    selectedChallenges.forEach(id => {
+        const ch = CHALLENGES.find(c => c.id === id);
+        if (ch) ch.skills.forEach(s => relevantSkills.add(s));
+    });
+    const customText = document.getElementById('customChallenge').value.trim().toLowerCase();
+
+    filteredActivities = ACTIVITIES.filter(a => {
+        if (!a.grades.some(g => grades.includes(g))) return false;
+        if (relevantSkills.size > 0) {
+            const skillMatch = a.skills.some(s => relevantSkills.has(s));
+            if (!skillMatch) {
+                return customText && (
+                    a.title.toLowerCase().includes(customText) ||
+                    a.skills.some(s => s.toLowerCase().includes(customText))
+                );
+            }
+            return true;
+        }
+        if (customText) {
+            return a.title.toLowerCase().includes(customText) ||
+                   a.skills.some(s => s.toLowerCase().includes(customText));
+        }
+        return true;
+    });
+
+    selectedActivity = null;
+    resultSkillFilter = 'all';
+    resultTimeFilter  = 'all';
+    document.getElementById('tryBtn').disabled = true;
+
+    buildResultsFilters();
+
+    const challengeLabels = [...selectedChallenges].map(id => {
+        const ch = CHALLENGES.find(c => c.id === id);
+        return ch ? ch.label.toLowerCase() : '';
+    }).filter(Boolean);
+
+    document.getElementById('resultsTitle').textContent =
+        `${filteredActivities.length} activit${filteredActivities.length === 1 ? 'y' : 'ies'} for age ${selectedAge}`;
+    document.getElementById('resultsSubtitle').textContent =
+        challengeLabels.length ? `Matching: ${challengeLabels.join(' · ')}` : 'Tap one to select it';
+
+    renderActivityList();
+    showScreen('results');
+}
+
+function buildResultsFilters() {
+    // Collect unique skills present in filtered set
+    const skillsInSet = [...new Set(filteredActivities.flatMap(a => a.skills))].sort();
+
+    const skillChips = document.getElementById('skillFilterChips');
+    skillChips.innerHTML = '';
+    [{ id: 'all', label: 'All skills' }, ...skillsInSet.map(s => ({ id: s, label: s }))].forEach(opt => {
+        const chip = document.createElement('button');
+        chip.className = 'filter-chip' + (resultSkillFilter === opt.id ? ' active' : '');
+        chip.textContent = opt.label;
+        chip.addEventListener('click', () => {
+            resultSkillFilter = opt.id;
+            skillChips.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            selectedActivity = null;
+            document.getElementById('tryBtn').disabled = true;
+            renderActivityList();
+        });
+        skillChips.appendChild(chip);
+    });
+
+    const timeChips = document.getElementById('timeFilterChips');
+    timeChips.innerHTML = '';
+    [{ id: 'all', label: 'Any time' }, ...TIME_BUCKETS].forEach(opt => {
+        const chip = document.createElement('button');
+        chip.className = 'filter-chip' + (resultTimeFilter === opt.id ? ' active' : '');
+        chip.textContent = opt.label;
+        chip.addEventListener('click', () => {
+            resultTimeFilter = opt.id;
+            timeChips.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            selectedActivity = null;
+            document.getElementById('tryBtn').disabled = true;
+            renderActivityList();
+        });
+        timeChips.appendChild(chip);
+    });
+}
+
+function renderActivityList() {
+    const visible = filteredActivities.filter(a => {
+        if (resultSkillFilter !== 'all' && !a.skills.includes(resultSkillFilter)) return false;
+        if (resultTimeFilter  !== 'all' && a.timeBucket !== resultTimeFilter)      return false;
+        return true;
+    });
+
+    const list = document.getElementById('activityList');
+    if (visible.length === 0) {
+        list.innerHTML = `
+            <div class="no-results">
+                <div class="icon">🔍</div>
+                <p>No activities match these filters.<br>Try a different skill or time range.</p>
+            </div>`;
+        return;
+    }
+
+    list.innerHTML = visible.map((a, i) => `
+        <div class="result-card" data-index="${i}">
+            <div class="select-dot"></div>
+            <div class="result-body">
+                <div class="result-title">${a.title}</div>
+                <div class="result-desc">${a.description}</div>
+                <div class="tag-row">
+                    <span class="tag tag-time">⏱ ${a.time}</span>
+                    <span class="tag tag-type">${a.type}</span>
+                    ${a.skills.map(s => `<span class="tag tag-skill">${s}</span>`).join('')}
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    list.querySelectorAll('.result-card').forEach(card => {
+        card.addEventListener('click', () => {
+            list.querySelectorAll('.result-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedActivity = visible[+card.dataset.index];
+            document.getElementById('tryBtn').disabled = false;
+        });
+    });
+}
+
+// ── DETAIL ────────────────────────────────────────────────────────────────────
+function showDetail() {
+    if (!selectedActivity) return;
+
+    const primarySkill = selectedActivity.skills[0];
+    const videoData = CONCEPT_VIDEOS[primarySkill] || CONCEPT_VIDEOS['default'];
+
+    const videoEmbed = document.getElementById('videoEmbed');
+    videoEmbed.innerHTML = videoData.videoUrl
+        ? `<iframe src="${videoData.videoUrl}" allowfullscreen></iframe>`
+        : `<div class="video-placeholder">
+               <div class="play-ring"></div>
+               <h3>${videoData.title}</h3>
+               <p>Video coming soon</p>
+           </div>`;
+
+    document.getElementById('videoCaption').textContent = videoData.description;
+
+    const gradeText = selectedActivity.grades.map(g => {
+        if (g === 'K') return 'Kindergarten';
+        const sfx = g==='1'?'st':g==='2'?'nd':g==='3'?'rd':'th';
+        return `${g}${sfx} Grade`;
+    }).join(', ');
+
+    const c = selectedActivity.content;
+    const inlineContent = c ? `
+        ${c.overview ? `<p style="font-size:0.9rem;color:#555;line-height:1.6;margin-bottom:16px;">${c.overview}</p>` : ''}
+        ${c.materials && c.materials.length ? `
+            <div class="detail-section">
+                <div class="detail-section-title">What you'll need</div>
+                <ul class="detail-list">${c.materials.map(m => `<li>${m}</li>`).join('')}</ul>
+            </div>` : ''}
+        ${c.steps && c.steps.length ? `
+            <div class="detail-section">
+                <div class="detail-section-title">How to do it</div>
+                <ol class="detail-list detail-steps">${c.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+            </div>` : ''}
+        ${c.tips ? `
+            <div class="detail-tip">
+                <strong>Tip for parents</strong>
+                <p>${c.tips}</p>
+            </div>` : ''}
+        <div class="detail-divider"></div>
+    ` : '';
+
+    document.getElementById('activityDetail').innerHTML = `
+        <h2>${selectedActivity.title}</h2>
+        <div class="tag-row" style="margin-bottom:14px;">
+            <span class="tag tag-type">${selectedActivity.type}</span>
+            <span class="tag" style="background:#e8fdf5;color:#00664a;">${gradeText}</span>
+            ${selectedActivity.skills.map(s => `<span class="tag tag-skill">${s}</span>`).join('')}
+        </div>
+        ${inlineContent}
+        <div class="detail-source">Source: ${selectedActivity.source}</div>
+    `;
+
+    document.getElementById('openActivityBtn').href = selectedActivity.url;
+    showScreen('detail');
+}
+</script>
+</body>
+</html>
