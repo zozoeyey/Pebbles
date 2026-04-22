@@ -324,6 +324,21 @@
         .result-card.selected .card-try-btn { display: block; }
         .card-try-btn:hover { opacity: 0.9; }
 
+        .starter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--green);
+            background: #e6faf5;
+            padding: 3px 8px;
+            border-radius: 99px;
+            margin-bottom: 6px;
+        }
+
         .tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
         .tag {
             font-size: 0.72rem;
@@ -1061,6 +1076,7 @@ function renderActivityList() {
         <div class="result-card" data-index="${i}">
             <div class="select-dot"></div>
             <div class="result-body">
+                ${a.content ? `<div class="starter-badge">★ Start here</div>` : ''}
                 <div class="result-title">${a.title}</div>
                 <div class="result-desc">${a.description}</div>
                 <div class="tag-row">
