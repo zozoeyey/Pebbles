@@ -1,3 +1,5 @@
+import { createClient } from 'npm:@supabase/supabase-js@2';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -16,7 +18,7 @@ Deno.serve(async (req) => {
     const childAge   = form.get('child_age')      as string | null;
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const serviceKey  = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const serviceKey  = Deno.env.get('SERVICE_ROLE_KEY') ?? Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const groqKey     = Deno.env.get('GROQ_API_KEY')!;
     const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY')!;
 
@@ -26,21 +28,12 @@ Deno.serve(async (req) => {
     const contentType = audioFile.type || 'audio/webm';
     const audioPath = `${activityId}/${crypto.randomUUID()}.${ext}`;
 
-    const uploadRes = await fetch(
-      `${supabaseUrl}/storage/v1/object/audio-reflections/${audioPath}`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${serviceKey}`,
-          'Content-Type': contentType,
-          'x-upsert': 'true',
-          'cache-control': '3600',
-        },
-        body: audioBytes,
-      }
-    );
-    if (!uploadRes.ok) {
-      console.error('Storage upload failed:', await uploadRes.text());
+    const supabase = createClient(supabaseUrl, serviceKey);
+    const { error: uploadError } = await supabase.storage
+      .from('audio-reflections')
+      .upload(audioPath, audioBytes, { contentType, upsert: true });
+    if (uploadError) {
+      console.error('Storage upload failed:', uploadError.message);
     } else {
       console.log('Storage upload ok:', audioPath);
     }
