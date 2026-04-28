@@ -21,8 +21,9 @@ Deno.serve(async (req) => {
     const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY')!;
 
     // 1. Upload audio to Supabase Storage
-    const audioBytes = await audioFile.arrayBuffer();
+    const audioBytes = new Uint8Array(await audioFile.arrayBuffer());
     const ext = audioFile.type.includes('mp4') ? 'm4a' : 'webm';
+    const contentType = audioFile.type || 'audio/webm';
     const audioPath = `${activityId}/${crypto.randomUUID()}.${ext}`;
 
     const uploadRes = await fetch(
@@ -31,14 +32,17 @@ Deno.serve(async (req) => {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${serviceKey}`,
-          'Content-Type': audioFile.type || 'audio/webm',
+          'Content-Type': contentType,
           'x-upsert': 'true',
+          'cache-control': '3600',
         },
         body: audioBytes,
       }
     );
     if (!uploadRes.ok) {
       console.error('Storage upload failed:', await uploadRes.text());
+    } else {
+      console.log('Storage upload ok:', audioPath);
     }
 
     // 2. Transcribe with Groq Whisper
