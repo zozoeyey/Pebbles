@@ -548,7 +548,43 @@
         .reflection-chevron { transition: transform 0.2s; flex-shrink: 0; }
         .reflection-body { display: none; margin-top: 16px; }
         .reflection-body.open { display: block; }
-        .reflection-iframe { width: 100%; height: 520px; border: none; border-radius: 10px; }
+        .recorder-wrap { text-align: center; padding: 10px 0 4px; }
+        .record-btn {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--purple-light));
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 16px rgba(108,92,231,0.35);
+            transition: transform 0.15s;
+        }
+        .record-btn:active { transform: scale(0.95); }
+        .record-btn.recording {
+            background: linear-gradient(135deg, #e17055, #d63031);
+            animation: pulse-record 1.5s ease-in-out infinite;
+            box-shadow: 0 4px 16px rgba(214,48,49,0.4);
+        }
+        @keyframes pulse-record {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+        }
+        .record-hint { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 4px; }
+        .record-timer { font-size: 0.78rem; color: #e17055; font-weight: 600; min-height: 18px; }
+        .refl-processing { text-align: center; padding: 16px 0; }
+        .refl-processing .spinner {
+            width: 30px; height: 30px;
+            border: 3px solid var(--border); border-top-color: var(--purple);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .refl-processing p { font-size: 0.85rem; color: var(--text-muted); }
+        .refl-result { padding-top: 4px; }
+        .refl-result-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple); margin-bottom: 10px; }
+        .refl-summary { font-size: 0.87rem; color: var(--text); line-height: 1.7; }
+        .refl-redo { margin-top: 14px; background: none; border: none; font-size: 0.82rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; display: block; }
+        .refl-error { text-align: center; padding: 12px 0; }
+        .refl-error p { font-size: 0.85rem; color: #e17055; margin-bottom: 10px; }
 
         .open-btn {
             display: flex;
@@ -794,18 +830,42 @@
         </a>
         <button class="ghost-btn" onclick="showScreen('results')">← Try a different activity</button>
 
-        <div class="reflection-card" id="reflectionCard" style="display:none;">
+        <div class="reflection-card" id="reflectionCard">
             <button class="reflection-toggle" onclick="toggleReflection(this)">
                 <div>
                     <div class="reflection-toggle-label">How did it go?</div>
-                    <div class="reflection-toggle-sub">Share a quick note after you try this</div>
+                    <div class="reflection-toggle-sub">Record a quick voice note after you try this</div>
                 </div>
                 <svg class="reflection-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M5 7.5L10 12.5L15 7.5" stroke="#888" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
             <div class="reflection-body" id="reflectionBody">
-                <iframe class="reflection-iframe" id="reflectionFrame" src="" loading="lazy"></iframe>
+                <div id="reflIdle" class="recorder-wrap">
+                    <button class="record-btn" id="recordBtn" onclick="startRecording()">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="2" width="6" height="12" rx="3" fill="white"/>
+                            <path d="M5 11a7 7 0 0 0 14 0" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <line x1="12" y1="18" x2="12" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="9" y1="22" x2="15" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <div class="record-hint">Tap to record your reflection</div>
+                    <div class="record-timer" id="recordTimer"></div>
+                </div>
+                <div id="reflProcessing" class="refl-processing" style="display:none;">
+                    <div class="spinner"></div>
+                    <p id="reflProcessingMsg">Transcribing your note…</p>
+                </div>
+                <div id="reflResult" class="refl-result" style="display:none;">
+                    <div class="refl-result-label">Your reflection summary</div>
+                    <div class="refl-summary" id="reflSummaryText"></div>
+                    <button class="refl-redo" onclick="resetRecorder()">Record again</button>
+                </div>
+                <div id="reflError" class="refl-error" style="display:none;">
+                    <p id="reflErrorMsg">Something went wrong.</p>
+                    <button class="refl-redo" onclick="resetRecorder()">Try again</button>
+                </div>
             </div>
         </div>
 
@@ -817,10 +877,16 @@
 <script>
 // ── DATA — bundled fallback, overwritten by activities.json when available ────
 
-// Paste your Google Form pre-fill URL here (see instructions in README or comments below).
-// How to get it: Forms editor → ⋮ → "Get pre-filled link" → fill a dummy activity name
-// → copy the link → replace the dummy text with {ACTIVITY} in the URL below.
-const REFLECTION_FORM_BASE_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc8Wz-CH0KxKLNaFgzOhfbyoLU7om_L5OHtY0vDLY3vDh-0HQ/viewform?usp=pp_url&entry.812342748={ACTIVITY}';
+// ── SUPABASE CONFIG ───────────────────────────────────────────────────────────
+// Fill in your project URL and anon key from: Supabase dashboard → Project Settings → API
+const SUPABASE_URL      = 'https://ntftfszfebeeusppqffz.supabase.co';       // e.g. https://abcxyz.supabase.co
+const SUPABASE_ANON_KEY = 'sb_publishable_8Yvco_n8NqG-xfPBUP_1vw_XSLUalOR';
+
+// ── RECORDER STATE ────────────────────────────────────────────────────────────
+let mediaRecorder   = null;
+let audioChunks     = [];
+let recordingTimer  = null;
+let recordingSeconds = 0;
 
 let ACTIVITIES = [
   { id:"freeze-feelings",        title:"Freeze Feelings: An SEL Kernels Brain Game",            description:"Kids move around and freeze when an emotion is called out — a playful way to connect movement with feeling words.",                                                   grades:["K"],             type:"Full lesson", source:"UC Berkeley's Greater Good Science Center",        url:"https://ggie.berkeley.edu/practice/freeze-feelings-an-sel-kernels-brain-game/#tab__2",                                                         skills:["Identifying emotions"],                                                                   time:"~20 min", timeBucket:"20to30",  content:null },
@@ -1163,16 +1229,11 @@ function showDetail() {
 
     document.getElementById('openActivityBtn').href = selectedActivity.url;
 
-    const reflCard = document.getElementById('reflectionCard');
     const reflBody = document.getElementById('reflectionBody');
-    const reflFrame = document.getElementById('reflectionFrame');
     reflBody.classList.remove('open');
-    if (REFLECTION_FORM_BASE_URL) {
-        reflCard.style.display = '';
-        reflFrame.src = REFLECTION_FORM_BASE_URL.replace('{ACTIVITY}', encodeURIComponent(selectedActivity.title));
-    } else {
-        reflCard.style.display = 'none';
-    }
+    const chevron = document.querySelector('#reflectionCard .reflection-chevron');
+    if (chevron) chevron.style.transform = '';
+    resetRecorder();
 
     showScreen('detail');
 }
@@ -1182,6 +1243,100 @@ function toggleReflection(btn) {
     const chevron = btn.querySelector('.reflection-chevron');
     body.classList.toggle('open');
     chevron.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+async function startRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+            ? 'audio/webm;codecs=opus' : 'audio/mp4';
+        mediaRecorder = new MediaRecorder(stream, { mimeType });
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.onstop = processRecording;
+        mediaRecorder.start(250);
+
+        document.getElementById('recordBtn').classList.add('recording');
+        document.getElementById('recordBtn').onclick = stopRecording;
+        recordingSeconds = 0;
+        document.getElementById('recordTimer').textContent = '00:00';
+        recordingTimer = setInterval(() => {
+            recordingSeconds++;
+            const m = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
+            const s = String(recordingSeconds % 60).padStart(2, '0');
+            document.getElementById('recordTimer').textContent = `${m}:${s}`;
+        }, 1000);
+    } catch {
+        showReflError('Microphone access denied. Please allow microphone access and try again.');
+    }
+}
+
+function stopRecording() {
+    clearInterval(recordingTimer);
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(t => t.stop());
+    }
+}
+
+async function processRecording() {
+    setReflState('processing');
+    const mimeType = audioChunks[0]?.type || 'audio/webm';
+    const audioBlob = new Blob(audioChunks, { type: mimeType });
+    const ext = mimeType.includes('mp4') ? 'm4a' : 'webm';
+
+    const form = new FormData();
+    form.append('audio', audioBlob, `audio.${ext}`);
+    form.append('activity_id', selectedActivity.id);
+    form.append('activity_title', selectedActivity.title);
+    if (selectedAge) form.append('child_age', String(selectedAge));
+
+    try {
+        document.getElementById('reflProcessingMsg').textContent = 'Transcribing your note…';
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/process-reflection`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            },
+            body: form,
+        });
+        if (!res.ok) throw new Error(await res.text());
+        document.getElementById('reflProcessingMsg').textContent = 'Summarizing…';
+        const { summary } = await res.json();
+        document.getElementById('reflSummaryText').innerHTML = summary
+            .split('\n').filter(l => l.trim())
+            .map(l => `<p style="margin-bottom:6px;">${l.replace(/^[-•*]\s*/, '')}</p>`)
+            .join('');
+        setReflState('result');
+    } catch (err) {
+        showReflError('Something went wrong — please try again.');
+        console.error(err);
+    }
+}
+
+function setReflState(state) {
+    ['Idle','Processing','Result','Error'].forEach(s =>
+        document.getElementById(`refl${s}`).style.display = s.toLowerCase() === state ? '' : 'none'
+    );
+}
+
+function showReflError(msg) {
+    document.getElementById('reflErrorMsg').textContent = msg;
+    setReflState('error');
+}
+
+function resetRecorder() {
+    clearInterval(recordingTimer);
+    mediaRecorder = null;
+    audioChunks = [];
+    recordingSeconds = 0;
+    const btn = document.getElementById('recordBtn');
+    if (btn) { btn.classList.remove('recording'); btn.onclick = startRecording; }
+    const timer = document.getElementById('recordTimer');
+    if (timer) timer.textContent = '';
+    setReflState('idle');
 }
 </script>
 </body>
