@@ -619,6 +619,21 @@
         }
         .ghost-btn:hover { background: var(--purple-soft); }
 
+        .reflect-activity-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.18s;
+        }
+        .reflect-activity-card:hover { border-color: var(--purple-light); }
+        .reflect-activity-card:active { transform: scale(0.98); }
+        .reflect-activity-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+        .reflect-activity-source { font-size: 0.8rem; color: var(--text-muted); }
+
         /* ── WELCOME screen ──────────────────────────── */
         .welcome-screen {
             padding: 0;
@@ -699,6 +714,12 @@
 <div id="app">
 
     <!-- ══ SCREEN: WELCOME ══════════════════════════════════ -->
+    <div class="screen" id="screen-reflect">
+        <div class="page-title" style="margin-top:20px;">Which activity did you try?</div>
+        <p class="page-subtitle">Tap the one you did with your child today.</p>
+        <div id="reflectPickerList"></div>
+    </div>
+
     <div class="screen active" id="screen-welcome" style="padding:0; animation: fadeUp 0.3s ease both;">
         <div class="welcome-screen">
             <div class="hero">
@@ -801,7 +822,7 @@
     <!-- ══ SCREEN: DETAIL ═══════════════════════════════════ -->
     <div class="screen" id="screen-detail">
         <div class="topbar">
-            <button class="topbar-back" onclick="showScreen('results')">
+            <button class="topbar-back" onclick="showScreen(isReflectMode ? 'reflect' : 'results')">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M10 3L5 8L10 13" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -828,7 +849,7 @@
                 <path d="M6 3h7m0 0v7m0-7L6 10M3 5v8h8" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </a>
-        <button class="ghost-btn" onclick="showScreen('results')">← Try a different activity</button>
+        <button class="ghost-btn" onclick="showScreen(isReflectMode ? 'reflect' : 'results')">← Pick a different activity</button>
 
         <div class="reflection-card" id="reflectionCard">
             <button class="reflection-toggle" onclick="toggleReflection(this)">
@@ -876,6 +897,9 @@
 
 <script>
 // ── DATA — bundled fallback, overwritten by activities.json when available ────
+
+const REFLECT_IDS = ['emotional-intelligence-playbook', 'tense-and-relax', 'self-awareness-card'];
+let isReflectMode = false;
 
 // ── SUPABASE CONFIG ───────────────────────────────────────────────────────────
 // Fill in your project URL and anon key from: Supabase dashboard → Project Settings → API
@@ -984,9 +1008,31 @@ let resultTimeFilter  = 'all';
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
+    isReflectMode = new URLSearchParams(window.location.search).has('reflect');
+    if (isReflectMode) {
+        buildReflectPicker();
+        showScreen('reflect');
+        return;
+    }
     buildAgeGrid();
     buildChallengeGrid();
     document.getElementById('customChallenge').addEventListener('input', updateFindBtn);
+}
+
+function buildReflectPicker() {
+    const list = document.getElementById('reflectPickerList');
+    const ordered = REFLECT_IDS.map(id => ACTIVITIES.find(a => a.id === id)).filter(Boolean);
+    list.innerHTML = ordered.map(a => `
+        <div class="reflect-activity-card" onclick="selectReflectActivity('${a.id}')">
+            <div class="reflect-activity-title">${a.title}</div>
+            <div class="reflect-activity-source">${a.source}</div>
+        </div>
+    `).join('');
+}
+
+function selectReflectActivity(id) {
+    selectedActivity = ACTIVITIES.find(a => a.id === id);
+    showDetail(true);
 }
 
 function buildAgeGrid() {
@@ -1172,7 +1218,7 @@ function renderActivityList() {
 }
 
 // ── DETAIL ────────────────────────────────────────────────────────────────────
-function showDetail() {
+function showDetail(autoReflect = false) {
     if (!selectedActivity) return;
 
     const primarySkill = selectedActivity.skills[0];
@@ -1230,10 +1276,15 @@ function showDetail() {
     document.getElementById('openActivityBtn').href = selectedActivity.url;
 
     const reflBody = document.getElementById('reflectionBody');
-    reflBody.classList.remove('open');
     const chevron = document.querySelector('#reflectionCard .reflection-chevron');
-    if (chevron) chevron.style.transform = '';
     resetRecorder();
+    if (autoReflect) {
+        reflBody.classList.add('open');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+    } else {
+        reflBody.classList.remove('open');
+        if (chevron) chevron.style.transform = '';
+    }
 
     showScreen('detail');
 }
