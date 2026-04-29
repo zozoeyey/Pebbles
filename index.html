@@ -636,6 +636,29 @@
         }
         .ghost-btn:hover { background: var(--purple-soft); }
 
+        .peer-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+        .peer-card-label {
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.09em; color: var(--green); margin-bottom: 12px;
+        }
+        .peer-card-body {
+            font-size: 0.86rem; color: #444; line-height: 1.75;
+            border-left: 3px solid #b2f0e0;
+            padding-left: 14px;
+        }
+        .peer-card-body p { margin-bottom: 10px; }
+        .peer-card-body p:last-child { margin-bottom: 0; }
+        .peer-card-attrib {
+            font-size: 0.78rem; color: var(--text-muted);
+            margin-top: 12px; font-style: italic;
+        }
+
         .reflect-activity-card {
             background: var(--surface);
             border-radius: var(--radius);
@@ -868,6 +891,12 @@
         </a>
         <button class="ghost-btn" onclick="showScreen(isReflectMode ? 'reflect' : 'results')">← Pick a different activity</button>
 
+        <div class="peer-card" id="peerReflectionCard" style="display:none;">
+            <div class="peer-card-label">What another parent shared</div>
+            <div class="peer-card-body" id="peerReflectionText"></div>
+            <div class="peer-card-attrib" id="peerReflectionAttrib"></div>
+        </div>
+
         <div class="reflection-card" id="reflectionCard">
             <button class="reflection-toggle" onclick="toggleReflection(this)">
                 <div>
@@ -931,6 +960,18 @@
 // ── DATA — bundled fallback, overwritten by activities.json when available ────
 
 const REFLECT_IDS = ['emotional-intelligence-playbook', 'tense-and-relax', 'self-awareness-card'];
+
+const PEER_REFLECTIONS = {
+    'tense-and-relax': {
+        paragraphs: [
+            "We tried the Tense and Relax activity tonight, and Lara was really distracted and hyperactive. She was already halfway up the couch when I pulled up the instructions. I went ahead anyway.",
+            "In terms of what went well, the turtle and the lemon were a hit. Something about the imagery caught her — squeezing imaginary lemons made her giggle, and for about ten seconds she actually noticed her hands feeling different afterward. \"They feel floppy,\" she said. That was the whole point, and she found it on her own.",
+            "I did get frustrated when she kept squirming and refusing to sit for the activity. I felt myself tighten up, which is ironic given the activity. She wasn't refusing, she was just being a five-year-old, and I was trying to make a calm moment happen on my schedule.",
+            "For the future, I hope that we keep trying the activity and get better over time.",
+        ],
+        attribution: 'Parent of a 5-year-old',
+    },
+};
 let isReflectMode = false;
 
 // ── SUPABASE CONFIG ───────────────────────────────────────────────────────────
@@ -1306,6 +1347,17 @@ function showDetail(autoReflect = false) {
     `;
 
     document.getElementById('openActivityBtn').href = selectedActivity.url;
+
+    const peer = PEER_REFLECTIONS[selectedActivity.id];
+    const peerCard = document.getElementById('peerReflectionCard');
+    if (peer) {
+        document.getElementById('peerReflectionText').innerHTML =
+            peer.paragraphs.map(p => `<p>${p}</p>`).join('');
+        document.getElementById('peerReflectionAttrib').textContent = `— ${peer.attribution}`;
+        peerCard.style.display = '';
+    } else {
+        peerCard.style.display = 'none';
+    }
 
     const reflBody = document.getElementById('reflectionBody');
     const chevron = document.querySelector('#reflectionCard .reflection-chevron');
