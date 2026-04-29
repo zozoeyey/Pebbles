@@ -583,6 +583,23 @@
         .refl-result-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple); margin-bottom: 10px; }
         .refl-summary { font-size: 0.87rem; color: var(--text); line-height: 1.7; }
         .refl-redo { margin-top: 14px; background: none; border: none; font-size: 0.82rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; display: block; }
+        .refl-questions { margin-bottom: 18px; text-align: left; }
+        .refl-questions-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--purple); margin-bottom: 10px; }
+        .refl-question {
+            display: flex; gap: 10px; align-items: flex-start;
+            background: var(--purple-soft);
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+        }
+        .refl-question-num {
+            min-width: 20px; height: 20px; border-radius: 50%;
+            background: var(--purple); color: white;
+            font-size: 0.68rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 1px;
+        }
+        .refl-question-text { font-size: 0.83rem; color: var(--text); line-height: 1.5; }
         .refl-error { text-align: center; padding: 12px 0; }
         .refl-error p { font-size: 0.85rem; color: #e17055; margin-bottom: 10px; }
 
@@ -863,6 +880,21 @@
             </button>
             <div class="reflection-body" id="reflectionBody">
                 <div id="reflIdle" class="recorder-wrap">
+                    <div class="refl-questions">
+                        <div class="refl-questions-label">Reflect on these as you record</div>
+                        <div class="refl-question">
+                            <div class="refl-question-num">1</div>
+                            <div class="refl-question-text">How did the activity go — what went well and what could have gone better? What did you notice about your child?</div>
+                        </div>
+                        <div class="refl-question">
+                            <div class="refl-question-num">2</div>
+                            <div class="refl-question-text">After reading another parent's reflection for this activity, what stood out to you?</div>
+                        </div>
+                        <div class="refl-question">
+                            <div class="refl-question-num">3</div>
+                            <div class="refl-question-text">What's one tip you'd share with another parent trying this?</div>
+                        </div>
+                    </div>
                     <button class="record-btn" id="recordBtn" onclick="startRecording()">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="9" y="2" width="6" height="12" rx="3" fill="white"/>
