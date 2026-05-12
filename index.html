@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Pebbles – Activity Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --purple: #6c5ce7;
@@ -83,6 +86,11 @@
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(14px); }
             to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
         }
 
         /* ── TYPOGRAPHY ──────────────────────────────── */
@@ -675,79 +683,1454 @@
         .reflect-activity-source { font-size: 0.8rem; color: var(--text-muted); }
 
         /* ── WELCOME screen ──────────────────────────── */
-        .welcome-screen {
-            padding: 0;
-            min-height: 100vh;
+        .welcome-v2 {
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
+            background: #faf8f5;
         }
 
-        .hero {
-            background: linear-gradient(150deg, var(--purple) 0%, #9b59b6 100%);
-            padding: 52px 28px 44px;
-            color: white;
+        .welcome-top {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: clamp(32px, 6vh, 64px);
+            overflow: hidden;
+        }
+
+        .welcome-logo {
+            width: clamp(160px, 60%, 230px);
+            height: auto;
             flex-shrink: 0;
         }
-        .hero-pill {
-            display: inline-block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            background: rgba(255,255,255,0.18);
-            border-radius: 99px;
-            padding: 5px 12px;
-            margin-bottom: 18px;
-        }
-        .hero h1 {
-            font-size: 2.1rem;
-            font-weight: 800;
-            line-height: 1.15;
-            letter-spacing: -0.5px;
-            margin-bottom: 12px;
-        }
-        .hero p {
-            font-size: 1rem;
-            opacity: 0.82;
-            line-height: 1.55;
+
+        .welcome-scene {
+            width: 100%;
+            aspect-ratio: 375 / 246;
+            position: relative;
+            margin-top: auto;
         }
 
-        .welcome-body {
-            padding: 28px 20px 120px;
+        .welcome-arc {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            aspect-ratio: 375 / 129;
+        }
+
+        .char-yellow {
+            position: absolute;
+            width: 45.3%;
+            aspect-ratio: 1;
+            bottom: 30.9%;
+            left: 11.2%;
+        }
+
+        .char-pink {
+            position: absolute;
+            width: 28%;
+            aspect-ratio: 1;
+            bottom: 30.9%;
+            left: 56.5%;
+        }
+
+        .welcome-card {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 36px 24px max(24px, env(safe-area-inset-bottom));
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            position: relative;
+            z-index: 1;
+            margin-top: -20px;
+        }
+
+        .welcome-texts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            text-align: center;
+        }
+
+        .welcome-heading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: clamp(22px, 5.5vw, 28px);
+            color: #3d3935;
+            letter-spacing: -0.56px;
+        }
+
+        .welcome-subtext {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #6b6761;
+            line-height: 1.6;
+            max-width: 295px;
+        }
+
+        .welcome-cta {
+            width: 100%;
+            height: 48px;
+            background: #3d3935;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.18s, transform 0.1s;
+        }
+        .welcome-cta:hover { opacity: 0.85; }
+        .welcome-cta:active { transform: scale(0.98); }
+
+
+        /* ── ONBOARDING SCREENS ──────────────────────── */
+        .onboard-screen {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: #faf8f5;
+        }
+
+        .onboard-top {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-top: 16px;
+            overflow: hidden;
+        }
+
+        .onboard-progress {
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .progress-segs {
+            display: flex;
+            gap: 8px;
             flex: 1;
         }
 
-        .feature-row {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 28px;
+        .progress-seg {
+            flex: 1;
+            height: 4px;
+            background: #dadada;
+            border-radius: 16px;
+            overflow: hidden;
         }
 
-        .feature-item {
+        .progress-seg-fill {
+            height: 100%;
+            background: #3d3935;
+            border-radius: 16px;
+        }
+
+        .progress-skip {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: #3d3935;
+            text-transform: uppercase;
+            background: none;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            flex-shrink: 0;
+            padding: 0;
+        }
+
+        /* Age screen illustration */
+        .age-scene {
+            width: 100%;
+            aspect-ratio: 375 / 318;
+            position: relative;
+            margin-top: auto;
+        }
+
+        .onboard-arc {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            aspect-ratio: 375 / 129;
+        }
+
+        .age-char-main {
+            position: absolute;
+            width: 36.8%;
+            aspect-ratio: 1;
+            bottom: 24.5%;
+            left: 32.3%;
+        }
+
+        .age-clock {
+            position: absolute;
+            width: 22.1%;
+            aspect-ratio: 1;
+            top: 0;
+            left: 70.4%;
+        }
+
+        .age-flower-left {
+            position: absolute;
+            width: 10.7%;
+            aspect-ratio: 40 / 44;
+            left: 11.7%;
+            bottom: 23%;
+        }
+
+        .age-flower-right {
+            position: absolute;
+            width: 10.7%;
+            aspect-ratio: 40 / 44;
+            right: 14.1%;
+            bottom: 9.1%;
+        }
+
+        /* Onboarding white card (shared) */
+        .onboard-card {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 36px 24px max(24px, env(safe-area-inset-bottom));
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            position: relative;
+            z-index: 1;
+            margin-top: -20px;
+        }
+
+        .onboard-texts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .onboard-heading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: clamp(22px, 5.5vw, 28px);
+            color: #3d3935;
+            letter-spacing: -0.56px;
+        }
+
+        .onboard-subtext {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #6b6761;
+            line-height: 1.6;
+        }
+
+        /* Age pill buttons */
+        .age-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .age-pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 2px solid #3d3935;
+            background: white;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: #3d3935;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+        .age-pill:hover { background: #f0efee; }
+        .age-pill.selected { background: #3d3935; color: white; }
+
+        /* Onboarding CTA */
+        .onboard-cta {
+            width: 100%;
+            height: 48px;
+            background: #3d3935;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.18s, transform 0.1s;
+        }
+        .onboard-cta:hover { opacity: 0.85; }
+        .onboard-cta:active { transform: scale(0.98); }
+        .onboard-cta:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+        /* ── CHALLENGE SCREEN ────────────────────────── */
+        .challenge-arc-img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        .challenge-pill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .challenge-pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 2px solid #3d3935;
+            background: white;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            color: #3d3935;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+            line-height: 1.6;
+        }
+        .challenge-pill:hover { background: #f0efee; }
+        .challenge-pill.selected { background: #3d3935; color: white; }
+
+        .challenge-pill-add {
+            padding: 8px 0;
+            border: none;
+            background: none;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            color: #3d3935;
+            cursor: pointer;
+            line-height: 1.6;
+        }
+
+        .add-own-box {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .add-own-input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 2px solid #3d3935;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 13px;
+            color: #3d3935;
+            background: white;
+            outline: none;
+        }
+        .add-own-input::placeholder { color: #c0bcb9; }
+
+        .add-own-save {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: none;
+            background: #3d3935;
+            color: white;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.15s;
+        }
+        .add-own-save:hover { opacity: 0.85; }
+
+        /* ── EXPLORE SCREEN ─────────────────────────── */
+        .explore-wrap {
+            min-height: 100dvh;
+            background: #faf8f5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #screen-results.active { display: flex; flex-direction: column; }
+
+        .explore-scroll {
+            flex: 1;
+            padding: 16px 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .explore-header {
             display: flex;
             align-items: center;
-            gap: 14px;
-            background: var(--surface);
-            border-radius: 14px;
-            padding: 14px 16px;
-            box-shadow: var(--shadow-sm);
+            justify-content: space-between;
+            padding-top: 4px;
         }
-        .feature-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 11px;
+
+        .explore-logo { width: 103px; height: auto; }
+
+        .explore-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: #d6e475;
+            padding: 8px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+        }
+        .explore-avatar img { width: 100%; height: 100%; }
+
+        .explore-search-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .explore-search-bar {
+            flex: 1;
+            height: 40px;
+            background: white;
+            border: 2px solid #ededed;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 8px;
+        }
+
+        .search-icon-circle {
+            width: 31px;
+            height: 31px;
+            background: #f7f7f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
         }
-        .feature-icon.purple { background: var(--purple-soft); }
-        .feature-icon.orange { background: #fff4e0; }
-        .feature-icon.green  { background: #e8fdf5; }
-        .feature-text strong { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
-        .feature-text span { font-size: 0.8rem; color: var(--text-muted); }
+
+        .explore-search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 14px;
+            color: #3d3935;
+        }
+        .explore-search-input::placeholder { color: #9d9da0; }
+
+        .explore-filter-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 16px;
+            border: 1.5px solid #3d3935;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            color: #3d3935;
+            transition: background 0.15s, color 0.15s;
+        }
+        .explore-filter-btn.filter-open {
+            background: #3d3935;
+            color: white;
+        }
+
+        .explore-filter-panel {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 12px;
+        }
+        .explore-filter-panel.open { display: flex; }
+
+        .filter-sec { display: flex; flex-direction: column; gap: 8px; }
+
+        .filter-sec-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            color: #3d3935;
+            line-height: 1.6;
+        }
+
+        .filter-chips-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
+
+        .ex-chip {
+            padding: 6px 8px;
+            border-radius: 12px;
+            border: 1px solid #3d3935;
+            background: transparent;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 10px;
+            color: #3d3935;
+            cursor: pointer;
+            white-space: nowrap;
+            line-height: 1.6;
+            transition: background 0.15s;
+        }
+        .ex-chip.active { background: #9cd3f8; }
+
+        /* Activity cards */
+        #exploreList {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ex-card {
+            background: white;
+            border-radius: 16px;
+            padding: 12px 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ex-card-header {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .ex-radio {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1.5px solid #ccc;
+            flex-shrink: 0;
+            margin-top: 1px;
+            background: white;
+            position: relative;
+            transition: all 0.15s;
+        }
+        .ex-radio.on { border-color: #3d3935; background: #3d3935; }
+        .ex-radio.on::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .ex-card-title {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #000;
+        }
+
+        .ex-card-tags {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding-left: 24px;
+        }
+
+        .ex-tag {
+            padding: 4px 6px;
+            border-radius: 8px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 10px;
+            color: #000;
+            line-height: 1.8;
+            white-space: nowrap;
+        }
+        .ex-tag-time { background: #d6e475; }
+        .ex-tag-skill { background: #ffa9bc; }
+        .ex-tag-ref { background: #fdd15e; }
+
+        .ex-card-desc {
+            display: none;
+            padding: 0 0 0 24px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 10px;
+            color: #6b6761;
+            line-height: 1.6;
+        }
+        .ex-card.selected .ex-card-desc { display: block; }
+
+        .ex-card-action { display: none; padding: 0 24px; }
+        .ex-card.selected .ex-card-action { display: block; }
+
+        .ex-try-btn {
+            width: 100%;
+            padding: 6px;
+            background: #3d3935;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            line-height: 1.6;
+            transition: opacity 0.15s;
+        }
+        .ex-try-btn:hover { opacity: 0.85; }
+
+        /* Bottom nav */
+        .explore-nav {
+            position: sticky;
+            bottom: 0;
+            padding: 0 16px 16px;
+        }
+        .explore-nav-inner {
+            background: white;
+            border-radius: 36px;
+            padding: 12px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        .nav-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 80px;
+            cursor: pointer;
+        }
+        .nav-tab-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #888;
+            letter-spacing: 0.24px;
+        }
+        .nav-tab.active .nav-tab-label { font-weight: 600; color: #3d3935; }
+        .nav-tab svg { width: 24px; height: 24px; display: block; }
+
+        /* ── DETAIL V2 SCREEN ──────────────────────────────── */
+        #screen-detail.active { display: flex; flex-direction: column; }
+
+        .detail-v2-wrap {
+            min-height: 100dvh;
+            background: #faf8f5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-v2-topbar {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px 8px;
+            flex-shrink: 0;
+        }
+
+        .detail-v2-back {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+
+        .detail-v2-scroll {
+            flex: 1;
+            padding: 4px 20px 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .detail-v2-heading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: #3d3935;
+            margin-bottom: 4px;
+        }
+
+        .detail-v2-subtext {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 13px;
+            color: #9d9da0;
+            line-height: 1.6;
+        }
+
+        .bub-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bub-card-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: #6b6761;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 12px 12px 0;
+        }
+
+        .bub-cream-area {
+            background: #faf8f5;
+            padding: 28px 19px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 13px;
+            position: relative;
+            min-height: 130px;
+        }
+
+        .bub-play-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #6b6761;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            transition: background 0.15s;
+        }
+        .bub-play-ring:hover { background: #f5f5f5; }
+
+        .bub-cream-title {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            color: #3d3935;
+            text-align: center;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bub-char-abs {
+            position: absolute;
+            width: 82px;
+            right: 12px;
+            top: 20px;
+            z-index: 0;
+        }
+
+        .bub-desc-section {
+            padding: 12px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 400;
+            font-size: 13px;
+            color: #3d3935;
+            line-height: 1.65;
+        }
+
+        .bub-video-player video {
+            width: 100%;
+            display: block;
+        }
+
+        .bub-iframe-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+        }
+        .bub-iframe-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .act-info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .act-info-title {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #3d3935;
+            line-height: 1.4;
+        }
+
+        .act-info-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .act-info-tag {
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            color: #3d3935;
+            line-height: 1.6;
+        }
+
+        .act-info-desc {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #6b6761;
+            line-height: 1.6;
+        }
+
+        .act-materials-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            color: #9d9da0;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .act-materials-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .act-materials-list li {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #3d3935;
+            padding-left: 14px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .act-materials-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #3d3935;
+        }
+
+        .act-tip-box {
+            background: #f5f3ef;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .act-tip-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            color: #9d9da0;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .act-tip-box {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 13px;
+            color: #6b6761;
+            line-height: 1.7;
+        }
+
+        .act-start-btn {
+            width: 100%;
+            height: 52px;
+            background: #3d3935;
+            color: white;
+            border: none;
+            border-radius: 26px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .act-start-btn:hover { opacity: 0.85; }
+        .act-start-btn:active { transform: scale(0.98); }
+
+        .act-open-btn {
+            width: 100%;
+            height: 52px;
+            background: white;
+            color: #3d3935;
+            border: 2px solid #3d3935;
+            border-radius: 26px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .act-open-btn:hover { background: #f0efee; }
+
+        /* ── SEL ONBOARDING SCREEN ─────────────────────── */
+        #screen-sel.active { display: flex; flex-direction: column; }
+
+        .sel-wrap {
+            min-height: 100dvh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            padding: 16px 24px 48px;
+        }
+
+        .sel-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-shrink: 0;
+        }
+
+        .sel-prelabel {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: #6b6761;
+            line-height: 1.6;
+            margin-bottom: 4px;
+        }
+
+        .sel-heading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: #3d3935;
+            line-height: 1.3;
+            letter-spacing: -0.48px;
+            margin-bottom: 24px;
+        }
+
+        .sel-video-box {
+            background: #faf8f5;
+            border-radius: 20px;
+            height: 210px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 24px;
+            flex-shrink: 0;
+        }
+
+        .sel-char {
+            position: absolute;
+            pointer-events: none;
+        }
+        .sel-char-1 { width: 80px; top: 27px; left: 40px; }
+        .sel-char-2 { width: 82px; bottom: 0; left: 50%; transform: translateX(-30%); }
+        .sel-char-3 { width: 78px; top: 8px; right: 16px; }
+
+        .sel-play-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #6b6761;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            transition: background 0.15s;
+            flex-shrink: 0;
+        }
+        .sel-play-ring:hover { background: #f5f5f5; }
+
+        .sel-iframe-wrap {
+            position: absolute;
+            inset: 0;
+        }
+        .sel-iframe-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .sel-question { margin-bottom: 16px; }
+
+        .sel-q-label {
+            display: block;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #6b6761;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .sel-input {
+            display: block;
+            width: 100%;
+            height: 48px;
+            border: 1px solid #6b6761;
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 14px;
+            color: #3d3935;
+            background: white;
+            outline: none;
+            transition: border-color 0.15s, border-width 0.15s;
+        }
+        .sel-input:focus { border-color: #3d3935; border-width: 1.5px; }
+        .sel-input::placeholder { color: #c0bcb9; }
+        .sel-input.error { border-color: #e17055; }
+
+        /* ── ACTIVITY PLAYER SCREEN ────────────────────── */
+        #screen-activity.active { display: flex; flex-direction: column; }
+
+        .act-wrap {
+            min-height: 100dvh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 24px 32px;
+            gap: 20px;
+        }
+
+        .act-back-row {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding-top: 12px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .act-back-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #3d3935;
+        }
+
+        .act-title {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            color: #000;
+            text-align: center;
+        }
+
+        .act-step-box {
+            width: 100%;
+            background: #faf8f5;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #444;
+            line-height: 1.6;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s;
+        }
+
+        .act-blob {
+            width: 260px;
+            height: 240px;
+            flex-shrink: 0;
+        }
+
+        .act-play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #F9A3C4;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: opacity 0.15s, transform 0.1s;
+            box-shadow: 0 4px 16px rgba(249,163,196,0.45);
+        }
+        .act-play-btn:hover { opacity: 0.9; }
+        .act-play-btn:active { transform: scale(0.95); }
+
+        .act-timeline {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .act-time-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .act-time-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            color: #000;
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 28px;
+        }
+
+        .act-track-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .act-progress-track {
+            width: 100%;
+            height: 14px;
+            background: rgba(156,211,248,0.4);
+            border-radius: 21px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .act-progress-fill {
+            position: absolute;
+            left: 0; top: 0;
+            height: 100%;
+            background: #9CD3F8;
+            border-radius: 21px;
+            pointer-events: none;
+        }
+
+        .act-tooltip-row {
+            position: relative;
+            height: 42px;
+            overflow: visible;
+        }
+
+        .act-tooltip {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .act-tooltip-arrow {
+            width: 0; height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 8px solid #9CD3F8;
+        }
+
+        .act-tooltip-chip {
+            background: #9CD3F8;
+            border-radius: 16px;
+            padding: 6px 14px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            color: #0e0e10;
+            white-space: nowrap;
+        }
+
+        .act-go-btn {
+            width: 100%;
+            height: 48px;
+            background: #3d3935;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.15s;
+            margin-top: auto;
+        }
+        .act-go-btn:hover { opacity: 0.85; }
+
+        /* ── REFLECTION SCREEN ─────────────────────────────── */
+        #screen-reflection.active { display: flex; flex-direction: column; }
+
+        .refl-screen-wrap {
+            min-height: 100dvh;
+            background: #faf8f5;
+            display: flex;
+            flex-direction: column;
+            padding: 0 20px 48px;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        .refl-back {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding-top: 14px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #3d3935;
+        }
+
+        .refl-heading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: #3d3935;
+            margin-top: 2px;
+        }
+
+        .refl-subtext {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 13px;
+            color: #6b6761;
+            margin-top: -8px;
+        }
+
+        /* Peer card */
+        .refl-peer-card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .refl-peer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refl-peer-avatar {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+        }
+
+        .refl-peer-name {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: #3d3935;
+        }
+
+        .refl-peer-meta {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 11px;
+            color: #9b9591;
+            margin-top: 1px;
+        }
+
+        .refl-peer-text {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 13px;
+            color: #3d3935;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* Prompts */
+        .refl-prompt-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            color: #6b6761;
+        }
+
+        .refl-prompt-card {
+            background: #d6e475;
+            border-radius: 16px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .refl-prompt-q {
+            background: white;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #3d3935;
+        }
+
+        /* Record button */
+        .refl-record-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .refl-record-btn {
+            width: 130px;
+            height: 130px;
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+        .refl-record-btn:active { transform: scale(0.95); }
+
+        .refl-record-btn .refl-btn-pebble {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+        }
+
+        .refl-record-btn .refl-btn-icon {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .refl-record-btn.recording .refl-btn-pebble path {
+            fill: #F9A3C4;
+        }
+
+        .refl-timer {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: #3d3935;
+        }
+
+        .refl-tap-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            color: #9b9591;
+        }
+
+        /* Processing / result / error states */
+        .refl-state-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .refl-state-msg {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 14px;
+            color: #3d3935;
+        }
+
+        .refl-summary-box {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 14px;
+            color: #3d3935;
+            line-height: 1.6;
+            text-align: left;
+            width: 100%;
+        }
+
+        .refl-reset-btn {
+            background: #3d3935;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 10px 28px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .refl-complete-btn {
+            background: #d6e475;
+            color: #3d3935;
+            border: none;
+            border-radius: 24px;
+            padding: 10px 28px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .refl-complete-btn:hover { opacity: 0.85; }
+
+        .refl-error-msg {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 13px;
+            color: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -761,40 +2144,162 @@
     </div>
 
     <div class="screen active" id="screen-welcome" style="padding:0; animation: fadeUp 0.3s ease both;">
-        <div class="welcome-screen">
-            <div class="hero">
-                <div class="hero-pill">Pebbles Activity Library</div>
-                <h1>Find the right activity for your child</h1>
-                <p>Answer two quick questions and we'll suggest activities matched to your child's needs.</p>
-            </div>
-            <div class="welcome-body">
-                <div class="feature-row">
-                    <div class="feature-item">
-                        <div class="feature-icon purple">🎯</div>
-                        <div class="feature-text">
-                            <strong>Tailored to your child</strong>
-                            <span>Filter by age and challenge area</span>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon orange">📋</div>
-                        <div class="feature-text">
-                            <strong>Curated activities</strong>
-                            <span>Research-backed SEL resources</span>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon green">▶️</div>
-                        <div class="feature-text">
-                            <strong>Video overview included</strong>
-                            <span>Understand the concept before you start</span>
-                        </div>
-                    </div>
+        <div class="welcome-v2">
+            <div class="welcome-top">
+                <img src="assets/pebbles logo.svg" class="welcome-logo" alt="Pebbles">
+                <div class="welcome-scene">
+                    <img src="assets/arc.svg" class="welcome-arc" alt="">
+                    <img src="assets/char-yellow.svg" class="char-yellow" alt="">
+                    <img src="assets/char-pink.svg" class="char-pink" alt="">
                 </div>
             </div>
+            <div class="welcome-card">
+                <div class="welcome-texts">
+                    <div class="welcome-heading">Welcome to Pebbles!</div>
+                    <p class="welcome-subtext">Guide your kid through big emotions,<br>one small moment at a time</p>
+                </div>
+                <button class="welcome-cta" onclick="showScreen('age')">Get Started</button>
+            </div>
         </div>
-        <div class="bottom-cta">
-            <button class="cta-btn" onclick="showScreen('filters')">Get Started →</button>
+    </div>
+
+    <!-- ══ SCREEN: AGE ════════════════════════════════════════ -->
+    <div class="screen" id="screen-age">
+        <div class="onboard-screen">
+            <div class="onboard-top">
+                <div class="onboard-progress">
+                    <div class="progress-segs">
+                        <div class="progress-seg"><div class="progress-seg-fill" style="width:50%"></div></div>
+                        <div class="progress-seg"></div>
+                        <div class="progress-seg"></div>
+                        <div class="progress-seg"></div>
+                    </div>
+                    <button class="progress-skip" onclick="showResults()">Skip</button>
+                </div>
+                <div class="age-scene">
+                    <img src="assets/arc.svg" class="onboard-arc" alt="">
+                    <img src="assets/char-center.svg" class="age-char-main" alt="">
+                    <img src="assets/clock.svg" class="age-clock" alt="">
+                    <img src="assets/flower-pink.svg" class="age-flower-left" alt="">
+                    <img src="assets/flower-white.svg" class="age-flower-right" alt="">
+                </div>
+            </div>
+            <div class="onboard-card">
+                <div class="onboard-texts">
+                    <div class="onboard-heading">How old is your child?</div>
+                    <p class="onboard-subtext">We'll tailor lessons to their stage.</p>
+                </div>
+                <div class="age-pills">
+                    <button class="age-pill" data-age="3" onclick="selectAgePill(this)">3 yrs</button>
+                    <button class="age-pill" data-age="4" onclick="selectAgePill(this)">4 yrs</button>
+                    <button class="age-pill" data-age="5" onclick="selectAgePill(this)">5 yrs</button>
+                    <button class="age-pill" data-age="6" onclick="selectAgePill(this)">6 yrs</button>
+                    <button class="age-pill" data-age="7" onclick="selectAgePill(this)">7 yrs</button>
+                    <button class="age-pill" data-age="8" onclick="selectAgePill(this)">8 yrs</button>
+                    <button class="age-pill" data-age="9" onclick="selectAgePill(this)">9 yrs</button>
+                    <button class="age-pill" data-age="10" onclick="selectAgePill(this)">10 yrs</button>
+                    <button class="age-pill" data-age="11" onclick="selectAgePill(this)">11 yrs</button>
+                </div>
+                <button class="onboard-cta" id="ageNextBtn" disabled onclick="showScreen('challenge')">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: CHALLENGE ════════════════════════════════ -->
+    <div class="screen" id="screen-challenge">
+        <div class="onboard-screen">
+            <div class="onboard-top">
+                <div class="onboard-progress">
+                    <div class="progress-segs">
+                        <div class="progress-seg"><div class="progress-seg-fill" style="width:100%"></div></div>
+                        <div class="progress-seg"><div class="progress-seg-fill" style="width:50%"></div></div>
+                        <div class="progress-seg"></div>
+                        <div class="progress-seg"></div>
+                    </div>
+                    <button class="progress-skip" onclick="showResults()">Skip</button>
+                </div>
+                <img src="assets/arc screen 3.svg" class="challenge-arc-img" alt="">
+            </div>
+            <div class="onboard-card">
+                <div class="onboard-texts">
+                    <div class="onboard-heading">What do you want to work on today?</div>
+                    <p class="onboard-subtext">Pick one to start.</p>
+                </div>
+                <div class="challenge-pill-grid">
+                    <button class="challenge-pill" data-id="naming" onclick="selectChallengePill(this)">Trouble naming feelings</button>
+                    <button class="challenge-pill" data-id="meltdowns" onclick="selectChallengePill(this)">Big reactions</button>
+                    <button class="challenge-pill" data-id="transitions" onclick="selectChallengePill(this)">Tantrums during transition</button>
+                    <button class="challenge-pill" data-id="calming" onclick="selectChallengePill(this)">Hard to calm down</button>
+                    <button class="challenge-pill" data-id="confidence" onclick="selectChallengePill(this)">Low confidence or self-doubt</button>
+                    <button class="challenge-pill selected" id="customChallengePill" style="display:none;" onclick="clearCustomChallenge()"></button>
+                    <button class="challenge-pill-add" id="addOwnBtn" onclick="toggleAddOwn()">+ Add your own</button>
+                </div>
+                <div class="add-own-box" id="addOwnBox" style="display:none;">
+                    <input type="text" class="add-own-input" id="addOwnInput" placeholder="e.g. refuses to share with siblings…" onkeydown="if(event.key==='Enter')saveOwnChallenge()">
+                    <button class="add-own-save" onclick="saveOwnChallenge()">Save</button>
+                </div>
+                <button class="onboard-cta" id="challengeNextBtn" disabled onclick="showScreen('sel')">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: SEL ONBOARDING ════════════════════════════ -->
+    <div class="screen" id="screen-sel" style="padding:0;">
+        <div class="sel-wrap">
+            <!-- Progress -->
+            <div class="sel-progress">
+                <div class="progress-segs">
+                    <div class="progress-seg"><div class="progress-seg-fill" style="width:100%"></div></div>
+                    <div class="progress-seg"><div class="progress-seg-fill" style="width:100%"></div></div>
+                    <div class="progress-seg"><div class="progress-seg-fill" style="width:100%"></div></div>
+                    <div class="progress-seg"><div class="progress-seg-fill" style="width:50%"></div></div>
+                </div>
+                <button class="progress-skip" onclick="showResults()">Skip</button>
+            </div>
+
+            <!-- Heading -->
+            <div class="sel-prelabel">Before we start, watch this video</div>
+            <div class="sel-heading">What is Social-Emotional Learning (SEL)?</div>
+
+            <!-- Video box -->
+            <div class="sel-video-box">
+                <!-- Placeholder state -->
+                <div id="selVideoPlaceholder" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                    <img src="assets/char-yellow.svg" class="sel-char sel-char-1" alt="">
+                    <!-- Inline blue pebble character -->
+                    <svg class="sel-char sel-char-2" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M77 0C92.4638 0 105 12.5362 105 28C105 38.5434 99.1714 47.7241 90.5615 52.5C99.1714 57.2759 105 66.4566 105 77C105 92.4638 92.4638 105 77 105H28C12.5362 105 0 92.4638 0 77C8.22277e-05 66.4569 5.82805 57.276 14.4375 52.5C5.82805 47.724 9.06667e-05 38.5431 0 28C0 12.5362 12.5362 0 28 0H77Z" fill="#9CD3F8"/>
+                        <path d="M27.5145 25.8692C27.5145 29.2182 26.0562 30.3345 24.2573 30.3345C22.4583 30.3345 21 29.2182 21 25.8692C21 22.5202 22.4583 21.4038 24.2573 21.4038C26.0562 21.4038 27.5145 22.1601 27.5145 25.8692Z" fill="#666"/>
+                        <path d="M41.8936 25.8692C41.8936 29.2182 40.4353 30.3345 38.6364 30.3345C36.8375 30.3345 35.3791 29.2182 35.3791 25.8692C35.3791 22.5202 36.8375 21.4038 38.6364 21.4038C40.4353 21.4038 41.8936 22.1601 41.8936 25.8692Z" fill="#666"/>
+                    </svg>
+                    <img src="assets/char-pink.svg" class="sel-char sel-char-3" alt="">
+                    <button class="sel-play-ring" onclick="playSelVideo()">
+                        <svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M1 1.5L17 10L1 18.5V1.5Z" fill="#3d3935" stroke="#3d3935" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    </button>
+                </div>
+                <!-- YouTube iframe (hidden until play; src set on click) -->
+                <div class="sel-iframe-wrap" id="selVideoIframe" style="display:none;">
+                    <iframe id="selYtIframe" src=""
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Q1 -->
+            <div class="sel-question">
+                <label class="sel-q-label" for="selQ1">In your own words, what is SEL and why does it matter for your child?</label>
+                <input type="text" class="sel-input" id="selQ1" placeholder="Type your answer…" oninput="updateSelNextBtn()">
+            </div>
+
+            <!-- Q2 -->
+            <div class="sel-question">
+                <label class="sel-q-label" for="selQ2">How did you usually handle big emotions with your child?</label>
+                <input type="text" class="sel-input" id="selQ2" placeholder="Type your answer…" oninput="updateSelNextBtn()">
+            </div>
+
+            <!-- Next -->
+            <button class="onboard-cta" id="selNextBtn" disabled onclick="submitSelOnboarding()">Next</button>
         </div>
     </div>
 
@@ -832,126 +2337,290 @@
         </div>
     </div>
 
-    <!-- ══ SCREEN: RESULTS ══════════════════════════════════ -->
-    <div class="screen" id="screen-results">
-        <div class="topbar">
-            <button class="topbar-back" onclick="showScreen('filters')">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M10 3L5 8L10 13" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
+    <!-- ══ SCREEN: RESULTS (Explore) ═══════════════════════ -->
+    <div class="screen" id="screen-results" style="padding:0;">
+        <div class="explore-wrap">
+            <div class="explore-scroll">
+                <!-- Header -->
+                <div class="explore-header">
+                    <img src="assets/pebbles logo.svg" class="explore-logo" alt="Pebbles">
+                    <div class="explore-avatar">
+                        <img src="assets/char-pink.svg" alt="">
+                    </div>
+                </div>
 
-        <div class="page-title" id="resultsTitle">Activities for you</div>
-        <p class="page-subtitle" id="resultsSubtitle">Tap one to select it</p>
+                <!-- Search + filter toggle -->
+                <div class="explore-search-row">
+                    <div class="explore-search-bar">
+                        <div class="search-icon-circle">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round">
+                                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </div>
+                        <input class="explore-search-input" id="exploreSearchInput" type="text" placeholder="Search activities" oninput="onExploreSearch(this.value)">
+                    </div>
+                    <button class="explore-filter-btn" id="filterToggleBtn" onclick="toggleExploreFilter()">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <line x1="2" y1="4.5" x2="16" y2="4.5"/>
+                            <line x1="4.5" y1="9" x2="13.5" y2="9"/>
+                            <line x1="7" y1="13.5" x2="11" y2="13.5"/>
+                        </svg>
+                    </button>
+                </div>
 
-        <div class="results-filters">
-            <div class="filter-row">
-                <div class="filter-row-label">SEL Skill</div>
-                <div class="filter-chips" id="skillFilterChips"></div>
+                <!-- Collapsible filter panel -->
+                <div class="explore-filter-panel" id="exploreFilterPanel">
+                    <div class="filter-sec">
+                        <div class="filter-sec-label">SEL Skills</div>
+                        <div class="filter-chips-wrap">
+                            <button class="ex-chip active" data-group="skill" data-val="all" onclick="setExploreFilter(this)">All skills</button>
+                            <button class="ex-chip" data-group="skill" data-val="Identifying emotions" onclick="setExploreFilter(this)">Identifying emotions</button>
+                            <button class="ex-chip" data-group="skill" data-val="Self-perception" onclick="setExploreFilter(this)">Self-perception</button>
+                        </div>
+                    </div>
+                    <div class="filter-sec">
+                        <div class="filter-sec-label">Duration</div>
+                        <div class="filter-chips-wrap">
+                            <button class="ex-chip active" data-group="time" data-val="all" onclick="setExploreFilter(this)">Any time</button>
+                            <button class="ex-chip" data-group="time" data-val="under10" onclick="setExploreFilter(this)">Under 10 mins</button>
+                            <button class="ex-chip" data-group="time" data-val="10to20" onclick="setExploreFilter(this)">10 – 20 mins</button>
+                            <button class="ex-chip" data-group="time" data-val="20to30" onclick="setExploreFilter(this)">20 – 30 mins</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity list -->
+                <div id="exploreList"></div>
             </div>
-            <div class="filter-row">
-                <div class="filter-row-label">Time available</div>
-                <div class="filter-chips" id="timeFilterChips"></div>
+
+            <!-- Bottom nav -->
+            <div class="explore-nav">
+                <div class="explore-nav-inner">
+                    <div class="nav-tab active">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3d3935" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12L12 4l9 8"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-4h4v4h4a1 1 0 0 0 1-1v-9"/>
+                        </svg>
+                        <span class="nav-tab-label">Explore</span>
+                    </div>
+                    <div class="nav-tab">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <span class="nav-tab-label">Community</span>
+                    </div>
+                    <div class="nav-tab">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                        <span class="nav-tab-label">Toolkit</span>
+                    </div>
+                    <div class="nav-tab">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <span class="nav-tab-label">Profile</span>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div id="activityList"></div>
     </div>
 
     <!-- ══ SCREEN: DETAIL ═══════════════════════════════════ -->
-    <div class="screen" id="screen-detail">
-        <div class="topbar">
-            <button class="topbar-back" onclick="showScreen(isReflectMode ? 'reflect' : 'results')">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M10 3L5 8L10 13" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="page-title" style="margin-bottom:6px;">Let's get started</div>
-        <p class="page-subtitle">Watch the quick intro, then open the activity.</p>
-
-        <div class="video-card">
-            <div class="video-header">
-                <div class="dot"></div>
-                <div class="eyebrow">Before you begin</div>
+    <div class="screen" id="screen-detail" style="padding:0;">
+        <div class="detail-v2-wrap">
+            <div class="detail-v2-topbar">
+                <button class="detail-v2-back" onclick="showScreen('results')">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="#3d3935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
-            <div class="video-aspect" id="videoEmbed"></div>
-            <div class="video-caption" id="videoCaption"></div>
-        </div>
-
-        <div class="detail-card" id="activityDetail"></div>
-
-        <a href="#" target="_blank" class="open-btn" id="openActivityBtn">
-            Open Full Activity
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M6 3h7m0 0v7m0-7L6 10M3 5v8h8" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </a>
-        <button class="ghost-btn" onclick="showScreen(isReflectMode ? 'reflect' : 'results')">← Pick a different activity</button>
-
-        <div class="peer-card" id="peerReflectionCard" style="display:none;">
-            <div class="peer-card-label">What another parent shared</div>
-            <div class="peer-card-body" id="peerReflectionText"></div>
-            <div class="peer-card-attrib" id="peerReflectionAttrib"></div>
-        </div>
-
-        <div class="reflection-card" id="reflectionCard">
-            <button class="reflection-toggle" onclick="toggleReflection(this)">
+            <div class="detail-v2-scroll">
                 <div>
-                    <div class="reflection-toggle-label">How did it go?</div>
-                    <div class="reflection-toggle-sub">Record a quick voice note after you try this</div>
+                    <div class="detail-v2-heading">Let's get started!</div>
+                    <div class="detail-v2-subtext">Watch the quick intro, then open the activity.</div>
                 </div>
-                <svg class="reflection-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M5 7.5L10 12.5L15 7.5" stroke="#888" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <!-- Before You Begin card -->
+                <div id="bubCard"></div>
+
+                <!-- Activity info card -->
+                <div class="act-info-card" id="actInfoCard">
+                    <!-- populated by showActivityDetail() -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══ SCREEN: ACTIVITY PLAYER ════════════════════════════ -->
+    <div class="screen" id="screen-activity" style="padding:0;">
+        <div class="act-wrap">
+
+            <!-- Back -->
+            <button class="act-back-row" onclick="stopActAudio(); showScreen('detail')">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M12 5L7 10L12 15" stroke="#3d3935" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="act-back-label">Back</span>
+            </button>
+
+            <!-- Title -->
+            <div class="act-title">Freeze Feelings</div>
+
+            <!-- Step text -->
+            <div class="act-step-box" id="actStepBox">Step #1: Clear a space where your child can move without bumping into things.</div>
+
+            <!-- Green blob character -->
+            <svg class="act-blob" viewBox="0 0 280 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="75"  cy="105" r="68" fill="#D6E475"/>
+                <circle cx="140" cy="78"  r="62" fill="#D6E475"/>
+                <circle cx="205" cy="105" r="68" fill="#D6E475"/>
+                <ellipse cx="140" cy="185" rx="115" ry="78" fill="#D6E475"/>
+                <rect x="52" y="82" width="176" height="108" fill="#D6E475"/>
+                <ellipse cx="112" cy="166" rx="10" ry="13" fill="#555"/>
+                <ellipse cx="168" cy="166" rx="10" ry="13" fill="#555"/>
+            </svg>
+
+            <!-- Play / Pause button -->
+            <button class="act-play-btn" id="actPlayBtn" onclick="toggleActAudio()">
+                <svg id="actPlayIcon" width="26" height="30" viewBox="0 0 26 30" fill="none">
+                    <path d="M2 1.5L24 15L2 28.5V1.5Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+                <svg id="actPauseIcon" width="26" height="30" viewBox="0 0 26 30" fill="none" style="display:none;">
+                    <rect x="2"  y="2" width="8" height="26" rx="2" fill="white"/>
+                    <rect x="16" y="2" width="8" height="26" rx="2" fill="white"/>
                 </svg>
             </button>
-            <div class="reflection-body" id="reflectionBody">
-                <div id="reflIdle" class="recorder-wrap">
-                    <div class="refl-questions">
-                        <div class="refl-questions-label">Reflect on these as you record</div>
-                        <div class="refl-question">
-                            <div class="refl-question-num">1</div>
-                            <div class="refl-question-text">How did the activity go — what went well and what could have gone better? What did you notice about your child?</div>
+
+            <!-- Timeline -->
+            <div class="act-timeline">
+                <div class="act-time-row">
+                    <span class="act-time-label" id="actCurrentTime">0:00</span>
+                    <div class="act-track-wrap">
+                        <div class="act-progress-track" onclick="actSeek(event)">
+                            <div class="act-progress-fill" id="actProgressFill" style="width:0%"></div>
                         </div>
-                        <div class="refl-question">
-                            <div class="refl-question-num">2</div>
-                            <div class="refl-question-text">After reading another parent's reflection for this activity, what stood out to you?</div>
-                        </div>
-                        <div class="refl-question">
-                            <div class="refl-question-num">3</div>
-                            <div class="refl-question-text">What's one tip you'd share with another parent trying this?</div>
+                        <div class="act-tooltip-row">
+                            <div class="act-tooltip" id="actTooltip" style="left:0%">
+                                <div class="act-tooltip-arrow"></div>
+                                <div class="act-tooltip-chip">Every Minute Counts!</div>
+                            </div>
                         </div>
                     </div>
-                    <button class="record-btn" id="recordBtn" onclick="startRecording()">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="9" y="2" width="6" height="12" rx="3" fill="white"/>
-                            <path d="M5 11a7 7 0 0 0 14 0" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
-                            <line x1="12" y1="18" x2="12" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="9" y1="22" x2="15" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                    <div class="record-hint">Tap to record your reflection</div>
-                    <div class="record-timer" id="recordTimer"></div>
-                </div>
-                <div id="reflProcessing" class="refl-processing" style="display:none;">
-                    <div class="spinner"></div>
-                    <p id="reflProcessingMsg">Transcribing your note…</p>
-                </div>
-                <div id="reflResult" class="refl-result" style="display:none;">
-                    <div class="refl-result-label">Your reflection summary</div>
-                    <div class="refl-summary" id="reflSummaryText"></div>
-                    <button class="refl-redo" onclick="resetRecorder()">Record again</button>
-                </div>
-                <div id="reflError" class="refl-error" style="display:none;">
-                    <p id="reflErrorMsg">Something went wrong.</p>
-                    <button class="refl-redo" onclick="resetRecorder()">Try again</button>
+                    <span class="act-time-label" id="actTotalTime" style="text-align:right;">0:36</span>
                 </div>
             </div>
-        </div>
 
-        <div style="height:20px;"></div>
+            <!-- CTA -->
+            <button class="act-go-btn" onclick="stopActAudio(); showReflectionScreen()">Go to Reflection</button>
+
+            <!-- Hidden audio -->
+            <audio id="actAudio" src="assets/Tense &amp; Relax Script.pdf.mp3" preload="auto"></audio>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: REFLECTION ════════════════════════════════ -->
+    <div class="screen" id="screen-reflection" style="padding:0;">
+        <div class="refl-screen-wrap">
+
+            <!-- Back -->
+            <button class="refl-back" onclick="showScreen('activity')">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M12 5L7 10L12 15" stroke="#3d3935" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back
+            </button>
+
+            <!-- Heading -->
+            <div class="refl-heading">How did it go?</div>
+            <div class="refl-subtext">Read another parent's reflection, then record your own.</div>
+
+            <!-- Peer reflection card -->
+            <div class="refl-peer-card">
+                <div class="refl-peer-header">
+                    <!-- Yellow pebble avatar (char-center shape, yellow fill) -->
+                    <div class="refl-peer-avatar">
+                        <svg viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+                            <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#FDD15E"/>
+                            <ellipse cx="52" cy="66" rx="7" ry="9" fill="#555"/>
+                            <ellipse cx="86" cy="66" rx="7" ry="9" fill="#555"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="refl-peer-name">Parent (child age 5)</div>
+                        <div class="refl-peer-meta">2h ago</div>
+                    </div>
+                </div>
+                <div class="refl-peer-text" id="reflPeerText">
+                    <!-- populated by showReflectionScreen() -->
+                </div>
+            </div>
+
+            <!-- Prompt label -->
+            <div class="refl-prompt-label">Reflect on these while you record</div>
+
+            <!-- Green prompt card -->
+            <div class="refl-prompt-card">
+                <div class="refl-prompt-q">What did you try with your child today?</div>
+                <div class="refl-prompt-q">What went well?</div>
+                <div class="refl-prompt-q">What would you do differently next time?</div>
+            </div>
+
+            <!-- Idle state: record button -->
+            <div id="reflIdle" class="refl-record-area">
+                <button class="refl-record-btn" id="recordBtn" onclick="startRecording()">
+                    <svg class="refl-btn-pebble" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#FDD15E"/>
+                    </svg>
+                    <div class="refl-btn-icon">
+                        <!-- Mic icon -->
+                        <svg width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="1" width="12" height="20" rx="6" fill="#3d3935"/>
+                            <path d="M4 18C4 25.18 9.37 31 16 31C22.63 31 28 25.18 28 18" stroke="#3d3935" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="16" y1="31" x2="16" y2="35" stroke="#3d3935" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="10" y1="35" x2="22" y2="35" stroke="#3d3935" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                        <span class="refl-timer" id="recordTimer"></span>
+                    </div>
+                </button>
+                <div class="refl-tap-label">Tap to record</div>
+            </div>
+
+            <!-- Processing state -->
+            <div id="reflProcessing" style="display:none;">
+                <div class="refl-state-box">
+                    <div class="refl-state-msg" id="reflProcessingMsg">Transcribing your note…</div>
+                    <!-- Spinner -->
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style="animation: spin 1s linear infinite;">
+                        <circle cx="16" cy="16" r="12" stroke="#d6e475" stroke-width="4"/>
+                        <path d="M16 4a12 12 0 0 1 12 12" stroke="#3d3935" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Result state -->
+            <div id="reflResult" style="display:none;">
+                <div class="refl-state-box">
+                    <div class="refl-summary-box" id="reflSummaryText"></div>
+                    <button class="refl-reset-btn" onclick="resetRecorder()">Record again</button>
+                    <button class="refl-complete-btn" onclick="showScreen('results')">Complete</button>
+                </div>
+            </div>
+
+            <!-- Error state -->
+            <div id="reflError" style="display:none;">
+                <div class="refl-state-box">
+                    <div class="refl-error-msg" id="reflErrorMsg"></div>
+                    <button class="refl-reset-btn" onclick="resetRecorder()">Try again</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </div><!-- #app -->
@@ -1092,12 +2761,20 @@ const TIME_BUCKETS = [
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let selectedAge = null;
 let selectedChallenges = new Set();
+let customChallengeText = '';
 let selectedActivity = null;
 let filteredActivities = [];
 let resultSkillFilter = 'all';
 let resultTimeFilter  = 'all';
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
+function selectAgePill(btn) {
+    selectedAge = parseInt(btn.dataset.age, 10);
+    document.querySelectorAll('.age-pill').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('ageNextBtn').disabled = false;
+}
+
 function init() {
     isReflectMode = new URLSearchParams(window.location.search).has('reflect');
     if (isReflectMode) {
@@ -1171,50 +2848,204 @@ function showScreen(name) {
     window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
-// ── RESULTS ───────────────────────────────────────────────────────────────────
-function showResults() {
-    const grades = AGE_GRADES[selectedAge] || [];
-    const relevantSkills = new Set();
-    selectedChallenges.forEach(id => {
-        const ch = CHALLENGES.find(c => c.id === id);
-        if (ch) ch.skills.forEach(s => relevantSkills.add(s));
-    });
-    const customText = document.getElementById('customChallenge').value.trim().toLowerCase();
+// ── EXPLORE SCREEN ────────────────────────────────────────────────────────────
+const EXPLORE_ACTS = [
+    {
+        id: 'freeze-feelings',
+        title: 'Freeze Feelings: An SEL Kernels Brain Game',
+        time: '20 mins', skill: 'Identifying emotions', skillVal: 'Identifying emotions',
+        timeVal: '20to30', refs: '18 reflections',
+        desc: 'Kids move around and freeze when an emotion is called out — a playful way to connect movement with feeling words.',
+        detailDesc: 'Kids move around freely, and when an emotion is called out, they freeze in a pose that represents that feeling — a playful way to connect movement with feeling words.',
+        materials: ['Music to dance to (any upbeat songs work!)'],
+        tip: 'Model each feeling yourself, especially for younger children — exaggerate your facial expressions and body pose to help them understand.',
+        url: 'https://ggie.berkeley.edu/practice/freeze-feelings-an-sel-kernels-brain-game/#tab__2',
+        videoUrl: 'assets/v2.mp4',
+        videoTitle: 'Understanding Emotions',
+        videoDesc: 'Why helping kids name their feelings is one of the most powerful things a parent can do — and how this activity puts that idea into motion.',
+    },
+    {
+        id: 'tense-and-relax',
+        title: 'Tense and Relax',
+        time: '10 mins', skill: 'Self-perception', skillVal: 'Self-perception',
+        timeVal: '10to20', refs: '18 reflections',
+        desc: 'Kids squeeze and release different muscle groups to feel the difference between tension and calm in their bodies.',
+        detailDesc: 'Kids squeeze and release different muscle groups to feel the contrast between tension and calm — a simple, effective technique for building body awareness and self-regulation.',
+        materials: ['A quiet space', 'Optional: soft background music'],
+        tip: 'Go slowly and breathe deeply together. The contrast between tense and relaxed is the key learning moment — don\'t rush through it.',
+        url: 'https://smho-smso.ca/emhc/stress-management-and-coping/stretching/tense-and-relax/',
+        videoUrl: null,
+        videoTitle: 'Building Body Awareness',
+        videoDesc: 'How body-based techniques help kids self-regulate and develop a stronger sense of their own physical and emotional state.',
+    },
+];
 
-    filteredActivities = ACTIVITIES.filter(a => {
-        if (!a.grades.some(g => grades.includes(g))) return false;
-        if (relevantSkills.size > 0) {
-            const skillMatch = a.skills.some(s => relevantSkills.has(s));
-            if (!skillMatch) {
-                return customText && (
-                    a.title.toLowerCase().includes(customText) ||
-                    a.skills.some(s => s.toLowerCase().includes(customText))
-                );
-            }
-            return true;
-        }
-        if (customText) {
-            return a.title.toLowerCase().includes(customText) ||
-                   a.skills.some(s => s.toLowerCase().includes(customText));
-        }
+let selectedExploreId = null;
+let exploreSkillVal = 'all';
+let exploreTimeVal = 'all';
+let exploreFilterOpen = false;
+let exploreSearchTerm = '';
+
+function showResults() {
+    selectedExploreId = null;
+    exploreSkillVal = 'all';
+    exploreTimeVal = 'all';
+    exploreFilterOpen = false;
+    exploreSearchTerm = '';
+    const inp = document.getElementById('exploreSearchInput');
+    if (inp) inp.value = '';
+    document.getElementById('exploreFilterPanel')?.classList.remove('open');
+    document.getElementById('filterToggleBtn')?.classList.remove('filter-open');
+    document.querySelectorAll('.ex-chip[data-group="skill"]').forEach((c, i) => c.classList.toggle('active', i === 0));
+    document.querySelectorAll('.ex-chip[data-group="time"]').forEach((c, i) => c.classList.toggle('active', i === 0));
+    showScreen('results');
+    renderExploreList();
+}
+
+function toggleExploreFilter() {
+    exploreFilterOpen = !exploreFilterOpen;
+    document.getElementById('exploreFilterPanel').classList.toggle('open', exploreFilterOpen);
+    document.getElementById('filterToggleBtn').classList.toggle('filter-open', exploreFilterOpen);
+}
+
+function setExploreFilter(btn) {
+    const group = btn.dataset.group;
+    document.querySelectorAll(`.ex-chip[data-group="${group}"]`).forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    if (group === 'skill') exploreSkillVal = btn.dataset.val;
+    else exploreTimeVal = btn.dataset.val;
+    renderExploreList();
+}
+
+function onExploreSearch(val) {
+    exploreSearchTerm = val.trim().toLowerCase();
+    selectedExploreId = null;
+    renderExploreList();
+}
+
+function renderExploreList() {
+    const q = exploreSearchTerm;
+    const visible = EXPLORE_ACTS.filter(a => {
+        if (exploreSkillVal !== 'all' && a.skillVal !== exploreSkillVal) return false;
+        if (exploreTimeVal !== 'all' && a.timeVal !== exploreTimeVal) return false;
+        if (q && !a.title.toLowerCase().includes(q) && !a.desc.toLowerCase().includes(q) && !a.skill.toLowerCase().includes(q)) return false;
         return true;
     });
+    if (visible.length === 0) {
+        document.getElementById('exploreList').innerHTML = `<p style="font-family:'Montserrat',sans-serif;font-size:13px;color:#9d9da0;text-align:center;padding:24px 0;">No activities match your search.</p>`;
+        return;
+    }
+    document.getElementById('exploreList').innerHTML = visible.map(a => `
+        <div class="ex-card ${selectedExploreId === a.id ? 'selected' : ''}" onclick="selectExploreCard('${a.id}')">
+            <div class="ex-card-header">
+                <div class="ex-radio ${selectedExploreId === a.id ? 'on' : ''}"></div>
+                <div class="ex-card-title">${a.title}</div>
+            </div>
+            <div class="ex-card-tags">
+                <span class="ex-tag ex-tag-time">${a.time}</span>
+                <span class="ex-tag ex-tag-skill">${a.skill}</span>
+                <span class="ex-tag ex-tag-ref">${a.refs}</span>
+            </div>
+            <div class="ex-card-desc">${a.desc}</div>
+            <div class="ex-card-action">
+                <button class="ex-try-btn" onclick="tryExploreAct(event,'${a.id}')">Try Activity →</button>
+            </div>
+        </div>
+    `).join('');
+}
 
-    selectedActivity = null;
-    resultSkillFilter = 'all';
-    resultTimeFilter  = 'all';
-    buildResultsFilters();
+function selectExploreCard(id) {
+    selectedExploreId = selectedExploreId === id ? null : id;
+    renderExploreList();
+}
 
-    const challengeLabels = [...selectedChallenges].map(id => {
-        const ch = CHALLENGES.find(c => c.id === id);
-        return ch ? ch.label.toLowerCase() : '';
-    }).filter(Boolean);
+function tryExploreAct(e, id) {
+    e.stopPropagation();
+    showActivityDetail(id);
+}
 
-    document.getElementById('resultsSubtitle').textContent =
-        challengeLabels.length ? `Matching: ${challengeLabels.join(' · ')}` : 'Tap one to select it';
+const PLAY_ICON_SVG = `<svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L17 10L1 18.5V1.5Z" fill="#3d3935" stroke="#3d3935" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
 
-    renderActivityList();
-    showScreen('results');
+function showActivityDetail(id) {
+    const act = EXPLORE_ACTS.find(a => a.id === id);
+    if (!act) return;
+
+    const isLocalVideo = act.videoUrl && !act.videoUrl.startsWith('http');
+    const isYouTube   = act.videoUrl && act.videoUrl.startsWith('http');
+
+    let mediaInner;
+    if (isLocalVideo) {
+        mediaInner = `
+            <div id="bubPlaceholder">
+                <div class="bub-cream-area">
+                    <button class="bub-play-ring" onclick="playBubVideo()">${PLAY_ICON_SVG}</button>
+                    <img src="assets/char-yellow.svg" class="bub-char-abs" alt="">
+                    <div class="bub-cream-title">${act.videoTitle || 'Introduction'}</div>
+                </div>
+                <div class="bub-desc-section">${act.videoDesc || ''}</div>
+            </div>
+            <div class="bub-video-player" id="bubVideoPlayer" style="display:none;">
+                <video src="${act.videoUrl}" controls playsinline></video>
+            </div>`;
+    } else if (isYouTube) {
+        mediaInner = `
+            <div class="bub-iframe-wrap">
+                <iframe src="${act.videoUrl}" allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+            </div>
+            <div class="bub-desc-section">${act.videoDesc || ''}</div>`;
+    } else {
+        mediaInner = `
+            <div class="bub-cream-area">
+                <div class="bub-play-ring">${PLAY_ICON_SVG}</div>
+                <img src="assets/char-yellow.svg" class="bub-char-abs" alt="">
+                <div class="bub-cream-title">${act.videoTitle || 'Introduction'}</div>
+            </div>
+            <div class="bub-desc-section">${act.videoDesc || ''}</div>`;
+    }
+
+    document.getElementById('bubCard').innerHTML = `
+        <div class="bub-card">
+            <div class="bub-card-label">Before You Begin</div>
+            ${mediaInner}
+        </div>`;
+
+    const materialsHtml = act.materials && act.materials.length
+        ? `<div>
+               <div class="act-materials-label">What You'll Need</div>
+               <ul class="act-materials-list">${act.materials.map(m => `<li>${m}</li>`).join('')}</ul>
+           </div>`
+        : '';
+    const tipHtml = act.tip
+        ? `<div class="act-tip-box"><div class="act-tip-label">Tips for Parents</div>${act.tip}</div>`
+        : '';
+
+    document.getElementById('actInfoCard').innerHTML = `
+        <div class="act-info-title">${act.title}</div>
+        <div class="act-info-tags">
+            <span class="act-info-tag" style="background:#d6e475;">${act.time}</span>
+            <span class="act-info-tag" style="background:#ffa9bc;">${act.skill}</span>
+            <span class="act-info-tag" style="background:#fdd15e;">${act.refs}</span>
+        </div>
+        <div class="act-info-desc">${act.detailDesc || act.desc}</div>
+        ${materialsHtml}
+        ${tipHtml}
+        <button class="act-start-btn" onclick="${act.id === 'freeze-feelings' ? 'showActivityScreen()' : `window.open('${act.url}','_blank')`}">Start Activity</button>
+        <button class="act-open-btn" onclick="window.open('${act.url}','_blank')">Open Full Activity</button>
+    `;
+
+    showScreen('detail');
+}
+
+function playBubVideo() {
+    const placeholder = document.getElementById('bubPlaceholder');
+    const player = document.getElementById('bubVideoPlayer');
+    if (placeholder) placeholder.style.display = 'none';
+    if (player) {
+        player.style.display = '';
+        const video = player.querySelector('video');
+        if (video) video.play();
+    }
 }
 
 function buildResultsFilters() {
@@ -1478,6 +3309,203 @@ function setReflState(state) {
 function showReflError(msg) {
     document.getElementById('reflErrorMsg').textContent = msg;
     setReflState('error');
+}
+
+// ── CHALLENGE SCREEN ──────────────────────────────────────────────────────────
+function selectChallengePill(btn) {
+    document.querySelectorAll('.challenge-pill').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedChallenges.clear();
+    selectedChallenges.add(btn.dataset.id);
+    customChallengeText = '';
+    document.getElementById('customChallengePill').style.display = 'none';
+    document.getElementById('addOwnBtn').style.display = '';
+    document.getElementById('addOwnBox').style.display = 'none';
+    document.getElementById('addOwnInput').value = '';
+    document.getElementById('challengeNextBtn').disabled = false;
+}
+
+function toggleAddOwn() {
+    const box = document.getElementById('addOwnBox');
+    const opening = box.style.display === 'none';
+    box.style.display = opening ? 'flex' : 'none';
+    if (opening) document.getElementById('addOwnInput').focus();
+}
+
+function saveOwnChallenge() {
+    const val = document.getElementById('addOwnInput').value.trim();
+    if (!val) return;
+    document.querySelectorAll('.challenge-pill').forEach(b => b.classList.remove('selected'));
+    selectedChallenges.clear();
+    customChallengeText = val;
+    const pill = document.getElementById('customChallengePill');
+    pill.textContent = val + ' ×';
+    pill.style.display = '';
+    document.getElementById('addOwnBtn').style.display = 'none';
+    document.getElementById('addOwnBox').style.display = 'none';
+    document.getElementById('challengeNextBtn').disabled = false;
+}
+
+function clearCustomChallenge() {
+    customChallengeText = '';
+    selectedChallenges.clear();
+    document.getElementById('customChallengePill').style.display = 'none';
+    document.getElementById('addOwnBtn').style.display = '';
+    document.getElementById('challengeNextBtn').disabled = true;
+}
+
+// ── SEL ONBOARDING ────────────────────────────────────────────────────────────
+function playSelVideo() {
+    document.getElementById('selYtIframe').src = 'https://www.youtube.com/embed/Y-XNp3h3h4A?autoplay=1';
+    document.getElementById('selVideoPlaceholder').style.display = 'none';
+    document.getElementById('selVideoIframe').style.display = '';
+}
+
+function updateSelNextBtn() {
+    const q1 = document.getElementById('selQ1').value.trim();
+    const q2 = document.getElementById('selQ2').value.trim();
+    document.getElementById('selNextBtn').disabled = !(q1 && q2);
+}
+
+async function submitSelOnboarding() {
+    const q1 = document.getElementById('selQ1').value.trim();
+    const q2 = document.getElementById('selQ2').value.trim();
+    if (!q1 || !q2) return;
+
+    const btn = document.getElementById('selNextBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const sessionId = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/onboarding_responses`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify({
+                session_id: sessionId,
+                selected_age: selectedAge,
+                selected_challenge: [...selectedChallenges].join(', ') || customChallengeText,
+                sel_definition: q1,
+                emotion_handling: q2,
+            }),
+        });
+    } catch (e) {
+        console.error('Supabase insert failed:', e);
+    }
+
+    btn.textContent = 'Next';
+    showResults();
+}
+
+// ── ACTIVITY PLAYER ───────────────────────────────────────────────────────────
+const FREEZE_STEPS = [
+    "Clear a space where your child can move without bumping into things.",
+    "Before each round, announce a feeling — happy, sad, angry, scared, embarrassed, etc.",
+    "Give them a moment to think about how they'd show that emotion with their face and body.",
+    "Start the music and let them dance freely.",
+    "Stop the music — they freeze in a pose that shows the emotion.",
+    "Play multiple rounds with different feelings.",
+];
+
+let actAudio = null;
+
+function showActivityScreen() {
+    actAudio = document.getElementById('actAudio');
+    actAudio.pause();
+    actAudio.currentTime = 0;
+
+    document.getElementById('actStepBox').textContent = 'Step #1: ' + FREEZE_STEPS[0];
+    document.getElementById('actProgressFill').style.width = '0%';
+    document.getElementById('actCurrentTime').textContent = '0:00';
+    document.getElementById('actPlayIcon').style.display = '';
+    document.getElementById('actPauseIcon').style.display = 'none';
+    actMoveTooltip(0);
+
+    actAudio.onloadedmetadata = () => {
+        document.getElementById('actTotalTime').textContent = actFmtTime(actAudio.duration);
+    };
+    actAudio.ontimeupdate = actOnTimeUpdate;
+    actAudio.onended = () => {
+        document.getElementById('actPlayIcon').style.display = '';
+        document.getElementById('actPauseIcon').style.display = 'none';
+    };
+
+    showScreen('activity');
+}
+
+function toggleActAudio() {
+    if (!actAudio) return;
+    if (actAudio.paused) {
+        actAudio.play();
+        document.getElementById('actPlayIcon').style.display = 'none';
+        document.getElementById('actPauseIcon').style.display = '';
+    } else {
+        actAudio.pause();
+        document.getElementById('actPlayIcon').style.display = '';
+        document.getElementById('actPauseIcon').style.display = 'none';
+    }
+}
+
+function stopActAudio() {
+    if (actAudio) { actAudio.pause(); actAudio.currentTime = 0; }
+    document.getElementById('actPlayIcon').style.display = '';
+    document.getElementById('actPauseIcon').style.display = 'none';
+}
+
+function actSeek(e) {
+    if (!actAudio || !actAudio.duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    actAudio.currentTime = pct * actAudio.duration;
+}
+
+function actOnTimeUpdate() {
+    if (!actAudio || !actAudio.duration) return;
+    const pct = actAudio.currentTime / actAudio.duration;
+    document.getElementById('actProgressFill').style.width = (pct * 100) + '%';
+    document.getElementById('actCurrentTime').textContent = actFmtTime(actAudio.currentTime);
+    actMoveTooltip(pct);
+
+    const idx = Math.min(Math.floor(pct * FREEZE_STEPS.length), FREEZE_STEPS.length - 1);
+    document.getElementById('actStepBox').textContent = `Step #${idx + 1}: ${FREEZE_STEPS[idx]}`;
+}
+
+function actMoveTooltip(pct) {
+    // Clamp so tooltip stays mostly visible within the track
+    const clamped = Math.max(0.04, Math.min(0.96, pct));
+    document.getElementById('actTooltip').style.left = (clamped * 100) + '%';
+}
+
+function actFmtTime(secs) {
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function showReflectionScreen() {
+    // Use tense-and-relax peer reflection for the activity player context
+    const peer = PEER_REFLECTIONS['tense-and-relax'];
+    const peerEl = document.getElementById('reflPeerText');
+    if (peer && peerEl) {
+        peerEl.innerHTML = peer.paragraphs.map(p => {
+            // Bold the leading label if it matches "Word word: " pattern
+            return `<p>${p.replace(/^(What went well|What could have gone better|Hope for the future):/, '<strong>$1:</strong>')}</p>`;
+        }).join('');
+    }
+
+    // Wire selectedActivity for processRecording()
+    if (!selectedActivity) {
+        selectedActivity = ACTIVITIES.find(a => a.id === 'freeze-feelings') || null;
+    }
+
+    resetRecorder();
+    showScreen('reflection');
 }
 
 function resetRecorder() {
