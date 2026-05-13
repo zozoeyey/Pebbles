@@ -1246,8 +1246,8 @@
 
         .ex-card-title {
             font-family: 'Montserrat', -apple-system, sans-serif;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 17px;
             line-height: 1.4;
             color: #000;
         }
@@ -1278,7 +1278,7 @@
             padding: 0 0 0 24px;
             font-family: 'Montserrat', -apple-system, sans-serif;
             font-weight: 500;
-            font-size: 10px;
+            font-size: 13px;
             color: #6b6761;
             line-height: 1.6;
         }
@@ -1407,14 +1407,33 @@
         }
 
         .bub-cream-area {
-            background: #faf8f5;
+            background: url('assets/opening.svg') center center / cover no-repeat;
             padding: 28px 19px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 13px;
             position: relative;
-            min-height: 130px;
+            min-height: 220px;
+        }
+
+        .bub-coming-soon {
+            background: #111;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .bub-coming-soon-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 0.04em;
         }
 
         .bub-play-ring {
@@ -1436,13 +1455,14 @@
 
         .bub-cream-title {
             font-family: 'Montserrat', -apple-system, sans-serif;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 18px;
-            color: #3d3935;
+            color: #fff;
             text-align: center;
             line-height: 1.4;
             position: relative;
             z-index: 1;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.35);
         }
 
         .bub-char-abs {
@@ -1781,9 +1801,15 @@
         }
 
         .act-blob {
-            width: 260px;
-            height: 240px;
+            width: 220px;
+            height: 220px;
             flex-shrink: 0;
+            animation: blobPulse 2.8s ease-in-out infinite;
+        }
+
+        @keyframes blobPulse {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.06); }
         }
 
         .act-play-btn {
@@ -1798,7 +1824,7 @@
             cursor: pointer;
             flex-shrink: 0;
             transition: opacity 0.15s, transform 0.1s;
-            box-shadow: 0 4px 16px rgba(249,163,196,0.45);
+            box-shadow: none;
         }
         .act-play-btn:hover { opacity: 0.9; }
         .act-play-btn:active { transform: scale(0.95); }
@@ -2026,38 +2052,30 @@
         }
 
         .refl-record-btn {
-            width: 130px;
-            height: 130px;
+            width: 110px;
+            height: 110px;
             border: none;
-            background: none;
+            background: #FDD15E;
+            border-radius: 50%;
             padding: 0;
             cursor: pointer;
-            position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: transform 0.1s;
+            gap: 4px;
+            transition: transform 0.1s, background 0.2s;
         }
         .refl-record-btn:active { transform: scale(0.95); }
+        .refl-record-btn.recording { background: #F9A3C4; }
 
-        .refl-record-btn .refl-btn-pebble {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            inset: 0;
-        }
+        .refl-record-btn .refl-btn-pebble { display: none; }
 
         .refl-record-btn .refl-btn-icon {
-            position: relative;
-            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 4px;
-        }
-
-        .refl-record-btn.recording .refl-btn-pebble path {
-            fill: #F9A3C4;
         }
 
         .refl-timer {
@@ -2130,6 +2148,568 @@
             font-family: 'Montserrat', -apple-system, sans-serif;
             font-size: 13px;
             color: #c0392b;
+        }
+
+        /* ── COMMUNITY SCREEN ──────────────────────────────── */
+        #screen-community.active { display: flex; flex-direction: column; }
+
+        .community-wrap {
+            flex: 1;
+            overflow-y: auto;
+            background: #faf8f5;
+            padding: 20px 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .community-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding-top: 8px;
+        }
+
+        .community-heading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .community-subheading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 11px;
+            color: #6b6761;
+            margin-top: 4px;
+        }
+
+        .community-avatar-bub {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .community-card {
+            background: white;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .community-card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .community-card-name {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .community-card-time {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            color: #6b6761;
+            margin-top: 2px;
+        }
+
+        .community-activity-tag {
+            display: inline-flex;
+            align-items: center;
+            background: #9CD3F8;
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 10px;
+            color: #3d3935;
+            align-self: flex-start;
+        }
+
+        .community-card-text {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            color: #3d3935;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .community-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .community-card-likes {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            color: #6b6761;
+        }
+
+        .community-card-see {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            color: #3d3935;
+            cursor: pointer;
+        }
+
+        .reply-area {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            padding-top: 4px;
+        }
+        .reply-area.open { display: flex; }
+
+        .reply-input {
+            width: 100%;
+            border: 1px solid #6b6761;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 13px;
+            color: #3d3935;
+            background: white;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+        .reply-input::placeholder { color: #b0aca7; }
+
+        .reply-voice-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #d6e475;
+            border-radius: 12px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+        .reply-voice-bar.recording { background: #f9a3c4; }
+
+        .reply-voice-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: #3d3935;
+            flex: 1;
+        }
+
+        .reply-timer {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #3d3935;
+        }
+
+        .reply-btn-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .reply-send-btn {
+            flex: 1;
+            background: #3d3935;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 10px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .reply-cancel-btn {
+            flex: 1;
+            background: transparent;
+            color: #6b6761;
+            border: 1px solid #ccc;
+            border-radius: 24px;
+            padding: 10px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .community-nav {
+            background: #faf8f5;
+            padding: 12px 20px 20px;
+            display: flex;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ── COMMUNITY EXPAND SCREEN ───────────────────────── */
+        #screen-community-expand.active { display: flex; flex-direction: column; }
+
+        .community-expand-wrap {
+            flex: 1;
+            overflow-y: auto;
+            background: #faf8f5;
+            padding: 0 20px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .ce-back {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding-top: 14px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #3d3935;
+        }
+
+        .ce-activity-card {
+            background: white;
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .ce-activity-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 11px;
+            color: #6b6761;
+            letter-spacing: 0.8px;
+        }
+
+        .ce-activity-title {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .ce-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .ce-tag {
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 10px;
+            color: #000;
+        }
+
+        .ce-section-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 11px;
+            color: #6b6761;
+            letter-spacing: 0.8px;
+        }
+
+        .ce-refl-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* ── TOOLKIT SCREEN ────────────────────────────────── */
+        #screen-toolkit.active { display: flex; flex-direction: column; }
+
+        .toolkit-wrap {
+            flex: 1;
+            overflow-y: auto;
+            background: #faf8f5;
+            padding: 0 20px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toolkit-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding-top: 8px;
+        }
+
+        .toolkit-heading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .toolkit-subheading {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-size: 11px;
+            color: #6b6761;
+            margin-top: 4px;
+        }
+
+        .toolkit-voice-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toolkit-voice-title {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .toolkit-record-bar {
+            background: #d6e475;
+            border-radius: 20px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .toolkit-record-bar-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .toolkit-section-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            color: #6b6761;
+            margin-top: 4px;
+        }
+
+        .toolkit-stat-row {
+            display: flex;
+            gap: 7px;
+        }
+
+        .toolkit-stat-card {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            height: 97px;
+            padding: 8px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toolkit-stat-num-row {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .toolkit-stat-num {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: #000;
+            line-height: 1;
+        }
+
+        .toolkit-stat-unit {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .toolkit-stat-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            color: #6b6761;
+            line-height: 1;
+        }
+
+        .toolkit-stat-deco {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        /* Calendar */
+        .toolkit-calendar {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 0.5px rgba(66,71,76,0.32), 0 4px 8px rgba(66,71,76,0.05), 0 4px 40px #eee;
+        }
+
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f4f4f5;
+        }
+
+        .cal-nav-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(228,230,231,0.6);
+            border-radius: 6px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: #3d3935;
+            box-shadow: 0 1px 5px rgba(17,12,34,0.1);
+        }
+
+        .cal-month-label {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: #3d3935;
+        }
+
+        .cal-weekdays {
+            display: flex;
+            padding: 6px 16px;
+        }
+
+        .cal-weekday {
+            flex: 1;
+            text-align: center;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            color: #71717a;
+            text-transform: capitalize;
+        }
+
+        .cal-grid {
+            padding: 8px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cal-row {
+            display: flex;
+        }
+
+        .cal-cell {
+            flex: 1;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #3f3f46;
+            position: relative;
+        }
+
+        .cal-cell.cal-active {
+            font-weight: 700;
+            color: white;
+        }
+
+        .cal-cell.cal-active::before {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: #9CD3F8;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .cal-cell.cal-active span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Reflection log entries */
+        .toolkit-refl-entry {
+            background: white;
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .toolkit-refl-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toolkit-refl-tag {
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 10px;
+            color: #3d3935;
+        }
+
+        .toolkit-refl-date {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            color: #6b6761;
+        }
+
+        .toolkit-refl-text {
+            font-family: 'Montserrat', -apple-system, sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            color: #3d3935;
+            line-height: 1.5;
+        }
+
+        .toolkit-nav {
+            background: #faf8f5;
+            padding: 12px 20px 20px;
+            display: flex;
+            justify-content: center;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -2402,14 +2982,14 @@
                         </svg>
                         <span class="nav-tab-label">Explore</span>
                     </div>
-                    <div class="nav-tab">
+                    <div class="nav-tab" onclick="showScreen('community')" style="cursor:pointer;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
                             <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                         </svg>
                         <span class="nav-tab-label">Community</span>
                     </div>
-                    <div class="nav-tab">
+                    <div class="nav-tab" onclick="showToolkitScreen()" style="cursor:pointer;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
@@ -2470,21 +3050,13 @@
             </button>
 
             <!-- Title -->
-            <div class="act-title">Freeze Feelings</div>
+            <div class="act-title" id="actTitle">Freeze Feelings</div>
 
             <!-- Step text -->
             <div class="act-step-box" id="actStepBox">Step #1: Clear a space where your child can move without bumping into things.</div>
 
-            <!-- Green blob character -->
-            <svg class="act-blob" viewBox="0 0 280 250" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="75"  cy="105" r="68" fill="#D6E475"/>
-                <circle cx="140" cy="78"  r="62" fill="#D6E475"/>
-                <circle cx="205" cy="105" r="68" fill="#D6E475"/>
-                <ellipse cx="140" cy="185" rx="115" ry="78" fill="#D6E475"/>
-                <rect x="52" y="82" width="176" height="108" fill="#D6E475"/>
-                <ellipse cx="112" cy="166" rx="10" ry="13" fill="#555"/>
-                <ellipse cx="168" cy="166" rx="10" ry="13" fill="#555"/>
-            </svg>
+            <!-- Blob character -->
+            <img class="act-blob" src="assets/blob.svg" alt="">
 
             <!-- Play / Pause button -->
             <button class="act-play-btn" id="actPlayBtn" onclick="toggleActAudio()">
@@ -2505,12 +3077,6 @@
                         <div class="act-progress-track" onclick="actSeek(event)">
                             <div class="act-progress-fill" id="actProgressFill" style="width:0%"></div>
                         </div>
-                        <div class="act-tooltip-row">
-                            <div class="act-tooltip" id="actTooltip" style="left:0%">
-                                <div class="act-tooltip-arrow"></div>
-                                <div class="act-tooltip-chip">Every Minute Counts!</div>
-                            </div>
-                        </div>
                     </div>
                     <span class="act-time-label" id="actTotalTime" style="text-align:right;">0:36</span>
                 </div>
@@ -2519,8 +3085,328 @@
             <!-- CTA -->
             <button class="act-go-btn" onclick="stopActAudio(); showReflectionScreen()">Go to Reflection</button>
 
-            <!-- Hidden audio -->
-            <audio id="actAudio" src="assets/Tense &amp; Relax Script.pdf.mp3" preload="auto"></audio>
+            <!-- Hidden audio (src set dynamically) -->
+            <audio id="actAudio" preload="auto"></audio>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: COMMUNITY ════════════════════════════════ -->
+    <div class="screen" id="screen-community" style="padding:0;">
+
+        <!-- Scrollable content -->
+        <div class="community-wrap">
+
+            <!-- Header -->
+            <div class="community-header-row">
+                <div>
+                    <div class="community-heading">Community</div>
+                    <div class="community-subheading">See what other parents are reflecting on</div>
+                </div>
+                <!-- Green avatar bubble -->
+                <div class="community-avatar-bub" style="background:#d6e475;">
+                    <svg width="30" height="30" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#F9A3C4"/>
+                        <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Card 1: Parent age 8, Freeze Feelings -->
+            <div class="community-card">
+                <div class="community-card-head">
+                    <!-- Yellow bubble + blue pebble -->
+                    <div class="community-avatar-bub" style="background:#fdd15e;">
+                        <svg width="30" height="30" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#9CD3F8"/>
+                            <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                            <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="community-card-name">Parent (child age 8)</div>
+                        <div class="community-card-time">2h ago</div>
+                    </div>
+                </div>
+                <div class="community-activity-tag">Activity: Freeze Feelings</div>
+                <p class="community-card-text">The activity created space for more open conversation than usual, with the child sharing feelings they typically don't express—showing how intentional slowing down unlocked emotional sharing.</p>
+                <div class="community-card-footer">
+                    <div class="community-card-likes">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6761" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        24 likes
+                    </div>
+                    <div class="community-card-see" onclick="showCommunityExpand('freeze-feelings')" style="cursor:pointer;">See full reflection →</div>
+                </div>
+            </div>
+
+            <!-- Card 2: Parent age 5, Emotional Playbook -->
+            <div class="community-card">
+                <div class="community-card-head">
+                    <!-- Green bubble + pink pebble -->
+                    <div class="community-avatar-bub" style="background:#d6e475;">
+                        <svg width="30" height="30" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#F9A3C4"/>
+                            <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                            <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="community-card-name">Parent (child age 5)</div>
+                        <div class="community-card-time">2h ago</div>
+                    </div>
+                </div>
+                <div class="community-activity-tag">Activity: Emotional Playbook</div>
+                <p class="community-card-text">Maya was able to name basic emotions easily and even added her own ("frustrated" when things don't go her way); she seemed especially engaged when we connected the scenario to something that actually happened at school.</p>
+                <div class="community-card-footer">
+                    <div class="community-card-likes">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6761" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        18 likes
+                    </div>
+                    <div class="community-card-see" onclick="showCommunityExpand('emotional-intelligence-playbook')" style="cursor:pointer;">See full reflection →</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom nav (Community active) -->
+        <div class="community-nav">
+            <div class="explore-nav-inner">
+                <div class="nav-tab" onclick="showScreen('results')" style="cursor:pointer;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12L12 4l9 8"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-4h4v4h4a1 1 0 0 0 1-1v-9"/>
+                    </svg>
+                    <span class="nav-tab-label">Explore</span>
+                </div>
+                <div class="nav-tab active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3d3935" stroke-width="1.8" stroke-linecap="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span class="nav-tab-label">Community</span>
+                </div>
+                <div class="nav-tab" onclick="showToolkitScreen()" style="cursor:pointer;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                    <span class="nav-tab-label">Toolkit</span>
+                </div>
+                <div class="nav-tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    <span class="nav-tab-label">Profile</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ══ SCREEN: TOOLKIT ══════════════════════════════════ -->
+    <div class="screen" id="screen-toolkit" style="padding:0;">
+        <div class="toolkit-wrap">
+
+            <!-- Header -->
+            <div class="toolkit-header-row">
+                <div>
+                    <div class="toolkit-heading">Your Toolkit</div>
+                    <div class="toolkit-subheading">See your progress through time</div>
+                </div>
+                <div class="community-avatar-bub" style="background:#d6e475;">
+                    <svg width="30" height="30" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#F9A3C4"/>
+                        <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- What's on your mind -->
+            <div class="toolkit-voice-card">
+                <div class="toolkit-voice-title">What's on your mind?</div>
+                <div class="toolkit-record-bar">
+                    <!-- Pink pebble with mic -->
+                    <svg width="42" height="42" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                        <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#F9A3C4"/>
+                        <rect x="55" y="30" width="28" height="44" rx="14" fill="#3d3935"/>
+                        <path d="M42 74C42 93 56 105 69 105C82 105 96 93 96 74" stroke="#3d3935" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="69" y1="105" x2="69" y2="116" stroke="#3d3935" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="55" y1="116" x2="83" y2="116" stroke="#3d3935" stroke-width="6" stroke-linecap="round"/>
+                    </svg>
+                    <span class="toolkit-record-bar-label">Record a voice note</span>
+                </div>
+            </div>
+
+            <!-- This month -->
+            <div class="toolkit-section-label">THIS MONTH</div>
+
+            <!-- Stat row 1: Streak + Activities Done -->
+            <div class="toolkit-stat-row">
+                <div class="toolkit-stat-card">
+                    <div class="toolkit-stat-num-row">
+                        <span class="toolkit-stat-num">7</span>
+                        <span class="toolkit-stat-unit">days</span>
+                    </div>
+                    <div class="toolkit-stat-label">Streak</div>
+                    <!-- Blue pebble decoration -->
+                    <svg class="toolkit-stat-deco" style="width:72px;height:80px;right:-6px;bottom:-10px;transform:rotate(-15deg);" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#9CD3F8"/>
+                        <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                    </svg>
+                </div>
+                <div class="toolkit-stat-card">
+                    <div class="toolkit-stat-num">12</div>
+                    <div class="toolkit-stat-label">Activities Done</div>
+                    <!-- Yellow star decoration -->
+                    <svg class="toolkit-stat-deco" style="width:70px;height:70px;right:-8px;top:-14px;" viewBox="0 0 170 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M51.7391 23.1575C63.7961 -7.71918 106.204 -7.71918 118.261 23.1575C121.304 30.9517 128.422 36.2683 136.552 36.8352C168.706 39.0773 181.885 80.624 157.126 101.898C150.859 107.282 148.142 115.897 150.137 124.053C158.021 156.278 123.638 181.882 96.3208 164.245C89.4108 159.784 80.5892 159.784 73.6792 164.245C46.3619 181.882 11.9794 156.278 19.8626 124.053C21.8578 115.897 19.1412 107.282 12.8745 101.898C-11.8845 80.624 1.29418 39.0773 33.4485 36.8352C41.5782 36.2683 48.6956 30.9517 51.7391 23.1575Z" fill="#FDD15E"/>
+                        <ellipse cx="114" cy="64" rx="7" ry="9" fill="#666"/>
+                        <ellipse cx="129" cy="64" rx="7" ry="9" fill="#666"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Stat row 2: SEL Skills + Reflections -->
+            <div class="toolkit-stat-row">
+                <div class="toolkit-stat-card">
+                    <div class="toolkit-stat-num">5</div>
+                    <div class="toolkit-stat-label">SEL Skills</div>
+                    <!-- Pink pebble decoration -->
+                    <svg class="toolkit-stat-deco" style="width:68px;height:68px;right:-8px;bottom:-14px;transform:rotate(180deg);" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#F9A3C4"/>
+                        <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                    </svg>
+                </div>
+                <div class="toolkit-stat-card">
+                    <div class="toolkit-stat-num">15</div>
+                    <div class="toolkit-stat-label">Reflections</div>
+                    <!-- Green star decoration -->
+                    <svg class="toolkit-stat-deco" style="width:80px;height:80px;right:-14px;bottom:-16px;transform:rotate(-17deg);" viewBox="0 0 170 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M51.7391 23.1575C63.7961 -7.71918 106.204 -7.71918 118.261 23.1575C121.304 30.9517 128.422 36.2683 136.552 36.8352C168.706 39.0773 181.885 80.624 157.126 101.898C150.859 107.282 148.142 115.897 150.137 124.053C158.021 156.278 123.638 181.882 96.3208 164.245C89.4108 159.784 80.5892 159.784 73.6792 164.245C46.3619 181.882 11.9794 156.278 19.8626 124.053C21.8578 115.897 19.1412 107.282 12.8745 101.898C-11.8845 80.624 1.29418 39.0773 33.4485 36.8352C41.5782 36.2683 48.6956 30.9517 51.7391 23.1575Z" fill="#D6E475"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- My Reflections -->
+            <div class="toolkit-section-label">MY REFLECTIONS</div>
+
+            <!-- Calendar -->
+            <div class="toolkit-calendar">
+                <div class="cal-header">
+                    <button class="cal-nav-btn" onclick="prevToolkitMonth()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3d3935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <span class="cal-month-label" id="calMonthLabel">May</span>
+                    <button class="cal-nav-btn" onclick="nextToolkitMonth()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3d3935" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="cal-weekdays">
+                    <div class="cal-weekday">mo</div>
+                    <div class="cal-weekday">tu</div>
+                    <div class="cal-weekday">we</div>
+                    <div class="cal-weekday">th</div>
+                    <div class="cal-weekday">fr</div>
+                    <div class="cal-weekday">sa</div>
+                    <div class="cal-weekday">su</div>
+                </div>
+                <div class="cal-grid" id="calGrid"></div>
+            </div>
+
+            <!-- Reflection log entries -->
+            <div class="toolkit-refl-entry">
+                <div class="toolkit-refl-top">
+                    <span class="toolkit-refl-tag" style="background:#9CD3F8;">Activity: Emotional Playbook</span>
+                    <span class="toolkit-refl-date">May 17</span>
+                </div>
+                <div class="toolkit-refl-text">"She surprised me completely — named 'frustrated' before I even said a word..."</div>
+            </div>
+            <div class="toolkit-refl-entry">
+                <div class="toolkit-refl-top">
+                    <span class="toolkit-refl-tag" style="background:#d6e475;">Personal Note</span>
+                    <span class="toolkit-refl-date">May 17</span>
+                </div>
+                <div class="toolkit-refl-text">"She surprised me completely — I want to slow down more and let her lead..."</div>
+            </div>
+
+        </div>
+
+        <!-- Bottom nav (Toolkit active) -->
+        <div class="toolkit-nav">
+            <div class="explore-nav-inner">
+                <div class="nav-tab" onclick="showScreen('results')" style="cursor:pointer;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12L12 4l9 8"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-4h4v4h4a1 1 0 0 0 1-1v-9"/>
+                    </svg>
+                    <span class="nav-tab-label">Explore</span>
+                </div>
+                <div class="nav-tab" onclick="showScreen('community')" style="cursor:pointer;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span class="nav-tab-label">Community</span>
+                </div>
+                <div class="nav-tab active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3d3935" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                    <span class="nav-tab-label">Toolkit</span>
+                </div>
+                <div class="nav-tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    <span class="nav-tab-label">Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: COMMUNITY EXPAND ════════════════════════ -->
+    <div class="screen" id="screen-community-expand" style="padding:0;">
+        <div class="community-expand-wrap">
+
+            <!-- Back -->
+            <button class="ce-back" onclick="showScreen('community')">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M12 5L7 10L12 15" stroke="#3d3935" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back
+            </button>
+
+            <!-- Activity info card -->
+            <div class="ce-activity-card">
+                <div class="ce-activity-label">ACTIVITY</div>
+                <div class="ce-activity-title" id="ceTitle"></div>
+                <div class="ce-tags">
+                    <span class="ce-tag" id="ceTime" style="background:#d6e475;"></span>
+                    <span class="ce-tag" id="ceSkill" style="background:#ffa9bc;"></span>
+                    <span class="ce-tag" id="ceRefs" style="background:#fdd15e;"></span>
+                </div>
+            </div>
+
+            <!-- Section label -->
+            <div class="ce-section-label">ALL REFLECTIONS</div>
+
+            <!-- Dynamically populated reflections -->
+            <div class="ce-refl-list" id="ceReflList"></div>
+
         </div>
     </div>
 
@@ -2566,19 +3452,15 @@
 
             <!-- Green prompt card -->
             <div class="refl-prompt-card">
-                <div class="refl-prompt-q">What did you try with your child today?</div>
-                <div class="refl-prompt-q">What went well?</div>
-                <div class="refl-prompt-q">What would you do differently next time?</div>
+                <div class="refl-prompt-q">How did the activity go — what went well and what could have gone better? What did you notice about your child?</div>
+                <div class="refl-prompt-q">After reading another parent's reflection, what stood out to you?</div>
+                <div class="refl-prompt-q">What's one tip you'd share with another parent trying this?</div>
             </div>
 
             <!-- Idle state: record button -->
             <div id="reflIdle" class="refl-record-area">
                 <button class="refl-record-btn" id="recordBtn" onclick="startRecording()">
-                    <svg class="refl-btn-pebble" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z" fill="#FDD15E"/>
-                    </svg>
                     <div class="refl-btn-icon">
-                        <!-- Mic icon -->
                         <svg width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="10" y="1" width="12" height="20" rx="6" fill="#3d3935"/>
                             <path d="M4 18C4 25.18 9.37 31 16 31C22.63 31 28 25.18 28 18" stroke="#3d3935" stroke-width="2.5" stroke-linecap="round"/>
@@ -2631,14 +3513,22 @@
 const REFLECT_IDS = ['emotional-intelligence-playbook', 'tense-and-relax', 'self-awareness-card'];
 
 const PEER_REFLECTIONS = {
-    'tense-and-relax': {
+    'freeze-feelings': {
         paragraphs: [
-            "Tried the Tense and Relax activity with Lara (5) while she was distracted and hyperactive — went ahead anyway despite the bad timing.",
-            "What went well: turtle and lemon landed; the imagery made her giggle, and she noticed on her own that her hands felt \"floppy\" afterward.",
+            "Tried the Freeze Feelings activity with Lara (5) while she was distracted and hyperactive — went ahead anyway despite the bad timing.",
+            "What went well: the imagery made her giggle, and she noticed on her own that her hands felt \"floppy\" afterward.",
             "What could have gone better: got frustrated when she squirmed, tightened up myself (ironically) — recognized she was just being five, and the calm moment was on my schedule, not hers.",
             "Hope for the future: keep trying the activity and get better at it over time.",
         ],
         attribution: 'Parent of a 5-year-old',
+    },
+    'tense-and-relax': {
+        paragraphs: [
+            "Activity engagement: Caleb enjoyed the push-pull-drop activity and found the steps easy to follow, though he took the \"push feet into the floor\" instruction very literally and needed clarification on its meaning.",
+            "Focus on mechanics over sensation: Caleb concentrated on completing the physical actions correctly rather than noticing the difference between tense and relaxed muscles—a common developmental stage for young learners.",
+            "Key takeaway: Keeping the activity light and playful, rather than aiming for perfect execution, helps children engage more fully and reduces pressure for both parent and child.",
+        ],
+        attribution: 'Parent of a 6-year-old',
     },
     'self-awareness-card': {
         paragraphs: [
@@ -2731,7 +3621,7 @@ const CHALLENGES = [
 const CONCEPT_VIDEOS = {
     "Identifying emotions": {
         videoUrl: null,
-        title: "Understanding Emotions",
+        title: "Identifying Emotions",
         description: "Why helping kids name their feelings is one of the most powerful things a parent can do — and how this activity uses that idea.",
     },
     "Accurate self-perception": {
@@ -2861,7 +3751,7 @@ const EXPLORE_ACTS = [
         tip: 'Model each feeling yourself, especially for younger children — exaggerate your facial expressions and body pose to help them understand.',
         url: 'https://ggie.berkeley.edu/practice/freeze-feelings-an-sel-kernels-brain-game/#tab__2',
         videoUrl: 'assets/v2.mp4',
-        videoTitle: 'Understanding Emotions',
+        videoTitle: 'Identifying Emotions',
         videoDesc: 'Why helping kids name their feelings is one of the most powerful things a parent can do — and how this activity puts that idea into motion.',
     },
     {
@@ -2879,6 +3769,226 @@ const EXPLORE_ACTS = [
         videoDesc: 'How body-based techniques help kids self-regulate and develop a stronger sense of their own physical and emotional state.',
     },
 ];
+
+const COMMUNITY_REFLECTIONS = {
+    'freeze-feelings': [
+        {
+            age: 8, time: '2h ago', bg: '#fdd15e', charFill: '#9CD3F8',
+            text: "The activity created space for more open conversation than usual, with the child sharing feelings they typically don't express—showing how intentional slowing down unlocked emotional sharing.",
+            likes: 24,
+        },
+        {
+            age: 6, time: '5h ago', bg: '#d6e475', charFill: '#F9A3C4',
+            text: "We did this right after school and it turned into one of the most connected moments we've had in a while. My daughter was shy about acting out 'embarrassed' but ended up laughing and really got into it.",
+            likes: 17,
+        },
+        {
+            age: 5, time: '1d ago', bg: '#F9A3C4', charFill: '#FDD15E',
+            text: "Tried the Tense and Relax activity with Lara while she was distracted and hyperactive — went ahead anyway despite the bad timing. What went well: the imagery made her giggle, and she noticed on her own that her hands felt 'floppy' afterward.",
+            likes: 11,
+        },
+    ],
+    'emotional-intelligence-playbook': [
+        {
+            age: 7, time: '2h ago', bg: '#d6e475', charFill: '#F9A3C4',
+            text: "Maya was able to name basic emotions easily and even added her own (\"frustrated\" when things don't go her way); she seemed especially engaged when we connected the scenario to something that actually happened at school.",
+            likes: 18,
+        },
+        {
+            age: 9, time: '5h ago', bg: '#fdd15e', charFill: '#9CD3F8',
+            text: "I jumped in too quickly to label the 'right' emotion instead of letting her sit with it. Next time I want to give more space for her to explore her own interpretations, and focus less on getting the 'right' answer.",
+            likes: 7,
+        },
+        {
+            age: 8, time: '2d ago', bg: '#9CD3F8', charFill: '#FDD15E',
+            text: "Tried this with Marcus at the kitchen table using index cards and markers. He was engaged and excited to decorate; the prompt about how others can tell when he's not doing well led to a surprisingly insightful response.",
+            likes: 13,
+        },
+    ],
+};
+
+function showCommunityExpand(activityId) {
+    const act = EXPLORE_ACTS.find(a => a.id === activityId) || ACTIVITIES.find(a => a.id === activityId);
+    const reflections = COMMUNITY_REFLECTIONS[activityId] || [];
+
+    if (act) {
+        document.getElementById('ceTitle').textContent = act.title || '';
+        document.getElementById('ceTime').textContent = act.time || '';
+        document.getElementById('ceSkill').textContent = act.skill || (act.skills ? act.skills[0] : '');
+        document.getElementById('ceRefs').textContent = act.refs || (reflections.length + ' reflections');
+    }
+
+    const shortTitle = act ? act.title.split(':')[0] : activityId;
+    const PEBBLE_PATH = 'M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z';
+
+    const PINK_PEBBLE = 'M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z';
+    document.getElementById('ceReflList').innerHTML = reflections.map((r, idx) => `
+        <div class="community-card" id="ceCard-${idx}">
+            <div class="community-card-head">
+                <div class="community-avatar-bub" style="background:${r.bg};">
+                    <svg width="30" height="30" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="${PEBBLE_PATH}" fill="${r.charFill}"/>
+                        <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="community-card-name">Parent (child age ${r.age})</div>
+                    <div class="community-card-time">${r.time}</div>
+                </div>
+            </div>
+            <div class="community-activity-tag">Activity: ${shortTitle}</div>
+            <p class="community-card-text">${r.text}</p>
+            <div class="community-card-footer">
+                <div class="community-card-likes">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6761" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    ${r.likes} likes
+                </div>
+                <span class="community-card-see" style="color:#6b6761;" onclick="toggleReply(${idx})">Reply</span>
+            </div>
+            <div class="reply-area" id="replyArea-${idx}">
+                <textarea class="reply-input" id="replyInput-${idx}" rows="2" placeholder="Share what resonates with you..."></textarea>
+                <div class="reply-voice-bar" id="replyVoiceBar-${idx}" onclick="toggleReplyRecording(${idx})">
+                    <svg width="24" height="24" viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="${PINK_PEBBLE}" fill="#F9A3C4"/>
+                        <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                        <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                    </svg>
+                    <span class="reply-voice-label" id="replyVoiceLabel-${idx}">Or record a voice note</span>
+                    <span class="reply-timer" id="replyTimer-${idx}" style="display:none;"></span>
+                </div>
+                <div class="reply-btn-row">
+                    <button class="reply-send-btn" onclick="sendReply(${idx})">Send</button>
+                    <button class="reply-cancel-btn" onclick="cancelReply(${idx})">Cancel</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    showScreen('community-expand');
+}
+
+// ── REPLY RECORDER ────────────────────────────────────────────────────────────
+let replyMediaRecorder = null;
+let replyAudioChunks = [];
+let replyRecordingTimer = null;
+let replyRecordingSeconds = 0;
+let activeReplyIdx = null;
+
+function toggleReply(idx) {
+    const area = document.getElementById(`replyArea-${idx}`);
+    if (!area) return;
+    const isOpen = area.classList.contains('open');
+    // Close any other open reply area
+    document.querySelectorAll('.reply-area.open').forEach(el => {
+        const openIdx = el.id.replace('replyArea-', '');
+        cancelReply(parseInt(openIdx));
+    });
+    if (!isOpen) {
+        area.classList.add('open');
+        document.getElementById(`replyInput-${idx}`)?.focus();
+    }
+}
+
+async function toggleReplyRecording(idx) {
+    if (activeReplyIdx === idx && replyMediaRecorder && replyMediaRecorder.state !== 'inactive') {
+        stopReplyRecording(idx);
+    } else {
+        if (replyMediaRecorder && replyMediaRecorder.state !== 'inactive') {
+            stopReplyRecording(activeReplyIdx);
+        }
+        startReplyRecording(idx);
+    }
+}
+
+async function startReplyRecording(idx) {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+            ? 'audio/webm;codecs=opus' : 'audio/webm';
+        replyMediaRecorder = new MediaRecorder(stream, { mimeType });
+        replyAudioChunks = [];
+        activeReplyIdx = idx;
+
+        replyMediaRecorder.ondataavailable = e => { if (e.data.size > 0) replyAudioChunks.push(e.data); };
+        replyMediaRecorder.onstop = () => {
+            const bar = document.getElementById(`replyVoiceBar-${idx}`);
+            const label = document.getElementById(`replyVoiceLabel-${idx}`);
+            const timer = document.getElementById(`replyTimer-${idx}`);
+            if (bar) bar.classList.remove('recording');
+            if (label) label.textContent = 'Voice note recorded ✓';
+            if (timer) timer.style.display = 'none';
+        };
+        replyMediaRecorder.start(250);
+
+        const bar = document.getElementById(`replyVoiceBar-${idx}`);
+        const label = document.getElementById(`replyVoiceLabel-${idx}`);
+        const timer = document.getElementById(`replyTimer-${idx}`);
+        if (bar) bar.classList.add('recording');
+        if (label) label.textContent = 'Recording… tap to stop';
+        if (timer) { timer.style.display = 'inline'; timer.textContent = '0:00'; }
+
+        replyRecordingSeconds = 0;
+        replyRecordingTimer = setInterval(() => {
+            replyRecordingSeconds++;
+            const m = String(Math.floor(replyRecordingSeconds / 60)).padStart(2, '0');
+            const s = String(replyRecordingSeconds % 60).padStart(2, '0');
+            const t = document.getElementById(`replyTimer-${idx}`);
+            if (t) t.textContent = `${m}:${s}`;
+        }, 1000);
+    } catch (err) {
+        console.error('Reply mic error:', err);
+        alert('Microphone access is required to record a voice note.');
+    }
+}
+
+function stopReplyRecording(idx) {
+    clearInterval(replyRecordingTimer);
+    if (replyMediaRecorder && replyMediaRecorder.state !== 'inactive') {
+        replyMediaRecorder.stop();
+        replyMediaRecorder.stream.getTracks().forEach(t => t.stop());
+    }
+    activeReplyIdx = null;
+}
+
+function cancelReply(idx) {
+    if (activeReplyIdx === idx) stopReplyRecording(idx);
+    const area = document.getElementById(`replyArea-${idx}`);
+    if (area) area.classList.remove('open');
+    const input = document.getElementById(`replyInput-${idx}`);
+    if (input) input.value = '';
+    const label = document.getElementById(`replyVoiceLabel-${idx}`);
+    if (label) label.textContent = 'Or record a voice note';
+    const bar = document.getElementById(`replyVoiceBar-${idx}`);
+    if (bar) bar.classList.remove('recording');
+    const timer = document.getElementById(`replyTimer-${idx}`);
+    if (timer) { timer.style.display = 'none'; timer.textContent = ''; }
+    replyAudioChunks = [];
+}
+
+function sendReply(idx) {
+    const input = document.getElementById(`replyInput-${idx}`);
+    const hasText = input && input.value.trim().length > 0;
+    const hasAudio = replyAudioChunks.length > 0 && activeReplyIdx === null; // stopped
+
+    if (!hasText && replyAudioChunks.length === 0) {
+        alert('Please type a reply or record a voice note first.');
+        return;
+    }
+    // Collapse and show confirmation
+    cancelReply(idx);
+    // Optionally show a brief confirmation (not an alert)
+    const card = document.getElementById(`ceCard-${idx}`);
+    if (card) {
+        const conf = document.createElement('div');
+        conf.style.cssText = 'font-family:Montserrat,sans-serif;font-size:12px;color:#6b6761;padding:6px 0;';
+        conf.textContent = 'Reply sent!';
+        card.appendChild(conf);
+        setTimeout(() => conf.remove(), 2500);
+    }
+}
 
 let selectedExploreId = null;
 let exploreSkillVal = 'all';
@@ -2979,8 +4089,6 @@ function showActivityDetail(id) {
             <div id="bubPlaceholder">
                 <div class="bub-cream-area">
                     <button class="bub-play-ring" onclick="playBubVideo()">${PLAY_ICON_SVG}</button>
-                    <img src="assets/char-yellow.svg" class="bub-char-abs" alt="">
-                    <div class="bub-cream-title">${act.videoTitle || 'Introduction'}</div>
                 </div>
                 <div class="bub-desc-section">${act.videoDesc || ''}</div>
             </div>
@@ -2996,10 +4104,8 @@ function showActivityDetail(id) {
             <div class="bub-desc-section">${act.videoDesc || ''}</div>`;
     } else {
         mediaInner = `
-            <div class="bub-cream-area">
-                <div class="bub-play-ring">${PLAY_ICON_SVG}</div>
-                <img src="assets/char-yellow.svg" class="bub-char-abs" alt="">
-                <div class="bub-cream-title">${act.videoTitle || 'Introduction'}</div>
+            <div class="bub-coming-soon">
+                <div class="bub-coming-soon-label">Coming Soon</div>
             </div>
             <div class="bub-desc-section">${act.videoDesc || ''}</div>`;
     }
@@ -3030,8 +4136,15 @@ function showActivityDetail(id) {
         <div class="act-info-desc">${act.detailDesc || act.desc}</div>
         ${materialsHtml}
         ${tipHtml}
-        <button class="act-start-btn" onclick="${act.id === 'freeze-feelings' ? 'showActivityScreen()' : `window.open('${act.url}','_blank')`}">Start Activity</button>
-        <button class="act-open-btn" onclick="window.open('${act.url}','_blank')">Open Full Activity</button>
+        <button class="act-start-btn" onclick="${(act.id === 'freeze-feelings' || act.id === 'tense-and-relax') ? `showActivityScreen('${act.id}')` : `window.open('${act.url}','_blank')`}">Start Activity</button>
+        <button class="act-open-btn" onclick="window.open('${act.url}','_blank')">
+            See original source
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-left:5px;margin-bottom:1px;">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+        </button>
     `;
 
     showScreen('detail');
@@ -3404,25 +4517,57 @@ async function submitSelOnboarding() {
 }
 
 // ── ACTIVITY PLAYER ───────────────────────────────────────────────────────────
-const FREEZE_STEPS = [
-    "Clear a space where your child can move without bumping into things.",
-    "Before each round, announce a feeling — happy, sad, angry, scared, embarrassed, etc.",
-    "Give them a moment to think about how they'd show that emotion with their face and body.",
-    "Start the music and let them dance freely.",
-    "Stop the music — they freeze in a pose that shows the emotion.",
-    "Play multiple rounds with different feelings.",
-];
+const ACT_CONFIGS = {
+    'freeze-feelings': {
+        title: 'Freeze Feelings',
+        audioSrc: 'assets/Tense & Relax Script.pdf.mp3',
+        steps: [
+            "Clear a space where your child can move without bumping into things.",
+            "Before each round, announce a feeling — happy, sad, angry, scared, embarrassed, etc.",
+            "Give them a moment to think about how they'd show that emotion with their face and body.",
+            "Start the music and let them dance freely.",
+            "Stop the music — they freeze in a pose that shows the emotion.",
+            "Play multiple rounds with different feelings.",
+        ],
+        stepTimes: [0, 6.5, 16.5, 24.0, 28.0, 33.5],
+    },
+    'tense-and-relax': {
+        title: 'Tense and Relax',
+        audioSrc: 'assets/Tense & Relax.mp3',
+        steps: [
+            "Neck (Turtle): Push shoulders up toward ears, hold for 3 counts, then slowly relax for 3 counts. Repeat.",
+            "Hands (Lemon): Squeeze hands into tight fists, hold for 3 counts, then slowly open and relax. Repeat.",
+            "Stomach (Fence): Squeeze your belly in like you're squeezing through a narrow fence, hold for 3 counts, then relax. Repeat.",
+            "Feet (Mud): Push feet down into the floor, hold for 3 counts, then slowly relax. Repeat.",
+            "Arms (Push-Pull-Drop): Sitting in a chair, grip the edges. First push down, then pull up against the seat, then drop your arms to your sides. Repeat.",
+            "Between each exercise, ask: 'How does that body part feel now compared to when it was tight?'",
+        ],
+        stepTimes: [0, 10.0, 21.4, 36.4, 44.5, 53.4],
+    },
+};
+
+// Keep legacy constants pointing at freeze-feelings for any old references
+const FREEZE_STEPS = ACT_CONFIGS['freeze-feelings'].steps;
+const FREEZE_STEP_TIMES = ACT_CONFIGS['freeze-feelings'].stepTimes;
 
 let actAudio = null;
+let currentActConfig = null;
 
-function showActivityScreen() {
+function showActivityScreen(activityId) {
+    const id = activityId || 'freeze-feelings';
+    currentActConfig = ACT_CONFIGS[id] || ACT_CONFIGS['freeze-feelings'];
+
     actAudio = document.getElementById('actAudio');
     actAudio.pause();
+    actAudio.src = currentActConfig.audioSrc;
+    actAudio.load();
     actAudio.currentTime = 0;
 
-    document.getElementById('actStepBox').textContent = 'Step #1: ' + FREEZE_STEPS[0];
+    document.getElementById('actTitle') && (document.getElementById('actTitle').textContent = currentActConfig.title);
+    document.getElementById('actStepBox').textContent = 'Step #1: ' + currentActConfig.steps[0];
     document.getElementById('actProgressFill').style.width = '0%';
     document.getElementById('actCurrentTime').textContent = '0:00';
+    document.getElementById('actTotalTime').textContent = '0:00';
     document.getElementById('actPlayIcon').style.display = '';
     document.getElementById('actPauseIcon').style.display = 'none';
     actMoveTooltip(0);
@@ -3466,21 +4611,22 @@ function actSeek(e) {
 }
 
 function actOnTimeUpdate() {
-    if (!actAudio || !actAudio.duration) return;
+    if (!actAudio || !actAudio.duration || !currentActConfig) return;
     const pct = actAudio.currentTime / actAudio.duration;
     document.getElementById('actProgressFill').style.width = (pct * 100) + '%';
     document.getElementById('actCurrentTime').textContent = actFmtTime(actAudio.currentTime);
     actMoveTooltip(pct);
 
-    const idx = Math.min(Math.floor(pct * FREEZE_STEPS.length), FREEZE_STEPS.length - 1);
-    document.getElementById('actStepBox').textContent = `Step #${idx + 1}: ${FREEZE_STEPS[idx]}`;
+    let idx = 0;
+    const t = actAudio.currentTime;
+    const times = currentActConfig.stepTimes;
+    for (let i = times.length - 1; i >= 0; i--) {
+        if (t >= times[i]) { idx = i; break; }
+    }
+    document.getElementById('actStepBox').textContent = `Step #${idx + 1}: ${currentActConfig.steps[idx]}`;
 }
 
-function actMoveTooltip(pct) {
-    // Clamp so tooltip stays mostly visible within the track
-    const clamped = Math.max(0.04, Math.min(0.96, pct));
-    document.getElementById('actTooltip').style.left = (clamped * 100) + '%';
-}
+function actMoveTooltip(pct) {}
 
 function actFmtTime(secs) {
     const m = Math.floor(secs / 60);
@@ -3488,14 +4634,78 @@ function actFmtTime(secs) {
     return `${m}:${String(s).padStart(2, '0')}`;
 }
 
+// ── TOOLKIT ───────────────────────────────────────────────────────────────────
+let toolkitCalYear = new Date().getFullYear();
+let toolkitCalMonth = new Date().getMonth();
+
+const TOOLKIT_ACTIVE_DATES = {
+    '2026-05': [8, 12, 17, 18, 19],
+    '2026-04': [3, 10, 14, 22],
+};
+
+function showToolkitScreen() {
+    toolkitCalYear = new Date().getFullYear();
+    toolkitCalMonth = new Date().getMonth();
+    renderToolkitCalendar();
+    showScreen('toolkit');
+}
+
+function prevToolkitMonth() {
+    toolkitCalMonth--;
+    if (toolkitCalMonth < 0) { toolkitCalMonth = 11; toolkitCalYear--; }
+    renderToolkitCalendar();
+}
+
+function nextToolkitMonth() {
+    toolkitCalMonth++;
+    if (toolkitCalMonth > 11) { toolkitCalMonth = 0; toolkitCalYear++; }
+    renderToolkitCalendar();
+}
+
+function renderToolkitCalendar() {
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('calMonthLabel').textContent = MONTHS[toolkitCalMonth];
+
+    const firstDow = new Date(toolkitCalYear, toolkitCalMonth, 1).getDay(); // 0=Sun
+    const startCol = (firstDow + 6) % 7; // Mon-first: Mon=0 … Sun=6
+    const daysInMonth = new Date(toolkitCalYear, toolkitCalMonth + 1, 0).getDate();
+
+    const key = `${toolkitCalYear}-${String(toolkitCalMonth + 1).padStart(2, '0')}`;
+    const active = new Set(TOOLKIT_ACTIVE_DATES[key] || []);
+    const today = new Date();
+    if (today.getFullYear() === toolkitCalYear && today.getMonth() === toolkitCalMonth) {
+        active.add(today.getDate());
+    }
+
+    const cells = [];
+    for (let i = 0; i < startCol; i++) cells.push(null);
+    for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+    while (cells.length % 7 !== 0) cells.push(null);
+
+    let html = '';
+    for (let i = 0; i < cells.length; i++) {
+        if (i % 7 === 0) html += '<div class="cal-row">';
+        const d = cells[i];
+        if (d === null) {
+            html += '<div class="cal-cell"></div>';
+        } else if (active.has(d)) {
+            html += `<div class="cal-cell cal-active"><span>${d}</span></div>`;
+        } else {
+            html += `<div class="cal-cell">${d}</div>`;
+        }
+        if (i % 7 === 6) html += '</div>';
+    }
+    document.getElementById('calGrid').innerHTML = html;
+}
+
 function showReflectionScreen() {
-    // Use tense-and-relax peer reflection for the activity player context
-    const peer = PEER_REFLECTIONS['tense-and-relax'];
+    const actId = currentActConfig ? Object.keys(ACT_CONFIGS).find(k => ACT_CONFIGS[k] === currentActConfig) : 'freeze-feelings';
+    const peer = PEER_REFLECTIONS[actId] || PEER_REFLECTIONS['freeze-feelings'];
     const peerEl = document.getElementById('reflPeerText');
     if (peer && peerEl) {
         peerEl.innerHTML = peer.paragraphs.map(p => {
             // Bold the leading label if it matches "Word word: " pattern
-            return `<p>${p.replace(/^(What went well|What could have gone better|Hope for the future):/, '<strong>$1:</strong>')}</p>`;
+            return `<p>${p.replace(/^(Activity engagement|Focus on mechanics over sensation|Key takeaway|What went well|What could have gone better|Hope for the future|Tried .+):/, '<strong>$1:</strong>')}</p>`;
         }).join('');
     }
 
