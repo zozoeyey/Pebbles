@@ -45,48 +45,58 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
         {/* Back */}
         <BackButton onClick={handleBack} />
 
-        {/* Title */}
-        <div className="act-title">{config.title}</div>
+        {/* Step text as title */}
+        <div className="act-title">{config.steps[currentStepIdx]}</div>
 
-        {/* Step text */}
-        <div className="act-step-box">
-          Step #{currentStepIdx + 1}: {config.steps[currentStepIdx]}
+        {/* Blob / step illustration — fills middle space */}
+        <div className="act-middle">
+          <img
+            className="act-blob"
+            src={
+              id === 'tense-and-relax' && currentStepIdx === 0
+                ? (isPlaying ? 'assets/turtle.gif' : 'assets/turtle-still.svg')
+                : id === 'tense-and-relax' && currentStepIdx === 1
+                ? 'assets/lemon.gif'
+                : 'assets/blob.svg'
+            }
+            alt=""
+          />
         </div>
 
-        {/* Blob */}
-        <img className="act-blob" src="assets/blob.svg" alt="" />
+        {/* Bottom controls — always anchored */}
+        <div className="act-controls">
+          {/* Play / Pause */}
+          <button className="act-play-btn" onClick={toggle}>
+            {isPlaying ? (
+              <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
+                <rect x="2" y="2" width="8" height="26" rx="2" fill="white"/>
+                <rect x="16" y="2" width="8" height="26" rx="2" fill="white"/>
+              </svg>
+            ) : (
+              <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
+                <path d="M2 1.5L24 15L2 28.5V1.5Z" fill="white" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+              </svg>
+            )}
+          </button>
 
-        {/* Play / Pause */}
-        <button className="act-play-btn" onClick={toggle}>
-          {isPlaying ? (
-            <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
-              <rect x="2" y="2" width="8" height="26" rx="2" fill="white"/>
-              <rect x="16" y="2" width="8" height="26" rx="2" fill="white"/>
-            </svg>
-          ) : (
-            <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
-              <path d="M2 1.5L24 15L2 28.5V1.5Z" fill="white" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
-            </svg>
-          )}
-        </button>
-
-        {/* Timeline */}
-        <div className="act-timeline">
-          <div className="act-time-row">
-            <span className="act-time-label">{currentTimeDisplay}</span>
-            <div className="act-track-wrap">
-              <div className="act-progress-track" onClick={seek}>
-                <div className="act-progress-fill" style={{ width: `${progressPct}%` }} />
+          {/* Timeline */}
+          <div className="act-timeline">
+            <div className="act-time-row">
+              <span className="act-time-label">{currentTimeDisplay}</span>
+              <div className="act-track-wrap">
+                <div className="act-progress-track" onClick={seek}>
+                  <div className="act-progress-fill" style={{ width: `${progressPct}%` }} />
+                </div>
               </div>
+              <span className="act-time-label" style={{ textAlign: 'right' }}>{durationDisplay}</span>
             </div>
-            <span className="act-time-label" style={{ textAlign: 'right' }}>{durationDisplay}</span>
           </div>
-        </div>
 
-        {/* CTA */}
-        <button className="act-go-btn" onClick={handleGoReflect}>
-          Go to Reflection
-        </button>
+          {/* CTA */}
+          <button className="act-go-btn" onClick={handleGoReflect}>
+            Go to Reflection
+          </button>
+        </div>
 
         {/* Hidden audio element */}
         <audio ref={(el) => { audioRef.current = el; }} preload="auto" />

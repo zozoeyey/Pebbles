@@ -119,7 +119,7 @@ export default function SelScreen({ showResults, selectedAge, selectedChallenges
 
         <div className="sel-question">
           <label className="sel-q-label" htmlFor="selQ2">
-            How did you usually handle big emotions with your child?
+            How do you usually handle big emotions with your child?
           </label>
           <input
             type="text"

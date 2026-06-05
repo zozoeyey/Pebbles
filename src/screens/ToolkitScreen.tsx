@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { TOOLKIT_ACTIVE_DATES, EXPLORE_ACTS } from '../data/activities';
+import { useState, useRef } from 'react';
+import { TOOLKIT_ACTIVE_DATES, EXPLORE_ACTS, ACT_CONFIGS } from '../data/activities';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
 
@@ -9,6 +9,12 @@ const PEBBLE_PATH =
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+const AI_BULLETS = [
+  'You engage most consistently after school hours — your reflections peak on weekday evenings.',
+  'Freeze Feelings is your most-used activity; your notes show growing confidence naming emotions together.',
+  'Reflections over the past 2 weeks share a theme: slowing down before responding makes a visible difference.',
 ];
 
 interface Props {
@@ -22,38 +28,56 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
   const now = new Date();
   const [calYear, setCalYear] = useState(now.getFullYear());
   const [calMonth, setCalMonth] = useState(now.getMonth());
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   function prevMonth() {
     if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); }
     else setCalMonth((m) => m - 1);
   }
-
   function nextMonth() {
     if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); }
     else setCalMonth((m) => m + 1);
   }
 
+  function toggleAudio(id: string) {
+    const config = ACT_CONFIGS[id];
+    if (!config?.audioSrc) return;
+
+    if (playingId === id) {
+      audioRef.current?.pause();
+      setPlayingId(null);
+    } else {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = config.audioSrc;
+        audioRef.current.play();
+      }
+      setPlayingId(id);
+    }
+  }
+
+  function handleAudioEnded() { setPlayingId(null); }
+
   const key = `${calYear}-${String(calMonth + 1).padStart(2, '0')}`;
   const active = new Set(TOOLKIT_ACTIVE_DATES[key] || []);
   const today = new Date();
-  if (today.getFullYear() === calYear && today.getMonth() === calMonth) {
-    active.add(today.getDate());
-  }
+  if (today.getFullYear() === calYear && today.getMonth() === calMonth) active.add(today.getDate());
 
   const firstDow = new Date(calYear, calMonth, 1).getDay();
-  const startCol = (firstDow + 6) % 7; // Mon-first
+  const startCol = (firstDow + 6) % 7;
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
   const cells: (number | null)[] = [];
   for (let i = 0; i < startCol; i++) cells.push(null);
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
   while (cells.length % 7 !== 0) cells.push(null);
-
   const rows: (number | null)[][] = [];
   for (let i = 0; i < cells.length; i += 7) rows.push(cells.slice(i, i + 7));
 
   return (
     <div style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
       <div className="toolkit-wrap">
+
         {/* Header */}
         <div className="toolkit-header-row">
           <div>
@@ -69,25 +93,8 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
           </div>
         </div>
 
-        {/* Voice card */}
-        <div className="toolkit-voice-card">
-          <div className="toolkit-voice-title">What's on your mind?</div>
-          <div className="toolkit-record-bar" style={{ cursor: 'pointer' }}>
-            <svg width="42" height="42" viewBox="0 0 138 138" fill="none" style={{ flexShrink: 0 }}>
-              <path d={PEBBLE_PATH} fill="#F9A3C4"/>
-              <rect x="55" y="30" width="28" height="44" rx="14" fill="#3d3935"/>
-              <path d="M42 74C42 93 56 105 69 105C82 105 96 93 96 74" stroke="#3d3935" strokeWidth="6" strokeLinecap="round"/>
-              <line x1="69" y1="105" x2="69" y2="116" stroke="#3d3935" strokeWidth="6" strokeLinecap="round"/>
-              <line x1="55" y1="116" x2="83" y2="116" stroke="#3d3935" strokeWidth="6" strokeLinecap="round"/>
-            </svg>
-            <span className="toolkit-record-bar-label">Record a voice note</span>
-          </div>
-        </div>
-
-        {/* This month label */}
-        <div className="toolkit-section-label">THIS MONTH</div>
-
-        {/* Stat row 1 */}
+        {/* ── 1. USAGE OVERVIEW ─────────────────────── */}
+        <div className="toolkit-section-label">USAGE OVERVIEW</div>
         <div className="toolkit-stat-row">
           <div className="toolkit-stat-card">
             <div className="toolkit-stat-num-row">
@@ -111,18 +118,7 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
             </svg>
           </div>
         </div>
-
-        {/* Stat row 2 */}
         <div className="toolkit-stat-row">
-          <div className="toolkit-stat-card">
-            <div className="toolkit-stat-num">5</div>
-            <div className="toolkit-stat-label">SEL Skills</div>
-            <svg className="toolkit-stat-deco" style={{ width: 68, height: 68, right: -8, bottom: -14, transform: 'rotate(180deg)' }} viewBox="0 0 138 138" fill="none">
-              <path d={PEBBLE_PATH} fill="#F9A3C4"/>
-              <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
-              <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
-            </svg>
-          </div>
           <div className="toolkit-stat-card">
             <div className="toolkit-stat-num">15</div>
             <div className="toolkit-stat-label">Reflections</div>
@@ -130,33 +126,22 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
               <path d="M51.7391 23.1575C63.7961 -7.71918 106.204 -7.71918 118.261 23.1575C121.304 30.9517 128.422 36.2683 136.552 36.8352C168.706 39.0773 181.885 80.624 157.126 101.898C150.859 107.282 148.142 115.897 150.137 124.053C158.021 156.278 123.638 181.882 96.3208 164.245C89.4108 159.784 80.5892 159.784 73.6792 164.245C46.3619 181.882 11.9794 156.278 19.8626 124.053C21.8578 115.897 19.1412 107.282 12.8745 101.898C-11.8845 80.624 1.29418 39.0773 33.4485 36.8352C41.5782 36.2683 48.6956 30.9517 51.7391 23.1575Z" fill="#D6E475"/>
             </svg>
           </div>
+          <div className="toolkit-stat-card">
+            <div className="toolkit-stat-num-row">
+              <span className="toolkit-stat-num">4.2</span>
+              <span className="toolkit-stat-unit">hrs</span>
+            </div>
+            <div className="toolkit-stat-label">Time Spent</div>
+            <svg className="toolkit-stat-deco" style={{ width: 68, height: 68, right: -8, bottom: -14, transform: 'rotate(180deg)' }} viewBox="0 0 138 138" fill="none">
+              <path d={PEBBLE_PATH} fill="#F9A3C4"/>
+              <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+              <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+            </svg>
+          </div>
         </div>
 
-        {/* Saved activities */}
-        {savedActivities.length > 0 && (
-          <>
-            <div className="toolkit-section-label">SAVED ACTIVITIES</div>
-            {savedActivities.map(a => (
-              <div
-                key={a.id}
-                className="toolkit-refl-entry"
-                style={{ cursor: 'pointer' }}
-                onClick={() => { onSelectActivity(a.id); showScreen('detail'); }}
-              >
-                <div className="toolkit-refl-top">
-                  <span className="toolkit-refl-tag" style={{ background: '#d6e475' }}>{a.skill}</span>
-                  <span className="toolkit-refl-date">{a.time}</span>
-                </div>
-                <div className="toolkit-refl-text" style={{ fontWeight: 600, color: '#3d3935' }}>{a.title}</div>
-              </div>
-            ))}
-          </>
-        )}
-
-        {/* Reflections label */}
-        <div className="toolkit-section-label">MY REFLECTIONS</div>
-
-        {/* Calendar */}
+        {/* ── 2. ACTIVITIES DONE ────────────────────── */}
+        <div className="toolkit-section-label" style={{ marginTop: 8 }}>ACTIVITIES DONE</div>
         <div className="toolkit-calendar">
           <div className="cal-header">
             <button className="cal-nav-btn" onClick={prevMonth}>
@@ -189,24 +174,87 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
           </div>
         </div>
 
-        {/* Reflection log */}
+        {/* ── 3. SAVED ACTIVITIES ───────────────────── */}
+        {savedActivities.length > 0 && (
+          <>
+            <div className="toolkit-section-label" style={{ marginTop: 8 }}>SAVED ACTIVITIES</div>
+            {savedActivities.map(a => (
+              <div key={a.id} className="toolkit-saved-card">
+                <div
+                  className="toolkit-saved-info"
+                  onClick={() => { onSelectActivity(a.id); showScreen('detail'); }}
+                >
+                  <div className="toolkit-saved-title">{a.title}</div>
+                  <div className="toolkit-saved-meta">
+                    <span className="toolkit-refl-tag" style={{ background: '#d6e475' }}>{a.skill}</span>
+                    <span className="toolkit-refl-date">{a.time}</span>
+                  </div>
+                </div>
+                {ACT_CONFIGS[a.id] && (
+                  <button
+                    className={`toolkit-audio-btn${playingId === a.id ? ' playing' : ''}`}
+                    onClick={() => toggleAudio(a.id)}
+                    aria-label={playingId === a.id ? 'Pause audio' : 'Play audio'}
+                  >
+                    {playingId === a.id ? (
+                      <svg width="14" height="16" viewBox="0 0 14 16" fill="none">
+                        <rect x="1" y="1" width="4" height="14" rx="1.5" fill="currentColor"/>
+                        <rect x="9" y="1" width="4" height="14" rx="1.5" fill="currentColor"/>
+                      </svg>
+                    ) : (
+                      <svg width="14" height="16" viewBox="0 0 14 16" fill="none">
+                        <path d="M2 1L13 8L2 15V1Z" fill="currentColor"/>
+                      </svg>
+                    )}
+                  </button>
+                )}
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* ── 4. MY REFLECTIONS ────────────────────── */}
+        <div className="toolkit-section-label" style={{ marginTop: 8 }}>MY REFLECTIONS</div>
         <div className="toolkit-refl-entry">
           <div className="toolkit-refl-top">
-            <span className="toolkit-refl-tag" style={{ background: '#9CD3F8' }}>Activity: Emotional Playbook</span>
+            <span className="toolkit-refl-tag" style={{ background: '#9CD3F8' }}>Freeze Feelings</span>
             <span className="toolkit-refl-date">May 17</span>
           </div>
           <div className="toolkit-refl-text">"She surprised me completely — named 'frustrated' before I even said a word..."</div>
         </div>
         <div className="toolkit-refl-entry">
           <div className="toolkit-refl-top">
-            <span className="toolkit-refl-tag" style={{ background: '#d6e475' }}>Personal Note</span>
-            <span className="toolkit-refl-date">May 17</span>
+            <span className="toolkit-refl-tag" style={{ background: '#d6e475' }}>Tense and Relax</span>
+            <span className="toolkit-refl-date">May 14</span>
           </div>
-          <div className="toolkit-refl-text">"She surprised me completely — I want to slow down more and let her lead..."</div>
+          <div className="toolkit-refl-text">"He actually giggled during the lemon squeeze. I want to slow down more and let him lead..."</div>
         </div>
+
+        {/* ── 5. AI INSIGHTS ───────────────────────── */}
+        <div className="toolkit-section-label" style={{ marginTop: 8 }}>AI INSIGHTS</div>
+        <div className="toolkit-ai-card">
+          <div className="toolkit-ai-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3d3935" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4l3 3"/>
+            </svg>
+            <span className="toolkit-ai-updated">Updated weekly · May 23</span>
+          </div>
+          <ul className="toolkit-ai-bullets">
+            {AI_BULLETS.map((b, i) => (
+              <li key={i} className="toolkit-ai-bullet">{b}</li>
+            ))}
+          </ul>
+        </div>
+
       </div>
 
-      {/* Bottom nav */}
+      <audio
+        ref={audioRef}
+        onEnded={handleAudioEnded}
+        preload="none"
+      />
+
       <BottomNav activeTab="toolkit" showScreen={showScreen} />
     </div>
   );

@@ -25,10 +25,10 @@ export default function ChallengeScreen({ showScreen, showResults, onChallengeSe
   const hasSelection = selected.size > 0 || customSaved.length > 0;
 
   function selectPill(id: string) {
-    const next = new Set<string>([id]);
-    setCustomSaved('');
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
     setSelected(next);
-    onChallengeSelect(next, '');
+    onChallengeSelect(next, customSaved);
   }
 
   function toggleAddOwn() {
@@ -40,15 +40,14 @@ export default function ChallengeScreen({ showScreen, showResults, onChallengeSe
     const val = customText.trim();
     if (!val) return;
     setCustomSaved(val);
-    setSelected(new Set());
     setShowAddOwn(false);
     setCustomText('');
-    onChallengeSelect(new Set(), val);
+    onChallengeSelect(selected, val);
   }
 
   function clearCustom() {
     setCustomSaved('');
-    onChallengeSelect(new Set(), '');
+    onChallengeSelect(selected, '');
   }
 
   return (
@@ -69,7 +68,7 @@ export default function ChallengeScreen({ showScreen, showResults, onChallengeSe
         <div className="onboard-card">
           <div className="onboard-texts">
             <div className="onboard-heading">What do you want to work on today?</div>
-            <p className="onboard-subtext">Pick one to start.</p>
+            <p className="onboard-subtext">Select all that apply.</p>
           </div>
           <div className="challenge-pill-grid">
             {PRESET_CHALLENGES.map((ch) => (
