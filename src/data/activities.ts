@@ -19,6 +19,9 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     videoTitle: 'Identifying Emotions',
     videoDesc:
       'Helping kids name their feelings is one of the most powerful things a parent can do — and this activity puts that idea into motion.',
+    extraTags: ['Impulse & body control'],
+    whenHelps:
+      'Good when your child has lots of energy or finds it hard to stop and pause — a playful way to practice catching a feeling and showing it.',
   },
   {
     id: 'tense-and-relax',

@@ -9,7 +9,8 @@ export type Screen =
   | 'reflection'
   | 'toolkit'
   | 'community'
-  | 'community-expand';
+  | 'community-expand'
+  | 'create-activity';
 
 export interface Activity {
   id: string;
@@ -48,6 +49,8 @@ export interface ExploreAct {
   videoUrl: string | null;
   videoTitle: string;
   videoDesc: string;
+  extraTags?: string[];
+  whenHelps?: string;
 }
 
 export interface CommunityReflection {

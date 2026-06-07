@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ACT_CONFIGS } from '../data/activities';
 import BackButton from '../components/BackButton';
 import { useActivityPlayer } from '../hooks/useActivityPlayer';
@@ -9,9 +10,20 @@ interface Props {
   onGoReflect: () => void;
 }
 
+function stepImg(id: string, stepIdx: number, isPlaying: boolean) {
+  if (id === 'tense-and-relax') {
+    if (stepIdx === 0) return isPlaying ? 'assets/turtle.gif' : 'assets/turtle-still.svg';
+    if (stepIdx === 1) return 'assets/lemon.gif';
+  }
+  return 'assets/blob.svg';
+}
+
 export default function ActivityScreen({ showScreen, selectedActivityId, onGoReflect }: Props) {
   const id = selectedActivityId || 'freeze-feelings';
   const config = ACT_CONFIGS[id] || ACT_CONFIGS['freeze-feelings'];
+
+  const [mode, setMode] = useState<'listen' | 'read'>('listen');
+  const [readStep, setReadStep] = useState(0);
 
   const {
     isPlaying,
@@ -39,66 +51,112 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
     onGoReflect();
   }
 
+  function switchMode(next: 'listen' | 'read') {
+    if (next === 'read') stop();
+    setMode(next);
+    setReadStep(0);
+  }
+
+  const displayStep = mode === 'read' ? readStep : currentStepIdx;
+  const totalSteps = config.steps.length;
+
   return (
     <div style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
       <div className="act-wrap">
-        {/* Back */}
-        <BackButton onClick={handleBack} />
 
-        {/* Step text as title */}
-        <div className="act-title">{config.steps[currentStepIdx]}</div>
+        {/* Top row: back + mode toggle */}
+        <div className="act-top-row">
+          <BackButton onClick={handleBack} />
+          <div className="act-mode-toggle">
+            <button
+              className={`act-mode-btn${mode === 'read' ? ' active' : ''}`}
+              onClick={() => switchMode('read')}
+            >
+              Read
+            </button>
+            <button
+              className={`act-mode-btn${mode === 'listen' ? ' active' : ''}`}
+              onClick={() => switchMode('listen')}
+            >
+              Listen
+            </button>
+          </div>
+        </div>
 
-        {/* Blob / step illustration — fills middle space */}
+        {/* Step text — read mode only */}
+        {mode === 'read' && (
+          <div className="act-title">{config.steps[displayStep]}</div>
+        )}
+
+        {/* Illustration */}
         <div className="act-middle">
           <img
             className="act-blob"
-            src={
-              id === 'tense-and-relax' && currentStepIdx === 0
-                ? (isPlaying ? 'assets/turtle.gif' : 'assets/turtle-still.svg')
-                : id === 'tense-and-relax' && currentStepIdx === 1
-                ? 'assets/lemon.gif'
-                : 'assets/blob.svg'
-            }
+            src={stepImg(id, displayStep, isPlaying)}
             alt=""
           />
         </div>
 
-        {/* Bottom controls — always anchored */}
+        {/* Bottom controls */}
         <div className="act-controls">
-          {/* Play / Pause */}
-          <button className="act-play-btn" onClick={toggle}>
-            {isPlaying ? (
-              <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
-                <rect x="2" y="2" width="8" height="26" rx="2" fill="white"/>
-                <rect x="16" y="2" width="8" height="26" rx="2" fill="white"/>
-              </svg>
-            ) : (
-              <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
-                <path d="M2 1.5L24 15L2 28.5V1.5Z" fill="white" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
-              </svg>
-            )}
-          </button>
 
-          {/* Timeline */}
-          <div className="act-timeline">
-            <div className="act-time-row">
-              <span className="act-time-label">{currentTimeDisplay}</span>
-              <div className="act-track-wrap">
-                <div className="act-progress-track" onClick={seek}>
-                  <div className="act-progress-fill" style={{ width: `${progressPct}%` }} />
+          {mode === 'read' ? (
+            /* Read mode: prev / step counter / next */
+            <div className="act-step-nav">
+              <button
+                className="act-step-nav-btn"
+                onClick={() => setReadStep((s) => Math.max(0, s - 1))}
+                disabled={readStep === 0}
+              >
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <path d="M12 5L7 10L12 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <span className="act-step-counter">{readStep + 1} / {totalSteps}</span>
+              <button
+                className="act-step-nav-btn"
+                onClick={() => setReadStep((s) => Math.min(totalSteps - 1, s + 1))}
+                disabled={readStep === totalSteps - 1}
+              >
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          ) : (
+            /* Listen mode: play + timeline */
+            <>
+              <button className="act-play-btn" onClick={toggle}>
+                {isPlaying ? (
+                  <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
+                    <rect x="2" y="2" width="8" height="26" rx="2" fill="white"/>
+                    <rect x="16" y="2" width="8" height="26" rx="2" fill="white"/>
+                  </svg>
+                ) : (
+                  <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
+                    <path d="M2 1.5L24 15L2 28.5V1.5Z" fill="white" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+                  </svg>
+                )}
+              </button>
+              <div className="act-timeline">
+                <div className="act-time-row">
+                  <span className="act-time-label">{currentTimeDisplay}</span>
+                  <div className="act-track-wrap">
+                    <div className="act-progress-track" onClick={seek}>
+                      <div className="act-progress-fill" style={{ width: `${progressPct}%` }} />
+                    </div>
+                  </div>
+                  <span className="act-time-label" style={{ textAlign: 'right' }}>{durationDisplay}</span>
                 </div>
               </div>
-              <span className="act-time-label" style={{ textAlign: 'right' }}>{durationDisplay}</span>
-            </div>
-          </div>
+            </>
+          )}
 
-          {/* CTA */}
           <button className="act-go-btn" onClick={handleGoReflect}>
             Go to Reflection
           </button>
         </div>
 
-        {/* Hidden audio element */}
         <audio ref={(el) => { audioRef.current = el; }} preload="auto" />
       </div>
     </div>

@@ -102,6 +102,9 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
             <div className="act-info-tags">
               <span className="act-info-tag" style={{ background: '#d6e475' }}>{act.time}</span>
               <span className="act-info-tag" style={{ background: '#ffa9bc' }}>{act.skill}</span>
+              {act.extraTags?.map((tag) => (
+                <span key={tag} className="act-info-tag" style={{ background: '#ffa9bc' }}>{tag}</span>
+              ))}
               <span className="act-info-tag" style={{ background: '#fdd15e' }}>{act.refs}</span>
             </div>
             <div className="act-info-desc">{act.detailDesc || act.desc}</div>
@@ -117,6 +120,12 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
               <div className="act-tip-box">
                 <div className="act-tip-label">Tips for Parents</div>
                 <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 500, fontSize: 13, color: '#6b6761', lineHeight: 1.7 }}>{act.tip}</div>
+              </div>
+            )}
+            {act.whenHelps && (
+              <div className="act-tip-box">
+                <div className="act-tip-label">When This Helps</div>
+                <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 500, fontSize: 13, color: '#6b6761', lineHeight: 1.7 }}>{act.whenHelps}</div>
               </div>
             )}
             <button className="act-start-btn" onClick={handleStartActivity}>

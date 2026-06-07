@@ -82,7 +82,7 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
         <div className="refl-prompt-label">Reflect on these while you record</div>
         <div className="refl-prompt-card">
           <div className="refl-prompt-q">How did the activity go — what went well and what could have gone better? What did you notice about your child?</div>
-          <div className="refl-prompt-q">After reading another parent's reflection, what stood out to you?</div>
+          <div className="refl-prompt-q">What would you try differently next time?</div>
           <div className="refl-prompt-q">What's one tip you'd share with another parent trying this?</div>
         </div>
 

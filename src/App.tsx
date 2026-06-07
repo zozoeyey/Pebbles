@@ -14,6 +14,7 @@ import ReflectionScreen from './screens/ReflectionScreen';
 import ToolkitScreen from './screens/ToolkitScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import CommunityExpandScreen from './screens/CommunityExpandScreen';
+import CreateActivityScreen from './screens/CreateActivityScreen';
 
 const SCREEN_TITLES: Record<Screen, string> = {
   welcome: 'Pebbles',
@@ -27,6 +28,7 @@ const SCREEN_TITLES: Record<Screen, string> = {
   toolkit: 'Pebbles – Toolkit',
   community: 'Pebbles – Community',
   'community-expand': 'Pebbles – Community',
+  'create-activity': 'Pebbles – Create',
 };
 
 export default function App() {
@@ -139,6 +141,12 @@ export default function App() {
         <CommunityExpandScreen
           showScreen={showScreen}
           expandActivityId={expandActivityId}
+        />
+      )}
+      {screen === 'create-activity' && (
+        <CreateActivityScreen
+          showScreen={showScreen}
+          onSaveCustom={() => showScreen('toolkit')}
         />
       )}
     </div>
