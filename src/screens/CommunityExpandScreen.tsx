@@ -140,7 +140,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
   }
 
   return (
-    <div style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="community-expand-wrap">
         {/* Back */}
         <BackButton onClick={() => showScreen('community')} />

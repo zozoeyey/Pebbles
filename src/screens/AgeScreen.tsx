@@ -18,13 +18,12 @@ export default function AgeScreen({ showScreen, showResults, onAgeSelect }: Prop
   }
 
   return (
-    <div style={{ padding: 0 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="onboard-screen">
         <div className="onboard-top">
           <div className="onboard-progress">
             <div className="progress-segs">
               <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '50%' }} /></div>
-              <div className="progress-seg" />
               <div className="progress-seg" />
               <div className="progress-seg" />
             </div>

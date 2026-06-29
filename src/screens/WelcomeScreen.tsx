@@ -6,7 +6,7 @@ interface Props {
 
 export default function WelcomeScreen({ showScreen }: Props) {
   return (
-    <div style={{ padding: 0, animation: 'fadeUp 0.3s ease both' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.3s ease both' }}>
       <div className="welcome-v2">
         <div className="welcome-top">
           <img src="assets/pebbles logo.svg" className="welcome-logo" alt="Pebbles" />

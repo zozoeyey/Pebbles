@@ -10,9 +10,9 @@ interface Props {
   onGoReflect: () => void;
 }
 
-function stepImg(id: string, stepIdx: number, isPlaying: boolean) {
+function stepImg(id: string, stepIdx: number, isPlaying: boolean, mode: 'listen' | 'read') {
   if (id === 'tense-and-relax') {
-    if (stepIdx === 0) return isPlaying ? 'assets/turtle.gif' : 'assets/turtle-still.svg';
+    if (stepIdx === 0) return (mode === 'read' || isPlaying) ? 'assets/turtle.gif' : 'assets/turtle-still.svg';
     if (stepIdx === 1) return 'assets/lemon.gif';
   }
   return 'assets/blob.svg';
@@ -61,7 +61,7 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
   const totalSteps = config.steps.length;
 
   return (
-    <div style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="act-wrap">
 
         {/* Top row: back + mode toggle */}
@@ -92,7 +92,7 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
         <div className="act-middle">
           <img
             className="act-blob"
-            src={stepImg(id, displayStep, isPlaying)}
+            src={stepImg(id, displayStep, isPlaying, mode)}
             alt=""
           />
         </div>

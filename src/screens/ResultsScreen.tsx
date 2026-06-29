@@ -55,7 +55,7 @@ export default function ResultsScreen({ showScreen, onSelectActivity, activeTab,
   }
 
   return (
-    <div style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="explore-wrap">
         <div className="explore-scroll">
           {/* Header */}

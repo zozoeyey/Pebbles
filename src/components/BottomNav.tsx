@@ -11,7 +11,7 @@ export default function BottomNav({ activeTab, showScreen }: Props) {
   const isToolkit = activeTab === 'toolkit';
 
   return (
-    <div className={activeTab === 'community' ? 'community-nav' : activeTab === 'toolkit' ? 'toolkit-nav' : 'explore-nav'}>
+    <div className="explore-nav">
       <div className="explore-nav-inner">
         {/* Explore */}
         <div className={`nav-tab${isExplore ? ' active' : ''}`} onClick={() => showScreen('results')} style={{ cursor: 'pointer' }}>

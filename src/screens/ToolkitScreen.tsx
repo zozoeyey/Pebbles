@@ -75,7 +75,7 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
   for (let i = 0; i < cells.length; i += 7) rows.push(cells.slice(i, i + 7));
 
   return (
-    <div style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="toolkit-wrap">
 
         {/* Header */}

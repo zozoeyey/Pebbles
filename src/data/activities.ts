@@ -37,10 +37,10 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     materials: ['A quiet space', 'Optional: soft background music'],
     tip: "Go slowly and breathe deeply together. The contrast between tense and relaxed is the key learning moment — don't rush through it.",
     url: 'https://smho-smso.ca/emhc/stress-management-and-coping/stretching/tense-and-relax/',
-    videoUrl: null,
-    videoTitle: 'Building Body Awareness',
+    videoUrl: 'assets/video.mp4',
+    videoTitle: 'Identifying Emotions',
     videoDesc:
-      'How body-based techniques help kids self-regulate and develop a stronger sense of their own physical and emotional state.',
+      'Helping kids name their feelings is one of the most powerful things a parent can do — and this activity puts that idea into motion.',
   },
 ];
 

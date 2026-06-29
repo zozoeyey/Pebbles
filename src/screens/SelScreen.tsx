@@ -60,11 +60,10 @@ export default function SelScreen({ showResults, selectedAge, selectedChallenges
   }
 
   return (
-    <div style={{ padding: 0 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="sel-wrap">
         <div className="sel-progress">
           <div className="progress-segs">
-            <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '100%' }} /></div>
             <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '100%' }} /></div>
             <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '100%' }} /></div>
             <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '50%' }} /></div>

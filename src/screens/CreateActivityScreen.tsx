@@ -87,7 +87,7 @@ export default function CreateActivityScreen({ showScreen, onSaveCustom }: Props
   }
 
   return (
-    <div style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="create-act-wrap">
         <div className="create-act-topbar">
           <BackButton onClick={() => showScreen('results')} />
