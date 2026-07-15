@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .tw2 { animation: tw 1.6s .8s ease-in-out infinite; }
+  .zz { animation: zfloat 2.6s ease-in-out infinite; }
+  .zb { animation-delay: .5s; }
+  @keyframes zfloat { 0% { opacity:0; transform: translateY(4px);} 40% { opacity:1;} 100% { opacity:0; transform: translateY(-10px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <path d="M124 44 a30 30 0 1 0 22 50 a24 24 0 0 1 -22 -50" fill="#FDD15E"/>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M160 53.7 L161.8 58.2 L166.3 58.2 L162.7 61.35 L164.05 66.3 L160 63.15 L155.95 66.3 L157.3 61.35 L153.7 58.2 L158.2 58.2 Z" fill="#fff"/>
+  
+  <path class="tw2" style="transform-box:fill-box;transform-origin:center"
+    d="M146 87.1 L147.4 90.6 L150.9 90.6 L148.1 93.05 L149.15 96.9 L146 94.45 L142.85 96.9 L143.9 93.05 L141.1 90.6 L144.6 90.6 Z" fill="#fff"/>
+  <rect x="44" y="108" width="66" height="56" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2" transform="rotate(-6 77 136)"/>
+  <line x1="56" y1="126" x2="94" y2="122" stroke="#b7b2aa" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="57" y1="138" x2="90" y2="134" stroke="#b7b2aa" stroke-width="2.4" stroke-linecap="round"/>
+  <text class="zz" x="130" y="140" font-family="Montserrat,sans-serif" font-weight="800" font-size="16" fill="#3d3935">z</text>
+  <text class="zz zb" x="146" y="126" font-family="Montserrat,sans-serif" font-weight="800" font-size="12" fill="#b7b2aa">z</text>
+
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .puffer { animation: pfr 2.4s ease-in-out infinite; }
+  @keyframes pfr { 0%,20% { transform: scale(1);} 30% { transform: scale(1.14) translateX(4px);} 40%,100% { transform: scale(1);} }
+  .popb { animation: popb 2.4s ease-in infinite; }
+  @keyframes popb { 0%,25% { opacity:0; transform: scale(.2);} 35%,48% { opacity:1; transform: scale(1);} 52%,100% { opacity:0;} }
+  .burst { animation: bst 2.4s ease-out infinite; opacity:0; }
+  @keyframes bst { 0%,50% {opacity:0; transform: scale(.6);} 56%,70% {opacity:1; transform: scale(1.1);} 80%,100% {opacity:0;} }
+  .popt { animation: bst 2.4s ease-out infinite; opacity:0; }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="puffer" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="58" cy="130" rx="28" ry="25" fill="#d6e475"/>
+    <ellipse cx="50.588235294117645" cy="126.25" rx="2.635294117647059" ry="4.117647058823529" fill="#3d3935"/>
+   <ellipse cx="65.41176470588235" cy="126.25" rx="2.635294117647059" ry="4.117647058823529" fill="#3d3935"/>
+  </g>
+  <circle class="popb" cx="126" cy="112" r="20" fill="none" stroke="#9CD3F8" stroke-width="3"/>
+  <g class="burst">
+    <line x1="140" y1="112" x2="152" y2="112" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/><line x1="135.89949493661166" y1="121.89949493661166" x2="144.38477631085024" y2="130.38477631085024" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/><line x1="126" y1="126" x2="126" y2="138" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/><line x1="116.10050506338834" y1="121.89949493661166" x2="107.61522368914976" y2="130.38477631085024" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/><line x1="112" y1="112" x2="100" y2="112" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/><line x1="116.10050506338834" y1="102.10050506338834" x2="107.61522368914976" y2="93.61522368914976" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/><line x1="126" y1="98" x2="126" y2="86" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/><line x1="135.89949493661166" y1="102.10050506338834" x2="144.38477631085024" y2="93.61522368914976" stroke="#9CD3F8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <text class="popt" x="126" y="66" font-family="Montserrat,sans-serif" font-weight="800" font-size="17" fill="#3d3935" text-anchor="middle">pop!</text>
+
+</svg>

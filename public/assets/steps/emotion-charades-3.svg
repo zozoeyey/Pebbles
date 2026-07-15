@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .actor { animation: pose 3.6s ease-in-out infinite; }
+  @keyframes pose {
+    0%,18% { transform: rotate(-10deg) scaleY(1.05);}
+    28%,48% { transform: rotate(8deg) scaleY(.92) translateY(6px);}
+    58%,78% { transform: rotate(0) scaleY(1.12) translateY(-6px);}
+    88%,100% { transform: rotate(-10deg) scaleY(1.05);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <path d="M40 168 q60 -22 120 0" stroke="#FDD15E" stroke-width="6" fill="none" stroke-linecap="round"/>
+  
+  <g class="actor" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="118" rx="36" ry="32" fill="#F9A3C4"/>
+    <ellipse cx="90.47058823529412" cy="113.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+   <ellipse cx="109.52941176470588" cy="113.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+  </g>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M50 70.5 Q51.1 74.9 55.5 76 Q51.1 77.1 50 81.5 Q48.9 77.1 44.5 76 Q48.9 74.9 50 70.5 Z" fill="#FDD15E"/>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M152 76 Q153.2 80.8 158 82 Q153.2 83.2 152 88 Q150.8 83.2 146 82 Q150.8 80.8 152 76 Z" fill="#9CD3F8"/>
+
+</svg>

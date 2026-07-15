@@ -1,5 +1,9 @@
+import { useEffect, useState } from 'react';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
+import AvatarBubble from '../components/AvatarBubble';
+import { fetchSharedReflections, likeReflection, timeAgo } from '../lib/communityApi';
+import type { SharedReflection } from '../lib/communityApi';
 
 const PEBBLE_PATH =
   'M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z';
@@ -12,7 +16,74 @@ interface Props {
   onExpandCard: (activityId: string) => void;
 }
 
+const BUBBLE_COLORS: [string, string][] = [
+  ['#fdd15e', '#9CD3F8'],
+  ['#d6e475', '#F9A3C4'],
+  ['#F9A3C4', '#FDD15E'],
+  ['#9CD3F8', '#d6e475'],
+];
+
+// A reflection a parent chose to share, fetched from Supabase.
+function LiveCard({ r, index }: { r: SharedReflection; index: number }) {
+  const [likes, setLikes] = useState(r.likes);
+  const [liked, setLiked] = useState(false);
+  const [bg, fill] = BUBBLE_COLORS[index % BUBBLE_COLORS.length];
+
+  function handleLike() {
+    if (liked) return;
+    setLiked(true);
+    setLikes((n) => n + 1);
+    likeReflection(r.id).catch(() => {});
+  }
+
+  return (
+    <div className="community-card">
+      <div className="community-card-head">
+        <div className="community-avatar-bub" style={{ background: bg }}>
+          <svg width="30" height="30" viewBox="0 0 138 138" fill="none">
+            <path d={PEBBLE_PATH} fill={fill}/>
+            <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+            <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+          </svg>
+        </div>
+        <div>
+          <div className="community-card-name">
+            Parent{r.child_age ? ` (child age ${r.child_age})` : ''}
+          </div>
+          <div className="community-card-time">{timeAgo(r.created_at)}</div>
+        </div>
+      </div>
+      <div className="community-activity-tag">Activity: {r.activity_title}</div>
+      <p className="community-card-text" style={{ whiteSpace: 'pre-line' }}>
+        {r.summary.replace(/^[-•*]\s*/gm, '')}
+      </p>
+      <div className="community-card-footer">
+        <div
+          className="community-card-likes"
+          onClick={handleLike}
+          style={{ cursor: liked ? 'default' : 'pointer' }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill={liked ? '#F9A3C4' : 'none'} stroke="#6b6761" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d={HEART_PATH}/>
+          </svg>
+          {likes} likes
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
+  const [live, setLive] = useState<SharedReflection[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchSharedReflections()
+      .then((rows) => { if (!cancelled) setLive(rows); })
+      .catch(() => {}); // feed still shows sample cards if the fetch fails
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="community-wrap">
@@ -22,14 +93,11 @@ export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
             <div className="community-heading">Community</div>
             <div className="community-subheading">See what other parents are reflecting on</div>
           </div>
-          <div className="community-avatar-bub" style={{ background: '#d6e475' }}>
-            <svg width="30" height="30" viewBox="0 0 138 138" fill="none">
-              <path d={PEBBLE_PATH} fill="#F9A3C4"/>
-              <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
-              <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
-            </svg>
-          </div>
+          <AvatarBubble />
         </div>
+
+        {/* Live shared reflections (newest first) */}
+        {live.map((r, i) => <LiveCard key={r.id} r={r} index={i} />)}
 
         {/* Card 1 */}
         <div className="community-card">

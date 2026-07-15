@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .ring { animation: grow 3s ease-in-out infinite; }
+  @keyframes grow { 0%,100% { transform: scale(.85); opacity:.5;} 50% { transform: scale(1.05); opacity:1;} }
+  .stepin { animation: hopin 3s ease-in-out infinite; }
+  @keyframes hopin { 0%,100% { transform: translateY(-4px);} 50% { transform: translateY(4px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <ellipse class="ring" cx="100" cy="140" rx="52" ry="20" fill="none" stroke="#3d3935" stroke-width="2.6" stroke-dasharray="8 8"/>
+  
+  <g class="stepin" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="106" rx="32" ry="28" fill="#d6e475"/>
+    <path d="M87.76470588235294 101.8 q3.764705882352941 -4.705882352941177 7.529411764705882 0" stroke="#3d3935" stroke-width="2.447058823529412" fill="none" stroke-linecap="round"/>
+   <path d="M104.70588235294117 101.8 q3.764705882352941 -4.705882352941177 7.529411764705882 0" stroke="#3d3935" stroke-width="2.447058823529412" fill="none" stroke-linecap="round"/><path d="M94.3529411764706 113.84 q5.647058823529411 5.647058823529411 11.294117647058822 0" stroke="#3d3935" stroke-width="2.2588235294117647" fill="none" stroke-linecap="round"/>
+  </g>
+
+</svg>

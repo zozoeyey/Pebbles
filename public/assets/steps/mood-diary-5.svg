@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .mag { animation: sweep 4.5s ease-in-out infinite; }
+  @keyframes sweep { 0%,100% { transform: translate(-26px,-10px);} 30% { transform: translate(26px,-10px);} 60% { transform: translate(-16px,20px);} 80% { transform: translate(22px,18px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="40" y="56" width="120" height="100" rx="8" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+  <circle cx="58" cy="86" r="7" fill="#d6e475"/><circle cx="79" cy="86" r="7" fill="#d6e475"/><circle cx="100" cy="86" r="7" fill="#F9A3C4"/><circle cx="121" cy="86" r="7" fill="#d6e475"/><circle cx="142" cy="86" r="7" fill="#F9A3C4"/>
+  <circle cx="58" cy="118" r="7" fill="#d6e475"/><circle cx="79" cy="118" r="7" fill="#F9A3C4"/><circle cx="100" cy="118" r="7" fill="#F9A3C4"/><circle cx="121" cy="118" r="7" fill="#d6e475"/><circle cx="142" cy="118" r="7" fill="#d6e475"/>
+  <g class="mag" style="transform-box:fill-box;transform-origin:center">
+    <circle cx="96" cy="100" r="17" fill="none" stroke="#3d3935" stroke-width="3.4"/>
+    <line x1="108" y1="113" x2="122" y2="128" stroke="#3d3935" stroke-width="4.4" stroke-linecap="round"/>
+  </g>
+
+</svg>

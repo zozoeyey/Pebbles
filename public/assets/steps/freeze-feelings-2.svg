@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .arc { animation: pulse 1.4s ease-out infinite; }
+  .a2 { animation-delay: .25s; }
+  @keyframes pulse { 0% {opacity:0; transform: translateX(-4px);} 40% {opacity:1;} 100% {opacity:0; transform: translateX(6px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="66" cy="128" rx="32" ry="28" fill="#F9A3C4"/>
+    <ellipse cx="57.529411764705884" cy="123.8" rx="3.011764705882353" ry="4.705882352941177" fill="#3d3935"/>
+   <ellipse cx="74.47058823529412" cy="123.8" rx="3.011764705882353" ry="4.705882352941177" fill="#3d3935"/>
+  </g>
+  <g class="mega">
+    <path d="M92 112 L116 100 L116 128 L92 120 Z" fill="#FDD15E" stroke="#3d3935" stroke-width="2"/>
+    <rect x="86" y="110" width="8" height="12" rx="2" fill="#FDD15E" stroke="#3d3935" stroke-width="2"/>
+  </g>
+  <path class="arc a1" d="M124 104 q10 10 0 20" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path class="arc a2" d="M134 98 q16 16 0 32" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  
+  <g>
+    <rect x="112" y="52" width="66" height="26" rx="13" fill="#fff" stroke="#3d3935" stroke-width="1.6"/>
+    <path d="M128.5 78 l4 8 l6 -8 z" fill="#fff" stroke="#3d3935" stroke-width="1.6"/>
+    <text x="145" y="69.68" font-family="Montserrat, sans-serif" font-weight="700" font-size="13" fill="#3d3935" text-anchor="middle">happy!</text>
+  </g>
+
+</svg>

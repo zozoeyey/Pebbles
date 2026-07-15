@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .holdB { animation: hld 3.6s ease-in-out infinite; }
+  @keyframes hld { 0%,100% { transform: scale(1);} 50% { transform: scale(1.03);} }
+  .c1,.c2,.c3 { opacity:.15; }
+  .c1 { animation: cnt 3.6s infinite; }
+  .c2 { animation: cnt 3.6s .9s infinite; }
+  .c3 { animation: cnt 3.6s 1.8s infinite; }
+  @keyframes cnt { 0% {opacity:.15;} 10%,30% {opacity:1;} 45%,100% {opacity:.15;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="holdB" style="transform-box:fill-box;transform-origin:bottom">
+    <ellipse cx="100" cy="95" rx="24" ry="30" fill="#F9A3C4"/>
+    <path d="M94 123.5 L106 123.5 L100 132.5 Z" fill="#F9A3C4"/>
+    <path d="M100 131 q4.5 12 -3 21" stroke="#3d3935" stroke-width="1.6" fill="none"/>
+  </g>
+  <text class="c1" x="58" y="60" font-family="Montserrat,sans-serif" font-weight="800" font-size="20" fill="#3d3935">1</text>
+  <text class="c2" x="100" y="48" font-family="Montserrat,sans-serif" font-weight="800" font-size="20" fill="#3d3935">2</text>
+  <text class="c3" x="140" y="60" font-family="Montserrat,sans-serif" font-weight="800" font-size="20" fill="#3d3935">3</text>
+
+</svg>

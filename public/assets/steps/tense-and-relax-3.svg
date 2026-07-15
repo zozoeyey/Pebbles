@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .squeeze { animation: sq 3s ease-in-out infinite; }
+  @keyframes sq { 0%,15% { transform: scaleX(1);} 40%,60% { transform: scaleX(.62) scaleY(1.12);} 85%,100% { transform: scaleX(1);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="34" y="70" width="12" height="80" rx="4" fill="#c9a36b"/>
+  <rect x="154" y="70" width="12" height="80" rx="4" fill="#c9a36b"/>
+  <line x1="34" y1="88" x2="166" y2="88" stroke="#c9a36b" stroke-width="7"/>
+  <line x1="34" y1="126" x2="166" y2="126" stroke="#c9a36b" stroke-width="7"/>
+  
+  <g class="squeeze" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="108" rx="36" ry="32" fill="#d6e475"/>
+    <ellipse cx="90.47058823529412" cy="103.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+   <ellipse cx="109.52941176470588" cy="103.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+  </g>
+
+</svg>

@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
+import { getSessionId } from '../lib/session';
 
 type RecorderState = 'idle' | 'recording' | 'processing' | 'result' | 'error';
 
@@ -7,6 +8,8 @@ interface UseAudioRecorderResult {
   state: RecorderState;
   isRecording: boolean;
   summary: string;
+  /** DB id of the saved reflection — null until processing succeeds. */
+  reflectionId: string | null;
   error: string;
   timerDisplay: string;
   startRecording: () => Promise<void>;
@@ -21,6 +24,7 @@ export function useAudioRecorder(
 ): UseAudioRecorderResult {
   const [state, setState] = useState<RecorderState>('idle');
   const [summary, setSummary] = useState('');
+  const [reflectionId, setReflectionId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [timerDisplay, setTimerDisplay] = useState('');
 
@@ -40,6 +44,7 @@ export function useAudioRecorder(
     secondsRef.current = 0;
     setTimerDisplay('');
     setSummary('');
+    setReflectionId(null);
     setError('');
     setState('idle');
   }, []);
@@ -54,6 +59,7 @@ export function useAudioRecorder(
       form.append('activity_id', activityId);
       form.append('activity_title', activityTitle);
       if (selectedAge) form.append('child_age', String(selectedAge));
+      form.append('session_id', getSessionId());
 
       try {
         const res = await fetch(`${SUPABASE_URL}/functions/v1/process-reflection`, {
@@ -65,8 +71,9 @@ export function useAudioRecorder(
           body: form,
         });
         if (!res.ok) throw new Error(await res.text());
-        const { summary: s } = (await res.json()) as { summary: string };
+        const { summary: s, id } = (await res.json()) as { summary: string; id: string | null };
         setSummary(s);
+        setReflectionId(id ?? null);
         setState('result');
       } catch (err) {
         console.error(err);
@@ -122,6 +129,7 @@ export function useAudioRecorder(
     state,
     isRecording: state === 'recording',
     summary,
+    reflectionId,
     error,
     timerDisplay,
     startRecording,

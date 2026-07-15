@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .pick { animation: pull 3s ease-in-out infinite; }
+  @keyframes pull { 0%,15% { transform: translateY(48px); opacity:0;} 45%,80% { transform: translateY(0); opacity:1;} 100% { transform: translateY(0); opacity:0;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <path d="M60 138 a40 24 0 0 0 80 0 z" fill="#9CD3F8" stroke="#3d3935" stroke-width="2.4"/>
+  <g class="pick">
+    <rect x="86" y="74" width="30" height="20" rx="3" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+    <text x="101" y="88" font-family="Montserrat,sans-serif" font-weight="800" font-size="13" fill="#3d3935" text-anchor="middle">?</text>
+  </g>
+  <text x="152" y="70" font-family="Montserrat,sans-serif" font-weight="700" font-size="14" fill="#3d3935">shh…</text>
+
+</svg>

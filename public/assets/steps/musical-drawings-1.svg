@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .bnote { animation: nb 1.2s ease-in-out infinite; }
+  @keyframes nb { 0%,100% { transform: translateY(0) rotate(-6deg);} 50% { transform: translateY(-10px) rotate(6deg);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="48" y="84" width="72" height="88" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+  <rect x="132" y="112" width="10" height="44" rx="4" fill="#9CD3F8" stroke="#3d3935" stroke-width="1.8"/>
+  <path d="M132 112 l5 -10 l5 10 z" fill="#9CD3F8" stroke="#3d3935" stroke-width="1.8"/>
+  
+  <g class="bnote" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="154" cy="84" rx="5" ry="4" fill="#3d3935"/>
+    <rect x="157.4" y="66" width="2.4" height="18" rx="1" fill="#3d3935"/>
+    <path d="M157.4 66 q7 -2 9 4 l0 4 q-2 -6 -9 -4 z" fill="#3d3935"/>
+  </g>
+
+</svg>

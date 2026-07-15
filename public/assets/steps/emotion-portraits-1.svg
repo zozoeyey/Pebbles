@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .card { animation: pick 3.9s ease-in-out infinite; }
+  .c2 { animation-delay: 1.3s; } .c3 { animation-delay: 2.6s; }
+  @keyframes pick { 0%,25%,100% { transform: translateY(0);} 8%,15% { transform: translateY(-10px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+    <g class="card c1">
+      <rect x="34" y="76" width="40" height="52" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+      <circle cx="54" cy="96" r="12" fill="#FDD15E"/>
+      <path d="M46.85 94 q2.2 -2.75 4.4 0" stroke="#3d3935" stroke-width="1.4300000000000002" fill="none" stroke-linecap="round"/>
+   <path d="M56.75 94 q2.2 -2.75 4.4 0" stroke="#3d3935" stroke-width="1.4300000000000002" fill="none" stroke-linecap="round"/><path d="M50.7 100 q3.3000000000000003 3.3000000000000003 6.6000000000000005 0" stroke="#3d3935" stroke-width="1.32" fill="none" stroke-linecap="round"/>
+    </g>
+    <g class="card c2">
+      <rect x="80" y="76" width="40" height="52" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+      <circle cx="100" cy="96" r="12" fill="#9CD3F8"/>
+      <ellipse cx="95.5" cy="94" rx="1.6" ry="2.5" fill="#3d3935"/>
+   <ellipse cx="104.5" cy="94" rx="1.6" ry="2.5" fill="#3d3935"/>
+    </g>
+    <g class="card c3">
+      <rect x="126" y="76" width="40" height="52" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+      <circle cx="146" cy="96" r="12" fill="#F9A3C4"/>
+      <ellipse cx="141.5" cy="94" rx="1.6" ry="2.5" fill="#3d3935"/>
+   <ellipse cx="150.5" cy="94" rx="1.6" ry="2.5" fill="#3d3935"/><path d="M141 103 q5 -4 10 0" stroke="#3d3935" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </g>
+
+</svg>

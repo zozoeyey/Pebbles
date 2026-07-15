@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .wand { animation: dip 3s ease-in-out infinite; }
+  @keyframes dip { 0%,100% { transform: translateY(0) rotate(0);} 40%,55% { transform: translateY(26px) rotate(-10deg);} }
+  .bb { animation: bfl 3s ease-in-out infinite; opacity:0; }
+  .b2 { animation-delay: .3s; }
+  @keyframes bfl { 0%,55% {opacity:0; transform: translateY(6px);} 70%,90% {opacity:1; transform: translateY(-6px);} 100% {opacity:0;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="76" y="96" width="48" height="66" rx="10" fill="#9CD3F8" stroke="#3d3935" stroke-width="2"/>
+  <rect x="90" y="80" width="20" height="18" rx="4" fill="#7fb8e6" stroke="#3d3935" stroke-width="2"/>
+  <g class="wand">
+    <line x1="140" y1="132" x2="140" y2="84" stroke="#3d3935" stroke-width="3.4" stroke-linecap="round"/>
+    <circle cx="140" cy="74" r="11" fill="none" stroke="#3d3935" stroke-width="3.4"/>
+  </g>
+  <circle class="bb b1" cx="52" cy="92" r="7" fill="none" stroke="#9CD3F8" stroke-width="2.6"/>
+  <circle class="bb b2" cx="40" cy="70" r="5" fill="none" stroke="#9CD3F8" stroke-width="2.6"/>
+
+</svg>

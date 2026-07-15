@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .sniffer { animation: lean 4s ease-in-out infinite; }
+  @keyframes lean { 0%,100% { transform: translateX(0) rotate(0);} 45%,65% { transform: translateX(-14px) rotate(-8deg);} }
+  .scent { animation: rise 4s ease-in-out infinite; opacity:0; }
+  .s2 { animation-delay: .35s; }
+  @keyframes rise { 0%,30% { opacity:0; transform: translateY(4px);} 50%,70% { opacity:1; transform: translateY(-6px);} 90%,100% { opacity:0; transform: translateY(-14px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <rect x="60.05" y="132" width="3.9000000000000004" height="33.800000000000004" rx="1.9500000000000002" fill="#7da84c"/>
+    <path d="M62 147.6 q-13 2.6 -11.700000000000001 10.4 q10.4 1.3 11.700000000000001 -10.4" fill="#7da84c"/>
+    <g class="petals" style="transform-box:fill-box;transform-origin:center">
+      <ellipse cx="62" cy="120.3" rx="6.5" ry="11.700000000000001" fill="#F9A3C4" transform="rotate(0 62 132)"/><ellipse cx="62" cy="120.3" rx="6.5" ry="11.700000000000001" fill="#F9A3C4" transform="rotate(60 62 132)"/><ellipse cx="62" cy="120.3" rx="6.5" ry="11.700000000000001" fill="#F9A3C4" transform="rotate(120 62 132)"/><ellipse cx="62" cy="120.3" rx="6.5" ry="11.700000000000001" fill="#F9A3C4" transform="rotate(180 62 132)"/><ellipse cx="62" cy="120.3" rx="6.5" ry="11.700000000000001" fill="#F9A3C4" transform="rotate(240 62 132)"/><ellipse cx="62" cy="120.3" rx="6.5" ry="11.700000000000001" fill="#F9A3C4" transform="rotate(300 62 132)"/>
+      <circle cx="62" cy="132" r="7.15" fill="#FDD15E"/>
+    </g>
+  </g>
+  
+  <g class="sniffer" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="138" cy="118" rx="30" ry="27" fill="#FDD15E"/>
+    <path d="M126.52941176470588 113.95 q3.5294117647058822 -4.411764705882353 7.0588235294117645 0" stroke="#3d3935" stroke-width="2.2941176470588234" fill="none" stroke-linecap="round"/>
+   <path d="M142.41176470588235 113.95 q3.5294117647058822 -4.411764705882353 7.0588235294117645 0" stroke="#3d3935" stroke-width="2.2941176470588234" fill="none" stroke-linecap="round"/><path d="M132.7058823529412 125.56 q5.294117647058823 5.294117647058823 10.588235294117647 0" stroke="#3d3935" stroke-width="2.1176470588235294" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <path class="scent s1" d="M88 116 q4 -6 0 -12 q-4 -6 0 -12" stroke="#b7b2aa" stroke-width="2.4" fill="none" stroke-linecap="round" style="transform-box:fill-box;transform-origin:center"/>
+  
+  <path class="scent s2" d="M100 108 q4 -6 0 -12 q-4 -6 0 -12" stroke="#b7b2aa" stroke-width="2.4" fill="none" stroke-linecap="round" style="transform-box:fill-box;transform-origin:center"/>
+
+</svg>

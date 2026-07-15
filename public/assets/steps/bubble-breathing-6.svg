@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .calm { animation: cb 5s ease-in-out infinite; }
+  @keyframes cb { 0%,100% { transform: scale(.95);} 50% { transform: scale(1.07);} }
+  .dream1 { animation: dg 5s ease-in-out infinite; }
+  @keyframes dg { 0%,100% { transform: scale(.5); opacity:.4;} 50%,70% { transform: scale(1); opacity:1;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="calm" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="128" rx="34" ry="30" fill="#d6e475"/>
+    <path d="M87 123.5 q4 -5 8 0" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+   <path d="M105 123.5 q4 -5 8 0" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M94 136.4 q6 6 12 0" stroke="#3d3935" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </g>
+  <circle class="dream1" cx="100" cy="66" r="24" fill="none" stroke="#9CD3F8" stroke-width="2.6" stroke-dasharray="5 7"/>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M48 85 Q49 89 53 90 Q49 91 48 95 Q47 91 43 90 Q47 89 48 85 Z" fill="#FDD15E"/>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M154 90.5 Q155.1 94.9 159.5 96 Q155.1 97.1 154 101.5 Q152.9 97.1 148.5 96 Q152.9 94.9 154 90.5 Z" fill="#F9A3C4"/>
+
+</svg>

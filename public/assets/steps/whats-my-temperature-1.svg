@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .thermo-fill { animation: draw 3s ease-in-out infinite; }
+  @keyframes draw { 0% { transform: scaleY(.1);} 50% { transform: scaleY(.85);} 100% { transform: scaleY(.1);} }
+  .crayon { animation: cr 3s ease-in-out infinite; }
+  @keyframes cr { 0% { transform: translateY(28px);} 50% { transform: translateY(-24px);} 100% { transform: translateY(28px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="46" y="40" width="76" height="128" rx="8" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+  
+  <g class="drawn">
+    <rect x="77" y="58" width="14" height="74" rx="7" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+    <circle cx="84" cy="142" r="14" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+    <circle cx="84" cy="142" r="9" fill="#e8604c"/>
+    <rect class="thermo-fill" x="80.5" y="64" width="7" height="74" rx="3.5" fill="#e8604c" style="transform-box:fill-box;transform-origin:bottom"/>
+    <line x1="92" y1="76.5" x2="97" y2="76.5" stroke="#3d3935" stroke-width="1.6"/><line x1="92" y1="95" x2="97" y2="95" stroke="#3d3935" stroke-width="1.6"/><line x1="92" y1="113.5" x2="97" y2="113.5" stroke="#3d3935" stroke-width="1.6"/>
+  </g>
+  <g class="crayon" style="transform-box:fill-box;transform-origin:center">
+    <rect x="128" y="96" width="12" height="40" rx="4" fill="#F9A3C4" stroke="#3d3935" stroke-width="1.8"/>
+    <path d="M128 96 l6 -12 l6 12 z" fill="#F9A3C4" stroke="#3d3935" stroke-width="1.8"/>
+  </g>
+
+</svg>

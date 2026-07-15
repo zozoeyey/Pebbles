@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .dream { animation: dr 3s ease-in-out infinite; }
+  @keyframes dr { 0%,100% { opacity:.35; transform: scale(.9);} 50% { opacity:1; transform: scale(1);} }
+  .d1 { animation: dr 3s ease-in-out infinite; }
+  .d2 { animation: dr 3s ease-in-out .2s infinite; }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="138" rx="34" ry="30" fill="#9CD3F8"/>
+    <ellipse cx="91" cy="133.5" rx="3.2" ry="5" fill="#3d3935"/>
+   <ellipse cx="109" cy="133.5" rx="3.2" ry="5" fill="#3d3935"/>
+  </g>
+  
+  <g class="dream" style="transform-box:fill-box;transform-origin:bottom">
+    <ellipse cx="100" cy="67.8" rx="17.6" ry="22" fill="#F9A3C4"/>
+    <path d="M95.6 88.7 L104.4 88.7 L100 95.3 Z" fill="#F9A3C4"/>
+    <path d="M100 94.2 q3.3000000000000003 8.8 -2.2 15.400000000000002" stroke="#3d3935" stroke-width="1.6" fill="none"/>
+  </g>
+  <circle class="d1" cx="72" cy="112" r="3" fill="#b7b2aa"/>
+  <circle class="d2" cx="80" cy="102" r="4" fill="#b7b2aa"/>
+
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .zen { animation: zb 5s ease-in-out infinite; }
+  @keyframes zb { 0%,100% { transform: scale(.96);} 50% { transform: scale(1.08);} }
+  .minib { animation: zb 5s ease-in-out infinite; }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="zen" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="124" rx="36" ry="32" fill="#9CD3F8"/>
+    <path d="M86.23529411764706 119.2 q4.235294117647059 -5.294117647058823 8.470588235294118 0" stroke="#3d3935" stroke-width="2.7529411764705882" fill="none" stroke-linecap="round"/>
+   <path d="M105.29411764705883 119.2 q4.235294117647059 -5.294117647058823 8.470588235294118 0" stroke="#3d3935" stroke-width="2.7529411764705882" fill="none" stroke-linecap="round"/><path d="M93.6470588235294 132.96 q6.352941176470589 6.352941176470589 12.705882352941178 0" stroke="#3d3935" stroke-width="2.541176470588235" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <g class="minib" style="transform-box:fill-box;transform-origin:bottom">
+    <ellipse cx="52" cy="70.8" rx="9.6" ry="12" fill="#F9A3C4"/>
+    <path d="M49.6 82.2 L54.4 82.2 L52 85.8 Z" fill="#F9A3C4"/>
+    <path d="M52 85.2 q1.7999999999999998 4.8 -1.2 8.4" stroke="#3d3935" stroke-width="1.6" fill="none"/>
+  </g>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M150 70 Q151.2 74.8 156 76 Q151.2 77.2 150 82 Q148.8 77.2 144 76 Q148.8 74.8 150 70 Z" fill="#FDD15E"/>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M140 125.5 Q140.9 129.1 144.5 130 Q140.9 130.9 140 134.5 Q139.1 130.9 135.5 130 Q139.1 129.1 140 125.5 Z" fill="#d6e475"/>
+  <text x="100" y="180" font-family="Montserrat,sans-serif" font-weight="700" font-size="12" fill="#3d3935" text-anchor="middle">×5</text>
+
+</svg>

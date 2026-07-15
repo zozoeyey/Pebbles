@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .line { animation: drawline 3.2s ease-in-out infinite; }
+  @keyframes drawline { 0% { stroke-dashoffset: 200;} 70%,100% { stroke-dashoffset: 0;} }
+  .mn1 { animation: nb 1.4s ease-in-out infinite; }
+  .mn2 { animation: nb 1.4s ease-in-out .5s infinite; }
+  @keyframes nb { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-8px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="36" y="70" width="128" height="92" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+  <path class="line" d="M48 130 q14 -34 28 -8 q14 26 28 -14 q12 -30 26 -2 q10 20 22 4"
+    stroke="#F9A3C4" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+  
+  <g class="mn1" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="58" cy="54" rx="4" ry="3.2" fill="#3d3935"/>
+    <rect x="60.72" y="39.6" width="1.92" height="14.4" rx="1" fill="#3d3935"/>
+    <path d="M60.72 39.6 q5.6000000000000005 -1.6 7.2 3.2 l0 3.2 q-1.6 -4.800000000000001 -7.2 -3.2 z" fill="#3d3935"/>
+  </g>
+  
+  <g class="mn2" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="148" cy="50" rx="4.5" ry="3.6" fill="#3d3935"/>
+    <rect x="151.06" y="33.8" width="2.16" height="16.2" rx="1" fill="#3d3935"/>
+    <path d="M151.06 33.8 q6.3 -1.8 8.1 3.6 l0 3.6 q-1.8 -5.4 -8.1 -3.6 z" fill="#3d3935"/>
+  </g>
+
+</svg>

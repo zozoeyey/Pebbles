@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .ph1 { animation: p1 3.6s ease-in-out infinite; opacity:0; }
+  .ph2 { animation: p2 3.6s ease-in-out infinite; opacity:0; }
+  .ph3 { animation: p3 3.6s ease-in-out infinite; opacity:0; }
+  @keyframes p1 { 0%,8% {opacity:0;} 12%,28% {opacity:1;} 33%,100% {opacity:0;} }
+  @keyframes p2 { 0%,36% {opacity:0;} 40%,56% {opacity:1;} 61%,100% {opacity:0;} }
+  @keyframes p3 { 0%,64% {opacity:0;} 68%,88% {opacity:1;} 95%,100% {opacity:0;} }
+  .sitter { animation: st 3.6s ease-in-out infinite; }
+  @keyframes st { 0%,10% {transform:translateY(0);} 14%,28% {transform:translateY(3px);} 40%,56% {transform:translateY(-4px);} 66%,74% {transform:translateY(2px);} 82%,100% {transform:translateY(0);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="56" y="128" width="88" height="10" rx="5" fill="#c9a36b"/>
+  <rect x="62" y="138" width="8" height="34" rx="3" fill="#c9a36b"/>
+  <rect x="130" y="138" width="8" height="34" rx="3" fill="#c9a36b"/>
+  
+  <g class="sitter" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="104" rx="32" ry="28" fill="#F9A3C4"/>
+    <ellipse cx="91.52941176470588" cy="99.8" rx="3.011764705882353" ry="4.705882352941177" fill="#3d3935"/>
+   <ellipse cx="108.47058823529412" cy="99.8" rx="3.011764705882353" ry="4.705882352941177" fill="#3d3935"/>
+  </g>
+  <g class="ph1" style="transform-box:fill-box;transform-origin:center">
+    <line x1="52" y1="96" x2="52" y2="118" stroke="#3d3935" stroke-width="3" stroke-linecap="round"/>
+    <path d="M52 118 L47.68517015256217 110.10175694298664 M52 118 L56.31482984743783 110.10175694298664" stroke="#3d3935" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+  <g class="ph2" style="transform-box:fill-box;transform-origin:center">
+    <line x1="148" y1="118" x2="148" y2="96" stroke="#3d3935" stroke-width="3" stroke-linecap="round"/>
+    <path d="M148 96 L152.31482984743784 103.89824305701336 M148 96 L143.68517015256216 103.89824305701336" stroke="#3d3935" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+  <text class="ph3" x="100" y="60" font-family="Montserrat,sans-serif" font-weight="700" font-size="14" fill="#3d3935" text-anchor="middle">drop!</text>
+
+</svg>

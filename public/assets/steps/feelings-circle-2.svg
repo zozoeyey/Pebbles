@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .rule { animation: rp 2s ease-in-out infinite; }
+  @keyframes rp { 0%,100% { transform: scale(1);} 50% { transform: scale(1.25);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="130" rx="34" ry="30" fill="#F9A3C4"/>
+    <ellipse cx="91" cy="125.5" rx="3.2" ry="5" fill="#3d3935"/>
+   <ellipse cx="109" cy="125.5" rx="3.2" ry="5" fill="#3d3935"/><path d="M94 138.4 q6 6 12 0" stroke="#3d3935" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <path class="rule" style="transform-box:fill-box;transform-origin:center"
+    d="M100 78 C 84 62, 90 50, 100 60 C 110 50, 116 62, 100 78 Z" fill="#F9A3C4"/>
+  <text x="100" y="182" font-family="Montserrat,sans-serif" font-weight="700" font-size="12" fill="#3d3935" text-anchor="middle">all feelings are ok</text>
+
+</svg>

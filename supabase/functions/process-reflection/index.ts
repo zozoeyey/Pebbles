@@ -16,6 +16,7 @@ Deno.serve(async (req) => {
     const activityId = form.get('activity_id')    as string;
     const activityTitle = form.get('activity_title') as string;
     const childAge   = form.get('child_age')      as string | null;
+    const sessionId  = form.get('session_id')     as string | null;
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const serviceKey  = Deno.env.get('SERVICE_ROLE_KEY') ?? Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -73,14 +74,15 @@ Deno.serve(async (req) => {
     const claudeData = await claudeRes.json();
     const summary = claudeData.content[0].text as string;
 
-    // 4. Save to DB
+    // 4. Save to DB — return the new row's id so the client can offer
+    //    "share to community" (a later PATCH flips `shared`).
     const dbRes = await fetch(`${supabaseUrl}/rest/v1/reflections`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${serviceKey}`,
         'apikey': serviceKey,
         'Content-Type': 'application/json',
-        'Prefer': 'return=minimal',
+        'Prefer': 'return=representation',
       },
       body: JSON.stringify({
         activity_id: activityId,
@@ -89,11 +91,18 @@ Deno.serve(async (req) => {
         audio_path: audioPath,
         transcript,
         summary,
+        session_id: sessionId,
       }),
     });
-    if (!dbRes.ok) console.error('DB insert failed:', await dbRes.text());
+    let reflectionId: string | null = null;
+    if (dbRes.ok) {
+      const rows = await dbRes.json();
+      reflectionId = rows?.[0]?.id ?? null;
+    } else {
+      console.error('DB insert failed:', await dbRes.text());
+    }
 
-    return new Response(JSON.stringify({ transcript, summary }), {
+    return new Response(JSON.stringify({ transcript, summary, id: reflectionId }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 

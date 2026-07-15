@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .p1 { stroke-dasharray: 164; stroke-dashoffset: 164; animation: circ 4.2s ease-in-out infinite; }
+  @keyframes circ { 0% { stroke-dashoffset: 164;} 35%,100% { stroke-dashoffset: 0;} }
+  .p2 { animation: pop2 4.2s ease-in-out infinite; opacity:0; }
+  @keyframes pop2 { 0%,38% {opacity:0;} 48%,100% {opacity:1;} }
+  .p3 { animation: pop3 4.2s ease-in-out infinite; opacity:0; }
+  @keyframes pop3 { 0%,58% {opacity:0;} 68%,100% {opacity:1;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="52" y="52" width="96" height="108" rx="8" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+  <circle class="pf p1" cx="100" cy="100" r="26" fill="none" stroke="#FDD15E" stroke-width="4"/>
+  <g class="pf p2"><ellipse cx="91.9" cy="94" rx="2.8800000000000003" ry="4.5" fill="#3d3935"/>
+   <ellipse cx="108.1" cy="94" rx="2.8800000000000003" ry="4.5" fill="#3d3935"/></g>
+  <path class="pf p3" d="M90 112 q10 8 20 0" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+
+</svg>

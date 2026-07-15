@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .h1 { animation: hb 1.8s ease-in-out infinite; }
+  .h2 { animation: hb 1.8s ease-in-out .6s infinite; }
+  @keyframes hb { 0%,100% { transform: scale(.85); opacity:.6;} 50% { transform: scale(1.15); opacity:1;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="58" y="58" width="84" height="72" rx="6" fill="#fff" stroke="#3d3935" stroke-width="3"/>
+  <path d="M68 112 q12 -26 26 -6 l14 16 l14 -14" stroke="#F9A3C4" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+  <circle cx="112" cy="116" r="2.4" fill="#3d3935"/><circle cx="122" cy="116" r="2.4" fill="#3d3935"/>
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="52" cy="158" rx="22" ry="19" fill="#d6e475"/>
+    <path d="M43.588235294117645 155.15 q2.588235294117647 -3.235294117647059 5.176470588235294 0" stroke="#3d3935" stroke-width="1.6823529411764708" fill="none" stroke-linecap="round"/>
+   <path d="M55.23529411764706 155.15 q2.588235294117647 -3.235294117647059 5.176470588235294 0" stroke="#3d3935" stroke-width="1.6823529411764708" fill="none" stroke-linecap="round"/><path d="M48.11764705882353 163.32 q3.882352941176471 3.882352941176471 7.764705882352942 0" stroke="#3d3935" stroke-width="1.5529411764705883" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="148" cy="158" rx="22" ry="19" fill="#FDD15E"/>
+    <path d="M139.58823529411765 155.15 q2.588235294117647 -3.235294117647059 5.176470588235294 0" stroke="#3d3935" stroke-width="1.6823529411764708" fill="none" stroke-linecap="round"/>
+   <path d="M151.23529411764707 155.15 q2.588235294117647 -3.235294117647059 5.176470588235294 0" stroke="#3d3935" stroke-width="1.6823529411764708" fill="none" stroke-linecap="round"/><path d="M144.11764705882354 163.32 q3.882352941176471 3.882352941176471 7.764705882352942 0" stroke="#3d3935" stroke-width="1.5529411764705883" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <path class="h1" style="transform-box:fill-box;transform-origin:center"
+    d="M100 49.6 C 87.2 36.8, 92 27.2, 100 35.2 C 108 27.2, 112.8 36.8, 100 49.6 Z" fill="#F9A3C4"/>
+  
+  <path class="h2" style="transform-box:fill-box;transform-origin:center"
+    d="M140 40.6 C 131.2 31.8, 134.5 25.2, 140 30.7 C 145.5 25.2, 148.8 31.8, 140 40.6 Z" fill="#F9A3C4"/>
+
+</svg>

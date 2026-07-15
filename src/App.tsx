@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSavedActivities } from './hooks/useSavedActivities';
 import './styles.css';
 import type { Screen } from './types';
@@ -15,6 +15,7 @@ import ToolkitScreen from './screens/ToolkitScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import CommunityExpandScreen from './screens/CommunityExpandScreen';
 import CreateActivityScreen from './screens/CreateActivityScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 const SCREEN_TITLES: Record<Screen, string> = {
   welcome: 'Pebbles',
@@ -29,16 +30,56 @@ const SCREEN_TITLES: Record<Screen, string> = {
   community: 'Pebbles – Community',
   'community-expand': 'Pebbles – Community',
   'create-activity': 'Pebbles – Create',
+  profile: 'Pebbles – Profile',
 };
 
+// Onboarding answers persist across visits so a returning parent keeps their
+// profile and suggestions without logging in.
+const PROFILE_KEY = 'pebbles_profile';
+
+interface StoredProfile {
+  age: number | null;
+  challenges: string[];
+  customText: string;
+  selDefinition: string;
+  emotionHandling: string;
+}
+
+function loadProfile(): StoredProfile {
+  try {
+    const raw = localStorage.getItem(PROFILE_KEY);
+    if (raw) return { age: null, challenges: [], customText: '', selDefinition: '', emotionHandling: '', ...JSON.parse(raw) };
+  } catch { /* fall through */ }
+  return { age: null, challenges: [], customText: '', selDefinition: '', emotionHandling: '' };
+}
+
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('welcome');
+  const stored = loadProfile();
+  // Returning users with a saved profile land on Explore, not onboarding.
+  const [screen, setScreen] = useState<Screen>(stored.age != null ? 'results' : 'welcome');
   const { saved, toggle: toggleSaved, isSaved } = useSavedActivities();
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
   const [expandActivityId, setExpandActivityId] = useState<string | null>(null);
-  const [selectedAge, setSelectedAge] = useState<number | null>(null);
-  const [selectedChallenges, setSelectedChallenges] = useState<Set<string>>(new Set());
-  const [customChallengeText, setCustomChallengeText] = useState('');
+  const [selectedAge, setSelectedAge] = useState<number | null>(stored.age);
+  const [selectedChallenges, setSelectedChallenges] = useState<Set<string>>(new Set(stored.challenges));
+  const [customChallengeText, setCustomChallengeText] = useState(stored.customText);
+  // Free-text answers from the SEL onboarding screen — fed into activity suggestions.
+  const [selAnswers, setSelAnswers] = useState({
+    selDefinition: stored.selDefinition,
+    emotionHandling: stored.emotionHandling,
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(PROFILE_KEY, JSON.stringify({
+        age: selectedAge,
+        challenges: [...selectedChallenges],
+        customText: customChallengeText,
+        selDefinition: selAnswers.selDefinition,
+        emotionHandling: selAnswers.emotionHandling,
+      } satisfies StoredProfile));
+    } catch { /* private mode — profile just won't persist */ }
+  }, [selectedAge, selectedChallenges, customChallengeText, selAnswers]);
 
   function showScreen(s: Screen) {
     setScreen(s);
@@ -92,6 +133,7 @@ export default function App() {
           selectedAge={selectedAge}
           selectedChallenges={selectedChallenges}
           customChallengeText={customChallengeText}
+          onSelAnswers={(selDefinition, emotionHandling) => setSelAnswers({ selDefinition, emotionHandling })}
         />
       )}
       {screen === 'results' && (
@@ -101,6 +143,10 @@ export default function App() {
           activeTab="results"
           isSaved={isSaved}
           toggleSaved={toggleSaved}
+          selectedAge={selectedAge}
+          selectedChallenges={selectedChallenges}
+          customChallengeText={customChallengeText}
+          selAnswers={selAnswers}
         />
       )}
       {screen === 'detail' && (
@@ -147,6 +193,22 @@ export default function App() {
         <CreateActivityScreen
           showScreen={showScreen}
           onSaveCustom={() => showScreen('toolkit')}
+        />
+      )}
+      {screen === 'profile' && (
+        <ProfileScreen
+          showScreen={showScreen}
+          activeTab="profile"
+          selectedAge={selectedAge}
+          onAgeChange={setSelectedAge}
+          selectedChallenges={selectedChallenges}
+          customChallengeText={customChallengeText}
+          onChallengesChange={(ids, custom) => {
+            setSelectedChallenges(ids);
+            setCustomChallengeText(custom);
+          }}
+          selAnswers={selAnswers}
+          onSelAnswers={(selDefinition, emotionHandling) => setSelAnswers({ selDefinition, emotionHandling })}
         />
       )}
     </div>

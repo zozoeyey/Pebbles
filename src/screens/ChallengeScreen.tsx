@@ -1,19 +1,12 @@
 import { useState, useRef } from 'react';
 import type { Screen } from '../types';
+import { PRESET_CHALLENGES } from '../data/activities';
 
 interface Props {
   showScreen: (s: Screen) => void;
   showResults: () => void;
   onChallengeSelect: (ids: Set<string>, custom: string) => void;
 }
-
-const PRESET_CHALLENGES = [
-  { id: 'naming', label: 'Trouble naming feelings' },
-  { id: 'meltdowns', label: 'Big reactions' },
-  { id: 'transitions', label: 'Tantrums during transition' },
-  { id: 'calming', label: 'Hard to calm down' },
-  { id: 'confidence', label: 'Low confidence or self-doubt' },
-];
 
 export default function ChallengeScreen({ showScreen, showResults, onChallengeSelect }: Props) {
   const [selected, setSelected] = useState<Set<string>>(new Set());

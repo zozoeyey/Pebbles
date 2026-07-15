@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .still { animation: calm 4s ease-in-out infinite; }
+  @keyframes calm { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-3px);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="still" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="126" rx="36" ry="32" fill="#d6e475"/>
+    <path d="M86.23529411764706 121.2 q4.235294117647059 -5.294117647058823 8.470588235294118 0" stroke="#3d3935" stroke-width="2.7529411764705882" fill="none" stroke-linecap="round"/>
+   <path d="M105.29411764705883 121.2 q4.235294117647059 -5.294117647058823 8.470588235294118 0" stroke="#3d3935" stroke-width="2.7529411764705882" fill="none" stroke-linecap="round"/><path d="M93.6470588235294 134.96 q6.352941176470589 6.352941176470589 12.705882352941178 0" stroke="#3d3935" stroke-width="2.541176470588235" fill="none" stroke-linecap="round"/>
+  </g>
+  <ellipse cx="88" cy="150" rx="8" ry="6" fill="#b6c65a"/>
+  <ellipse cx="112" cy="150" rx="8" ry="6" fill="#b6c65a"/>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M54 77 Q55 81 59 82 Q55 83 54 87 Q53 83 49 82 Q53 81 54 77 Z" fill="#FDD15E"/>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M148 84 Q149.2 88.8 154 90 Q149.2 91.2 148 96 Q146.8 91.2 142 90 Q146.8 88.8 148 84 Z" fill="#F9A3C4"/>
+
+</svg>

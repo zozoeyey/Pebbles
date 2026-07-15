@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
+import { getSessionId } from '../lib/session';
 
 interface Props {
   showResults: () => void;
   selectedAge: number | null;
   selectedChallenges: Set<string>;
   customChallengeText: string;
+  onSelAnswers: (selDefinition: string, emotionHandling: string) => void;
 }
 
-export default function SelScreen({ showResults, selectedAge, selectedChallenges, customChallengeText }: Props) {
+export default function SelScreen({ showResults, selectedAge, selectedChallenges, customChallengeText, onSelAnswers }: Props) {
   const [q1, setQ1] = useState('');
   const [q2, setQ2] = useState('');
   const [saving, setSaving] = useState(false);
@@ -30,9 +32,9 @@ export default function SelScreen({ showResults, selectedAge, selectedChallenges
   async function submitSelOnboarding() {
     if (!canSubmit) return;
     setSaving(true);
-    const sessionId = crypto.randomUUID
-      ? crypto.randomUUID()
-      : Date.now().toString(36) + Math.random().toString(36).slice(2);
+    onSelAnswers(q1.trim(), q2.trim());
+    // Persistent per-device id, so this parent's rows can be connected later.
+    const sessionId = getSessionId();
 
     try {
       await fetch(`${SUPABASE_URL}/rest/v1/onboarding_responses`, {

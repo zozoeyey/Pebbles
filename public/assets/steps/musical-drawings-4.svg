@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .creature { animation: appear 3s ease-in-out infinite; opacity:0; }
+  @keyframes appear { 0%,30% { opacity:0;} 50%,95% { opacity:1;} 100% {opacity:0;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="36" y="70" width="128" height="92" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+  <path d="M56 132 q16 -30 36 -12 l20 24 l16 -20" stroke="#F9A3C4" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <g class="creature">
+    <circle cx="112" cy="136" r="3" fill="#3d3935"/>
+    <circle cx="126" cy="136" r="3" fill="#3d3935"/>
+    <path d="M112 146 q7 5 14 0" stroke="#3d3935" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M104 120 l-6 -10 M130 118 l6 -10" stroke="#d6e475" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  
+  <path class="tw" style="transform-box:fill-box;transform-origin:center"
+    d="M56 85 L58 90 L63 90 L59 93.5 L60.5 99 L56 95.5 L51.5 99 L53 93.5 L49 90 L54 90 Z" fill="#FDD15E"/>
+
+</svg>

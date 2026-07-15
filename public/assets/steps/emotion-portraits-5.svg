@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .spot { animation: mv 3.9s ease-in-out infinite; opacity:0; }
+  .sp2 { animation-delay: 1.3s; } .sp3 { animation-delay: 2.6s; }
+  @keyframes mv { 0%,26%,100% { opacity:0; transform: scale(.6);} 6%,18% { opacity:1; transform: scale(1.15);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="116" rx="36" ry="32" fill="#F9A3C4"/>
+    <ellipse cx="90.47058823529412" cy="111.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+   <ellipse cx="109.52941176470588" cy="111.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+  </g>
+  
+  <path class="spot sp1" style="transform-box:fill-box;transform-origin:center"
+    d="M100 115.8 C 89.6 105.4, 93.5 97.6, 100 104.1 C 106.5 97.6, 110.4 105.4, 100 115.8 Z" fill="#e8604c"/>
+  <circle class="spot sp2" cx="100" cy="134" r="7" fill="#e8604c"/>
+  <circle class="spot sp3" cx="100" cy="74" r="7" fill="#e8604c"/>
+
+</svg>

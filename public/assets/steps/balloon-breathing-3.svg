@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .fill { animation: inflate 4.5s ease-in-out infinite; }
+  @keyframes inflate { 0% { transform: scale(.55);} 45%,60% { transform: scale(1.15);} 100% { transform: scale(.55);} }
+  .belly { animation: bl 4.5s ease-in-out infinite; }
+  @keyframes bl { 0%,100% { transform: scale(1);} 45%,60% { transform: scale(1.1);} }
+  .inA { animation: ia 4.5s ease-in-out infinite; }
+  @keyframes ia { 0%,45% { opacity:1;} 60%,100% { opacity:.15;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="belly" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="140" rx="34" ry="28" fill="#9CD3F8"/>
+    <ellipse cx="91" cy="135.8" rx="3.2" ry="5" fill="#3d3935"/>
+   <ellipse cx="109" cy="135.8" rx="3.2" ry="5" fill="#3d3935"/>
+  </g>
+  
+  <g class="fill" style="transform-box:fill-box;transform-origin:bottom">
+    <ellipse cx="100" cy="64" rx="16" ry="20" fill="#F9A3C4"/>
+    <path d="M96 83 L104 83 L100 89 Z" fill="#F9A3C4"/>
+    <path d="M100 88 q3 8 -2 14" stroke="#3d3935" stroke-width="1.6" fill="none"/>
+  </g>
+  <g class="inA" style="transform-box:fill-box;transform-origin:center">
+    <line x1="40" y1="76" x2="62" y2="92" stroke="#3d3935" stroke-width="3" stroke-linecap="round"/>
+    <path d="M62 92 L53.07454504064971 90.8440355677577 M62 92 L58.150266633742646 83.86491837725491" stroke="#3d3935" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+  <text x="34" y="66" font-family="Montserrat,sans-serif" font-weight="700" font-size="13" fill="#3d3935">in…</text>
+
+</svg>

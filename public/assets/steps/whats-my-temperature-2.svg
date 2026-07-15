@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .thermo-fill { animation: updown 4s ease-in-out infinite; }
+  @keyframes updown { 0%,100% { transform: scaleY(.15);} 50% { transform: scaleY(.95);} }
+  .coolb { animation: cw 4s ease-in-out infinite; }
+  @keyframes cw { 0%,10%,90%,100% { transform: scale(1.12);} 45%,60% { transform: scale(.92);} }
+  .hotb { animation: hw 4s ease-in-out infinite; }
+  @keyframes hw { 0%,10%,90%,100% { transform: scale(.92);} 45%,60% { transform: scale(1.12) rotate(4deg);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="">
+    <rect x="93" y="46" width="14" height="92" rx="7" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+    <circle cx="100" cy="148" r="14" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+    <circle cx="100" cy="148" r="9" fill="#e8604c"/>
+    <rect class="thermo-fill" x="96.5" y="52" width="7" height="92" rx="3.5" fill="#e8604c" style="transform-box:fill-box;transform-origin:bottom"/>
+    <line x1="108" y1="69" x2="113" y2="69" stroke="#3d3935" stroke-width="1.6"/><line x1="108" y1="92" x2="113" y2="92" stroke="#3d3935" stroke-width="1.6"/><line x1="108" y1="115" x2="113" y2="115" stroke="#3d3935" stroke-width="1.6"/>
+  </g>
+  
+  <g class="coolb" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="46" cy="78" rx="20" ry="18" fill="#9CD3F8"/>
+    <path d="M38.35294117647059 75.3 q2.3529411764705883 -2.9411764705882355 4.705882352941177 0" stroke="#3d3935" stroke-width="1.5294117647058825" fill="none" stroke-linecap="round"/>
+   <path d="M48.94117647058823 75.3 q2.3529411764705883 -2.9411764705882355 4.705882352941177 0" stroke="#3d3935" stroke-width="1.5294117647058825" fill="none" stroke-linecap="round"/><path d="M42.470588235294116 83.04 q3.5294117647058822 3.5294117647058822 7.0588235294117645 0" stroke="#3d3935" stroke-width="1.411764705882353" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <g class="hotb" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="154" cy="78" rx="20" ry="18" fill="#F9A3C4"/>
+    <ellipse cx="148.7058823529412" cy="75.3" rx="1.8823529411764708" ry="2.9411764705882355" fill="#3d3935"/>
+   <ellipse cx="159.2941176470588" cy="75.3" rx="1.8823529411764708" ry="2.9411764705882355" fill="#3d3935"/>
+  </g>
+  <text x="46" y="112" font-family="Montserrat,sans-serif" font-weight="700" font-size="12" fill="#3d3935" text-anchor="middle">cool</text>
+  <text x="154" y="112" font-family="Montserrat,sans-serif" font-weight="700" font-size="12" fill="#3d3935" text-anchor="middle">hot!</text>
+
+</svg>

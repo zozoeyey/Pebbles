@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .tt { animation: three 4.2s ease-in-out infinite; opacity:0; }
+  .t2 { animation-delay: 1.4s; } .t3 { animation-delay: 2.8s; }
+  @keyframes three { 0% { opacity:0; transform: translateY(6px);} 10%,88% { opacity:1; transform: translateY(0);} 100% { opacity:0;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <g class="tt t1">
+    <circle cx="56" cy="96" r="17" fill="#FDD15E"/>
+    <ellipse cx="50.42" cy="94" rx="1.984" ry="3.1" fill="#3d3935"/>
+   <ellipse cx="61.58" cy="94" rx="1.984" ry="3.1" fill="#3d3935"/>
+    <path d="M50 105 q6 5 12 0" stroke="#3d3935" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+  <g class="tt t2">
+  <g>
+    <rect x="76" y="46" width="60" height="26" rx="13" fill="#fff" stroke="#3d3935" stroke-width="1.6"/>
+    <path d="M91 72 l4 8 l6 -8 z" fill="#fff" stroke="#3d3935" stroke-width="1.6"/>
+    <text x="106" y="63.32" font-family="Montserrat, sans-serif" font-weight="700" font-size="12" fill="#3d3935" text-anchor="middle">what?</text>
+  </g></g>
+  <g class="tt t3">
+    
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="146" cy="122" rx="24" ry="21" fill="#F9A3C4"/>
+    <ellipse cx="139.64705882352942" cy="118.85" rx="2.258823529411765" ry="3.5294117647058827" fill="#3d3935"/>
+   <ellipse cx="152.35294117647058" cy="118.85" rx="2.258823529411765" ry="3.5294117647058827" fill="#3d3935"/>
+  </g>
+    
+  <path class="" style="transform-box:fill-box;transform-origin:center"
+    d="M146 127.4 C 138.8 120.2, 141.5 114.8, 146 119.3 C 150.5 114.8, 153.2 120.2, 146 127.4 Z" fill="#e8604c"/>
+  </g>
+  <text x="100" y="180" font-family="Montserrat,sans-serif" font-weight="700" font-size="11" fill="#3d3935" text-anchor="middle">feeling · story · body</text>
+
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .sw1 { animation: sswap1 4s ease-in-out infinite; }
+  .sw2 { animation: sswap2 4s ease-in-out infinite; }
+  @keyframes sswap1 { 0%,20% { transform: translate(0,0);} 60%,100% { transform: translate(80px,0);} }
+  @keyframes sswap2 { 0%,20% { transform: translate(0,0);} 60%,100% { transform: translate(-80px,0);} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="sw1" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="60" cy="110" rx="28" ry="25" fill="#FDD15E"/>
+    <path d="M49.294117647058826 106.25 q3.2941176470588234 -4.117647058823529 6.588235294117647 0" stroke="#3d3935" stroke-width="2.1411764705882352" fill="none" stroke-linecap="round"/>
+   <path d="M64.11764705882354 106.25 q3.2941176470588234 -4.117647058823529 6.588235294117647 0" stroke="#3d3935" stroke-width="2.1411764705882352" fill="none" stroke-linecap="round"/><path d="M55.05882352941177 117 q4.9411764705882355 4.9411764705882355 9.882352941176471 0" stroke="#3d3935" stroke-width="1.976470588235294" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <g class="sw2" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="140" cy="110" rx="28" ry="25" fill="#d6e475"/>
+    <path d="M129.2941176470588 106.25 q3.2941176470588234 -4.117647058823529 6.588235294117647 0" stroke="#3d3935" stroke-width="2.1411764705882352" fill="none" stroke-linecap="round"/>
+   <path d="M144.11764705882354 106.25 q3.2941176470588234 -4.117647058823529 6.588235294117647 0" stroke="#3d3935" stroke-width="2.1411764705882352" fill="none" stroke-linecap="round"/><path d="M135.05882352941177 117 q4.9411764705882355 4.9411764705882355 9.882352941176471 0" stroke="#3d3935" stroke-width="1.976470588235294" fill="none" stroke-linecap="round"/>
+  </g>
+  <path d="M76 62 a40 20 0 0 1 48 0" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M124 62 l3 -8 M124 62 l-8 -3" stroke="#3d3935" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M124 158 a40 20 0 0 1 -48 0" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M76 158 l-3 8 M76 158 l8 3" stroke="#3d3935" stroke-width="2.6" stroke-linecap="round"/>
+
+</svg>

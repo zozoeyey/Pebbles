@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .slowbr { animation: sb 6s ease-in-out infinite; }
+  @keyframes sb { 0%,100% { transform: scale(.95);} 50% { transform: scale(1.08);} }
+  .h1 { animation: hb 3s ease-in-out infinite; }
+  .h2 { animation: hb 3s 1s ease-in-out infinite; }
+  @keyframes hb { 0%,100% { transform: scale(.8); opacity:.5;} 50% { transform: scale(1.1); opacity:1;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="" style="transform-box:fill-box;transform-origin:center">
+    <rect x="56.35" y="130" width="3.3000000000000003" height="28.6" rx="1.6500000000000001" fill="#7da84c"/>
+    <path d="M58 143.2 q-11 2.2 -9.9 8.8 q8.8 1.1 9.9 -8.8" fill="#7da84c"/>
+    <g class="petals" style="transform-box:fill-box;transform-origin:center">
+      <ellipse cx="58" cy="120.1" rx="5.5" ry="9.9" fill="#F9A3C4" transform="rotate(0 58 130)"/><ellipse cx="58" cy="120.1" rx="5.5" ry="9.9" fill="#F9A3C4" transform="rotate(60 58 130)"/><ellipse cx="58" cy="120.1" rx="5.5" ry="9.9" fill="#F9A3C4" transform="rotate(120 58 130)"/><ellipse cx="58" cy="120.1" rx="5.5" ry="9.9" fill="#F9A3C4" transform="rotate(180 58 130)"/><ellipse cx="58" cy="120.1" rx="5.5" ry="9.9" fill="#F9A3C4" transform="rotate(240 58 130)"/><ellipse cx="58" cy="120.1" rx="5.5" ry="9.9" fill="#F9A3C4" transform="rotate(300 58 130)"/>
+      <circle cx="58" cy="130" r="6.050000000000001" fill="#FDD15E"/>
+    </g>
+  </g>
+  
+  <g class="slowbr" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="134" cy="122" rx="32" ry="28" fill="#FDD15E"/>
+    <path d="M121.76470588235294 117.8 q3.764705882352941 -4.705882352941177 7.529411764705882 0" stroke="#3d3935" stroke-width="2.447058823529412" fill="none" stroke-linecap="round"/>
+   <path d="M138.7058823529412 117.8 q3.764705882352941 -4.705882352941177 7.529411764705882 0" stroke="#3d3935" stroke-width="2.447058823529412" fill="none" stroke-linecap="round"/><path d="M128.35294117647058 129.84 q5.647058823529411 5.647058823529411 11.294117647058822 0" stroke="#3d3935" stroke-width="2.2588235294117647" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <path class="h1" style="transform-box:fill-box;transform-origin:center"
+    d="M170 80.6 C 161.2 71.8, 164.5 65.2, 170 70.7 C 175.5 65.2, 178.8 71.8, 170 80.6 Z" fill="#F9A3C4"/>
+  
+  <path class="h2" style="transform-box:fill-box;transform-origin:center"
+    d="M152 60.8 C 145.6 54.4, 148 49.6, 152 53.6 C 156 49.6, 158.4 54.4, 152 60.8 Z" fill="#F9A3C4"/>
+  <text x="100" y="182" font-family="Montserrat,sans-serif" font-weight="700" font-size="12" fill="#3d3935" text-anchor="middle">slower each time…</text>
+
+</svg>

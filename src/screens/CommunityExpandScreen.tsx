@@ -155,7 +155,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
                 {'time' in act ? act.time : ''}
               </span>
               <span className="ce-tag" style={{ background: '#ffa9bc' }}>
-                {'skill' in act ? act.skill : ('skills' in act ? (act as typeof ACTIVITIES[0]).skills[0] : '')}
+                {act.skills[0] ?? ''}
               </span>
               <span className="ce-tag" style={{ background: '#fdd15e' }}>
                 {'refs' in act ? act.refs : `${reflections.length} reflections`}

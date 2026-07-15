@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .jag { animation: jg 3s ease-in-out infinite; stroke-dasharray: 90; stroke-dashoffset: 90; }
+  @keyframes jg { 0%,20% { stroke-dashoffset: 90;} 45%,100% { stroke-dashoffset: 0;} }
+  .oops { animation: op 3s ease-in-out infinite; opacity:0; }
+  @keyframes op { 0%,45% {opacity:0; transform:scale(.6);} 55%,90% {opacity:1; transform:scale(1);} 100% {opacity:0;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  <rect x="36" y="70" width="128" height="92" rx="6" fill="#fff" stroke="#3d3935" stroke-width="2"/>
+  <path d="M48 120 q20 -24 40 -6" stroke="#F9A3C4" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path class="jag" d="M88 114 l22 32 l14 -18" stroke="#F9A3C4" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="oops" x="138" y="104" font-family="Montserrat,sans-serif" font-weight="800" font-size="18" fill="#3d3935">oops!</text>
+
+</svg>

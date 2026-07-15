@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import BackButton from '../components/BackButton';
-import { EXPLORE_ACTS } from '../data/activities';
+import { EXPLORE_ACTS, ACT_CONFIGS } from '../data/activities';
 import type { Screen } from '../types';
 
 interface Props {
@@ -40,7 +40,8 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
 
   const isLocalVideo = act.videoUrl && !act.videoUrl.startsWith('http');
   const isYouTube = act.videoUrl && act.videoUrl.startsWith('http');
-  const hasPlayerScreen = act.id === 'freeze-feelings' || act.id === 'tense-and-relax';
+  // Any activity with a step config gets the in-app player; others open their source link.
+  const hasPlayerScreen = act.id in ACT_CONFIGS;
 
   function handleStartActivity() {
     if (hasPlayerScreen) {
@@ -73,7 +74,10 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
                 </div>
               ) : (
                 <>
-                  <div className="bub-cream-area">
+                  <div
+                    className="bub-cream-area"
+                    style={act.videoThumb ? { background: `url('${act.videoThumb}') center center / cover no-repeat` } : undefined}
+                  >
                     <button className="bub-play-ring" onClick={() => setVideoPlaying(true)}>{PLAY_ICON}</button>
                   </div>
                   <div className="bub-desc-section">{act.videoDesc}</div>
@@ -101,8 +105,8 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
             <div className="act-info-title">{act.title}</div>
             <div className="act-info-tags">
               <span className="act-info-tag" style={{ background: '#d6e475' }}>{act.time}</span>
-              <span className="act-info-tag" style={{ background: '#ffa9bc' }}>{act.skill}</span>
-              {act.extraTags?.map((tag) => (
+              <span className="act-info-tag" style={{ background: '#9CD3F8' }}>{act.ages}</span>
+              {act.skills.map((tag) => (
                 <span key={tag} className="act-info-tag" style={{ background: '#ffa9bc' }}>{tag}</span>
               ))}
               <span className="act-info-tag" style={{ background: '#fdd15e' }}>{act.refs}</span>
@@ -126,6 +130,12 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
               <div className="act-tip-box">
                 <div className="act-tip-label">When This Helps</div>
                 <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 500, fontSize: 13, color: '#6b6761', lineHeight: 1.7 }}>{act.whenHelps}</div>
+              </div>
+            )}
+            {act.olderKids && (
+              <div className="act-tip-box">
+                <div className="act-tip-label">For Older Kids</div>
+                <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 500, fontSize: 13, color: '#6b6761', lineHeight: 1.7 }}>{act.olderKids}</div>
               </div>
             )}
             <button className="act-start-btn" onClick={handleStartActivity}>

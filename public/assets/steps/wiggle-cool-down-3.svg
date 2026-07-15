@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .slow { animation: sl 3.2s ease-in-out infinite; }
+  @keyframes sl { 0% { transform: rotate(-5deg);} 25% { transform: rotate(5deg);} 50% { transform: rotate(-2deg);} 75% { transform: rotate(2deg);} 100% { transform: rotate(0);} }
+  .fz { animation: fd 3.2s ease-out infinite; }
+  @keyframes fd { 0% {opacity:1;} 60%,100% {opacity:0;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="slow" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="124" rx="36" ry="32" fill="#9CD3F8"/>
+    <ellipse cx="90.47058823529412" cy="119.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+   <ellipse cx="109.52941176470588" cy="119.2" rx="3.3882352941176475" ry="5.294117647058823" fill="#3d3935"/>
+  </g>
+  <path class="fz f1" d="M48 92 q5 -7 0 -14" stroke="#b7b2aa" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path class="fz f2" d="M152 92 q5 -7 0 -14" stroke="#b7b2aa" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+
+</svg>

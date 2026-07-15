@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ACT_CONFIGS } from '../data/activities';
 import BackButton from '../components/BackButton';
 import { useActivityPlayer } from '../hooks/useActivityPlayer';
-import type { Screen } from '../types';
+import type { ActConfig, Screen } from '../types';
 
 interface Props {
   showScreen: (s: Screen) => void;
@@ -10,19 +10,22 @@ interface Props {
   onGoReflect: () => void;
 }
 
-function stepImg(id: string, stepIdx: number, isPlaying: boolean, mode: 'listen' | 'read') {
-  if (id === 'tense-and-relax') {
-    if (stepIdx === 0) return (mode === 'read' || isPlaying) ? 'assets/turtle.gif' : 'assets/turtle-still.svg';
-    if (stepIdx === 1) return 'assets/lemon.gif';
+function stepImg(config: ActConfig, id: string, stepIdx: number, isPlaying: boolean, mode: 'listen' | 'read') {
+  // Turtle keeps its still frame while listen-mode audio is paused.
+  if (id === 'tense-and-relax' && stepIdx === 0 && mode === 'listen' && !isPlaying) {
+    return 'assets/turtle-still.svg';
   }
-  return 'assets/blob.svg';
+  return config.stepImgs?.[stepIdx] ?? 'assets/blob.svg';
 }
 
 export default function ActivityScreen({ showScreen, selectedActivityId, onGoReflect }: Props) {
   const id = selectedActivityId || 'freeze-feelings';
   const config = ACT_CONFIGS[id] || ACT_CONFIGS['freeze-feelings'];
 
-  const [mode, setMode] = useState<'listen' | 'read'>('listen');
+  // Read-only (text) activities have no audio narration — force Read mode, hide the toggle.
+  const readOnly = !config.audioSrc;
+
+  const [mode, setMode] = useState<'listen' | 'read'>(readOnly ? 'read' : 'listen');
   const [readStep, setReadStep] = useState(0);
 
   const {
@@ -36,9 +39,9 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
     seek,
     audioRef,
   } = useActivityPlayer({
-    audioSrc: config.audioSrc,
+    audioSrc: config.audioSrc ?? '',
     steps: config.steps,
-    stepTimes: config.stepTimes,
+    stepTimes: config.stepTimes ?? [],
   });
 
   function handleBack() {
@@ -67,20 +70,22 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
         {/* Top row: back + mode toggle */}
         <div className="act-top-row">
           <BackButton onClick={handleBack} />
-          <div className="act-mode-toggle">
-            <button
-              className={`act-mode-btn${mode === 'read' ? ' active' : ''}`}
-              onClick={() => switchMode('read')}
-            >
-              Read
-            </button>
-            <button
-              className={`act-mode-btn${mode === 'listen' ? ' active' : ''}`}
-              onClick={() => switchMode('listen')}
-            >
-              Listen
-            </button>
-          </div>
+          {!readOnly && (
+            <div className="act-mode-toggle">
+              <button
+                className={`act-mode-btn${mode === 'read' ? ' active' : ''}`}
+                onClick={() => switchMode('read')}
+              >
+                Read
+              </button>
+              <button
+                className={`act-mode-btn${mode === 'listen' ? ' active' : ''}`}
+                onClick={() => switchMode('listen')}
+              >
+                Listen
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Step text — read mode only */}
@@ -92,7 +97,7 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
         <div className="act-middle">
           <img
             className="act-blob"
-            src={stepImg(id, displayStep, isPlaying, mode)}
+            src={stepImg(config, id, displayStep, isPlaying, mode)}
             alt=""
           />
         </div>

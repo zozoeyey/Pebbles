@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .deflate { animation: def 4.5s ease-in-out infinite; }
+  @keyframes def { 0%,15% { transform: scale(1.15);} 70%,100% { transform: scale(.5);} }
+  .belly2 { animation: bl2 4.5s ease-in-out infinite; }
+  @keyframes bl2 { 0%,15% { transform: scale(1.1);} 70%,100% { transform: scale(1);} }
+  .puff { animation: pf 4.5s ease-in-out infinite; opacity:0; }
+  .pf2 { animation-delay: .3s; }
+  @keyframes pf { 0%,20% {opacity:0;} 35%,60% {opacity:1; transform: translateX(6px);} 80%,100% {opacity:0;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="belly2" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="100" cy="140" rx="34" ry="28" fill="#9CD3F8"/>
+    <path d="M87 135.8 q4 -5 8 0" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+   <path d="M105 135.8 q4 -5 8 0" stroke="#3d3935" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M94 147.84 q6 6 12 0" stroke="#3d3935" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <g class="deflate" style="transform-box:fill-box;transform-origin:bottom">
+    <ellipse cx="100" cy="64" rx="16" ry="20" fill="#F9A3C4"/>
+    <path d="M96 83 L104 83 L100 89 Z" fill="#F9A3C4"/>
+    <path d="M100 88 q3 8 -2 14" stroke="#3d3935" stroke-width="1.6" fill="none"/>
+  </g>
+  
+  <path class="puff pf1" d="M148 96 q4 -6 0 -12 q-4 -6 0 -12" stroke="#b7b2aa" stroke-width="2.4" fill="none" stroke-linecap="round" style="transform-box:fill-box;transform-origin:center"/>
+  
+  <path class="puff pf2" d="M162 104 q4 -6 0 -12 q-4 -6 0 -12" stroke="#b7b2aa" stroke-width="2.4" fill="none" stroke-linecap="round" style="transform-box:fill-box;transform-origin:center"/>
+  <text x="146" y="62" font-family="Montserrat,sans-serif" font-weight="700" font-size="13" fill="#3d3935">out…</text>
+
+</svg>

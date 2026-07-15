@@ -1,1 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# macOS junk
+.DS_Store
+Icon?
+
+# Local tooling config
 .mcp.json
+.claude/settings.local.json
+
+# Supabase CLI temp files
+supabase/.temp/
+
+# Env files
+.env
+.env.local

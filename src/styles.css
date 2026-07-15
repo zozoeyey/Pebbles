@@ -27,12 +27,12 @@ html, body {
 }
 
 /* ── APP SHELL ───────────────────────────────── */
-/* Every screen's outer div fills #app — overflow hidden so no per-screen scrollbar gutter */
+/* Every screen's outer div fills #app. Each screen controls its own overflow:
+   root-scrolling screens set overflow-y:auto; inner-scroll screens clip themselves. */
 #app > * {
     flex: 1;
     min-height: 0;
     width: 100%;
-    overflow: hidden;
 }
 
 /* Consistent thin scrollbar across all scroll containers */
@@ -1203,10 +1203,31 @@ html, body {
 .ex-chip.active { background: #9cd3f8; }
 
 /* Activity cards */
-#exploreList {
+#exploreList,
+.explore-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
+}
+
+.explore-section-label {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #6b6761;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.explore-section-sub {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: #9d9da0;
+    line-height: 1.5;
+    margin-top: -4px;
+    margin-bottom: 10px;
 }
 
 .ex-card {
@@ -1257,6 +1278,7 @@ html, body {
 
 .ex-card-tags {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     align-items: center;
     padding-left: 24px;
@@ -1273,6 +1295,7 @@ html, body {
     white-space: nowrap;
 }
 .ex-tag-time { background: #d6e475; }
+.ex-tag-age { background: #9CD3F8; }
 .ex-tag-skill { background: #ffa9bc; }
 .ex-tag-ref { background: #fdd15e; }
 
@@ -1283,6 +1306,16 @@ html, body {
     font-size: 13px;
     color: #6b6761;
     line-height: 1.6;
+}
+
+/* AI-generated reason shown on suggested cards */
+.ex-card-note {
+    margin: 2px 0 0 24px;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 500;
+    font-size: 12.5px;
+    color: #6c5ce7;
+    line-height: 1.5;
 }
 
 .ex-card-action { padding: 0 24px; }
@@ -1342,6 +1375,7 @@ html, body {
     background: #faf8f5;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .detail-v2-topbar {
@@ -1386,6 +1420,11 @@ html, body {
     flex-direction: column;
     gap: 16px;
     overflow-y: auto;
+}
+/* Keep cards at their natural height so the container scrolls instead of
+   compressing them — otherwise the video card collapses to just its label. */
+.detail-v2-scroll > * {
+    flex-shrink: 0;
 }
 
 .detail-v2-heading {
@@ -2171,6 +2210,16 @@ html, body {
     width: 100%;
 }
 
+.refl-share-box {
+    width: 100%;
+    background: #f5efe3;
+    border: 1.5px solid #e8dfcc;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    text-align: left;
+}
+
 .refl-reset-btn {
     background: #3d3935;
     color: white;
@@ -2561,6 +2610,58 @@ html, body {
     font-size: 13px;
     color: #6b6761;
     margin-top: 4px;
+}
+
+/* ── Profile ─────────────────────────────── */
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-field-label {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #6b6761;
+    margin: 12px 0 8px;
+}
+.profile-card .profile-field-label:first-child { margin-top: 0; }
+
+.profile-input {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-size: 13px;
+    color: #3d3935;
+    background: #faf8f5;
+    border: 1.5px solid #eee8dd;
+    border-radius: 10px;
+    padding: 10px 12px;
+    outline: none;
+    width: 100%;
+}
+.profile-input:focus { border-color: #d6e475; }
+
+.profile-hint {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-size: 11px;
+    color: #9d9da0;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+.profile-redo-btn {
+    background: #3d3935;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 24px;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    align-self: flex-start;
 }
 
 .toolkit-stat-row {

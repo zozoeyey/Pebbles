@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+  * { transform-box: fill-box; }
+  .tw { animation: tw 1.6s ease-in-out infinite; }
+  @keyframes tw { 0%,100% { opacity: .15; transform: scale(.6);} 50% { opacity: 1; transform: scale(1);} }
+
+  .blower { animation: bw 5s ease-in-out infinite; }
+  @keyframes bw { 0%,15% { transform: scale(1.08);} 60%,80% { transform: scale(.95);} 100% { transform: scale(1.08);} }
+  .grower { animation: gr 5s ease-in-out infinite; }
+  .shine { animation: gr 5s ease-in-out infinite; }
+  @keyframes gr { 0%,10% { transform: scale(.25); opacity:.6;} 65%,85% { transform: scale(1); opacity:1;} 100% { transform: scale(.25); opacity:.6;} }
+
+</style>
+<circle cx="100" cy="104" r="88" fill="#FAF3E6"/>
+
+  
+  <g class="blower" style="transform-box:fill-box;transform-origin:center">
+    <ellipse cx="54" cy="132" rx="26" ry="23" fill="#d6e475"/>
+    <ellipse cx="47.11764705882353" cy="128.55" rx="2.447058823529412" ry="3.8235294117647056" fill="#3d3935"/>
+   <ellipse cx="60.88235294117647" cy="128.55" rx="2.447058823529412" ry="3.8235294117647056" fill="#3d3935"/>
+  </g>
+  <circle class="grower" cx="124" cy="108" r="30" fill="none" stroke="#9CD3F8" stroke-width="3"/>
+  <path class="shine" d="M108 94 q6 -8 16 -8" stroke="#9CD3F8" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+
+</svg>
