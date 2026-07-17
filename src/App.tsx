@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSavedActivities } from './hooks/useSavedActivities';
 import { logEvent } from './lib/analytics';
 import { syncOnboarding } from './lib/onboardingApi';
+import { setTouring } from './lib/tourState';
+import { EXPLORE_ACTS } from './data/activities';
 import './styles.css';
 import type { Screen } from './types';
 
@@ -66,8 +68,16 @@ export default function App() {
   const [tourActive, setTourActive] = useState(false);
 
   function startTour() {
+    setTouring(true);
+    setSelectedActivityId(EXPLORE_ACTS[0].id); // demo activity for the walkthrough
     showScreen('results');
     setTourActive(true);
+  }
+
+  function endTour() {
+    setTouring(false);
+    setTourActive(false);
+    showScreen('results');
   }
 
   function attemptSkip(): boolean {
@@ -250,7 +260,7 @@ export default function App() {
           onStartTour={startTour}
         />
       )}
-      <TourOverlay active={tourActive} onDone={() => setTourActive(false)} />
+      <TourOverlay active={tourActive} screen={screen} onNavigate={showScreen} onDone={endTour} />
     </div>
   );
 }

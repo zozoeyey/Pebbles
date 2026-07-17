@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import ExitButton from '../components/ExitButton';
 import { EXPLORE_ACTS, ACT_CONFIGS } from '../data/activities';
 import { logEvent } from '../lib/analytics';
+import { isTouring } from '../lib/tourState';
 import type { Screen } from '../types';
 
 interface Props {
@@ -30,7 +31,7 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (selectedActivityId) logEvent('activity_viewed', { activityId: selectedActivityId });
+    if (selectedActivityId && !isTouring()) logEvent('activity_viewed', { activityId: selectedActivityId });
     return () => {
       if (videoRef.current) videoRef.current.pause();
     };

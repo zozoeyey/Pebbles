@@ -5,6 +5,7 @@ import ExitButton from '../components/ExitButton';
 import { useActivityPlayer } from '../hooks/useActivityPlayer';
 import { logEvent } from '../lib/analytics';
 import { addTimeSpent } from '../lib/timeSpent';
+import { isTouring } from '../lib/tourState';
 import type { ActConfig, Screen } from '../types';
 
 interface Props {
@@ -32,6 +33,7 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
   const [readStep, setReadStep] = useState(0);
 
   useEffect(() => {
+    if (isTouring()) return; // walkthrough visit — not a real session
     logEvent('activity_started', { activityId: id });
     const startedAt = Date.now();
     return () => addTimeSpent((Date.now() - startedAt) / 1000);
