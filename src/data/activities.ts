@@ -103,7 +103,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     refs: '9 reflections',
     desc: 'Kids shake out extra energy, then follow a short sequence of calming moves to settle their bodies and brains and get ready to focus.',
     detailDesc:
-      'Kids move through a repeating sequence — wiggle, get quiet, sit silently, breathe deeply, roll shoulders back — practicing each move one at a time. Remembering the order builds attention while the moves release energy and bring the body back to calm.',
+      'Kids move through a repeating sequence: wiggle, get quiet, sit silently, breathe deeply, roll shoulders back; practicing each move one at a time. Remembering the order builds attention while the moves release energy and bring the body back to calm.',
     materials: ['Just a bit of open space to move'],
     tip: 'Do every move alongside them and keep it playful. Younger kids may need to practice each step on its own before stringing them together.',
     url: 'https://ggie.berkeley.edu/practice/wiggle-cool-down-an-sel-kernels-brain-game/',
