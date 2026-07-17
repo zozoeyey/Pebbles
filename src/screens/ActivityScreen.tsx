@@ -80,7 +80,7 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
   const totalSteps = config.steps.length;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       <div className="act-wrap">
 
         {/* Top row: back + mode toggle */}

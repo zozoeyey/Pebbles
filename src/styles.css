@@ -1807,7 +1807,9 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 24px 24px calc(24px + env(safe-area-inset-bottom));
+    /* Bleed white into the top notch area; keep the toolbar below the status bar */
+    margin-top: calc(-1 * env(safe-area-inset-top));
+    padding: calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
     gap: 16px;
     overflow-y: auto; /* fallback: scroll rather than clip on short screens */
 }
