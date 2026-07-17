@@ -1081,7 +1081,7 @@ html, body {
 .explore-scroll {
     flex: 1;
     overflow-y: auto;
-    padding: 44px 24px 16px;
+    padding: 44px 24px 104px; /* room to scroll clear of the floating nav */
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -1342,9 +1342,15 @@ html, body {
 
 /* Bottom nav — fixed at bottom of every tabbed screen */
 .explore-nav {
-    flex-shrink: 0;
-    padding: 0 16px 16px;
-    background: #faf8f5;
+    /* Floating pill: overlays content, no background strip or seam.
+       #app's safe-area padding keeps it above the home indicator. */
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 12px;
+    padding: 0;
+    background: transparent;
+    z-index: 50;
 }
 .explore-nav-inner {
     background: white;
@@ -2341,7 +2347,7 @@ html, body {
     min-height: 0;
     overflow-y: auto;
     background: #faf8f5;
-    padding: 44px 20px 24px;
+    padding: 44px 20px 104px; /* room to scroll clear of the floating nav */
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -2627,7 +2633,7 @@ html, body {
     min-height: 0;
     overflow-y: auto;
     background: #faf8f5;
-    padding: 44px 20px 32px;
+    padding: 44px 20px 104px; /* room to scroll clear of the floating nav */
     display: flex;
     flex-direction: column;
     gap: 12px;
