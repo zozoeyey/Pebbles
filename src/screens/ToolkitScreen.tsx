@@ -111,8 +111,8 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [showAllSaved, setShowAllSaved] = useState(false);
-  const [showAllRefl, setShowAllRefl] = useState(false);
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  // Today starts selected, so the calendar always opens on "what happened today".
+  const [selectedDay, setSelectedDay] = useState<number | null>(now.getDate());
 
   // This parent's own reflections drive every number on this screen.
   const [myRefl, setMyRefl] = useState<MyReflection[]>([]);
@@ -131,15 +131,20 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
   const spentMinutes = getTimeSpentMinutes();
   const insights = buildInsights(myRefl);
 
+  function goMonth(year: number, month: number) {
+    setCalYear(year);
+    setCalMonth(month);
+    // Back on the current month → reselect today; other months start unselected.
+    const t = new Date();
+    setSelectedDay(year === t.getFullYear() && month === t.getMonth() ? t.getDate() : null);
+  }
   function prevMonth() {
-    setSelectedDay(null);
-    if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); }
-    else setCalMonth((m) => m - 1);
+    if (calMonth === 0) goMonth(calYear - 1, 11);
+    else goMonth(calYear, calMonth - 1);
   }
   function nextMonth() {
-    setSelectedDay(null);
-    if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); }
-    else setCalMonth((m) => m + 1);
+    if (calMonth === 11) goMonth(calYear, 0);
+    else goMonth(calYear, calMonth + 1);
   }
 
   function toggleAudio(id: string) {
@@ -177,7 +182,8 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
   const dayEntries = selectedDay != null ? reflByDay.get(selectedDay) ?? [] : [];
 
   function tapDay(d: number) {
-    if (!reflByDay.has(d)) return;
+    // Past days open only if something was done; today is always selectable.
+    if (!reflByDay.has(d) && d !== todayNum) return;
     setSelectedDay((prev) => (prev === d ? null : d));
   }
 
@@ -287,7 +293,7 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
                     'cal-cell',
                     (hasRefl || isToday) && 'cal-active',
                     isToday && 'cal-today',
-                    hasRefl && 'cal-clickable',
+                    (hasRefl || isToday) && 'cal-clickable',
                     selectedDay === d && 'cal-selected',
                   ].filter(Boolean).join(' ');
                   return (
@@ -301,23 +307,34 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
           </div>
         </div>
 
-        {/* What happened on the tapped day — same data as the calendar dots */}
-        {selectedDay != null && dayEntries.length > 0 && (
+        {/* What happened on the selected day — same data as the calendar dots */}
+        {selectedDay != null && (
           <>
             <div className="toolkit-section-label" style={{ marginTop: 4 }}>
-              {MONTHS[calMonth].toUpperCase()} {selectedDay}
+              {selectedDay === todayNum ? 'TODAY' : `${MONTHS[calMonth].toUpperCase()} ${selectedDay}`}
             </div>
-            {dayEntries.map((r, i) => (
-              <div className="toolkit-refl-entry" key={r.id}>
-                <div className="toolkit-refl-top">
-                  <span className="toolkit-refl-tag" style={{ background: TAG_COLORS[i % TAG_COLORS.length] }}>
-                    {(EXPLORE_ACTS.find((a) => a.id === r.activity_id)?.title ?? r.activity_title).split(':')[0]}
-                  </span>
-                  <span className="toolkit-refl-date">{monthDay(r.created_at)}</span>
+            {dayEntries.length > 0 ? (
+              dayEntries.map((r, i) => (
+                <div className="toolkit-refl-entry" key={r.id}>
+                  <div className="toolkit-refl-top">
+                    <span className="toolkit-refl-tag" style={{ background: TAG_COLORS[i % TAG_COLORS.length] }}>
+                      {(EXPLORE_ACTS.find((a) => a.id === r.activity_id)?.title ?? r.activity_title).split(':')[0]}
+                    </span>
+                    <span className="toolkit-refl-date">{monthDay(r.created_at)}</span>
+                  </div>
+                  <div className="toolkit-refl-text">{plainSummary(r.summary).split('\n')[0]}</div>
                 </div>
-                <div className="toolkit-refl-text">{plainSummary(r.summary).split('\n')[0]}</div>
+              ))
+            ) : (
+              <div className="toolkit-refl-entry" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div className="toolkit-refl-text" style={{ flex: 1 }}>
+                  Nothing here yet — a 5-minute activity together turns today blue. 💛
+                </div>
+                <button className="profile-redo-btn" style={{ flexShrink: 0 }} onClick={() => showScreen('results')}>
+                  Find one
+                </button>
               </div>
-            ))}
+            )}
           </>
         )}
 
@@ -365,34 +382,7 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
           </>
         )}
 
-        {/* ── 4. MY REFLECTIONS ────────────────────── */}
-        <SectionHeader
-          label="MY REFLECTIONS"
-          count={myRefl.length}
-          expanded={showAllRefl}
-          onToggle={() => setShowAllRefl(v => !v)}
-        />
-        {myRefl.length === 0 ? (
-          <div className="toolkit-refl-entry">
-            <div className="toolkit-refl-text">
-              No reflections yet — try an activity and record how it went. Your notes will show up here.
-            </div>
-          </div>
-        ) : (
-          myRefl.slice(0, showAllRefl ? myRefl.length : 3).map((r, i) => (
-            <div className="toolkit-refl-entry" key={r.id}>
-              <div className="toolkit-refl-top">
-                <span className="toolkit-refl-tag" style={{ background: TAG_COLORS[i % TAG_COLORS.length] }}>
-                  {(EXPLORE_ACTS.find((a) => a.id === r.activity_id)?.title ?? r.activity_title).split(':')[0]}
-                </span>
-                <span className="toolkit-refl-date">{monthDay(r.created_at)}</span>
-              </div>
-              <div className="toolkit-refl-text">{plainSummary(r.summary).split('\n')[0]}</div>
-            </div>
-          ))
-        )}
-
-        {/* ── 5. INSIGHTS ──────────────────────────── */}
+        {/* ── 4. INSIGHTS ──────────────────────────── */}
         {insights.length > 0 && (
           <>
             <div className="toolkit-section-label" style={{ marginTop: 8 }}>INSIGHTS</div>
