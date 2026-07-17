@@ -208,10 +208,10 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
           <div className="toolkit-stat-card">
             <div className="toolkit-stat-num">{activitiesDone}</div>
             <div className="toolkit-stat-label">Activities Tried</div>
-            <svg className="toolkit-stat-deco" style={{ width: 76, height: 76, right: -14, top: -10 }} viewBox="0 0 170 170" fill="none">
+            <svg className="toolkit-stat-deco" style={{ width: 76, height: 76, right: -20, top: -16 }} viewBox="0 0 170 170" fill="none">
               <path d="M51.7391 23.1575C63.7961 -7.71918 106.204 -7.71918 118.261 23.1575C121.304 30.9517 128.422 36.2683 136.552 36.8352C168.706 39.0773 181.885 80.624 157.126 101.898C150.859 107.282 148.142 115.897 150.137 124.053C158.021 156.278 123.638 181.882 96.3208 164.245C89.4108 159.784 80.5892 159.784 73.6792 164.245C46.3619 181.882 11.9794 156.278 19.8626 124.053C21.8578 115.897 19.1412 107.282 12.8745 101.898C-11.8845 80.624 1.29418 39.0773 33.4485 36.8352C41.5782 36.2683 48.6956 30.9517 51.7391 23.1575Z" fill="#FDD15E"/>
-              <ellipse cx="106" cy="64" rx="7" ry="9" fill="#666"/>
-              <ellipse cx="130" cy="64" rx="7" ry="9" fill="#666"/>
+              <ellipse cx="92" cy="72" rx="7" ry="9" fill="#666"/>
+              <ellipse cx="116" cy="72" rx="7" ry="9" fill="#666"/>
             </svg>
           </div>
         </div>
