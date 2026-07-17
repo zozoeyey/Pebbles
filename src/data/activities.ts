@@ -537,6 +537,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'wiggle-cool-down': {
     title: 'Wiggle Cool Down',
+    audioSrc: 'assets/wiggle-cool-down.mp3',
+    stepTimes: [0, 9.4, 21.2, 32.7, 40.9, 49.5, 61.6],
     steps: [
       'Find your space. Have your child pick a spot where they can move around freely without bumping into furniture or anyone else.',
       'Set up the idea. Tell them: "We\'re going to count down from 10 to 1, and our bodies will do different things at each number to help us go from wiggly to calm."',
