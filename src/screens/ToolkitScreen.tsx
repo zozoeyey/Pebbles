@@ -112,6 +112,7 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
 
   const [showAllSaved, setShowAllSaved] = useState(false);
   const [showAllRefl, setShowAllRefl] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   // This parent's own reflections drive every number on this screen.
   const [myRefl, setMyRefl] = useState<MyReflection[]>([]);
@@ -131,10 +132,12 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
   const insights = buildInsights(myRefl);
 
   function prevMonth() {
+    setSelectedDay(null);
     if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); }
     else setCalMonth((m) => m - 1);
   }
   function nextMonth() {
+    setSelectedDay(null);
     if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); }
     else setCalMonth((m) => m + 1);
   }
@@ -158,14 +161,25 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
 
   function handleAudioEnded() { setPlayingId(null); }
 
-  // Days in the shown month with at least one reflection, plus today.
-  const active = new Set<number>();
+  // Reflections grouped by day for the shown month — the calendar and the
+  // day detail below both read from this, so they always match.
+  const reflByDay = new Map<number, MyReflection[]>();
   myRefl.forEach((r) => {
     const d = new Date(r.created_at);
-    if (d.getFullYear() === calYear && d.getMonth() === calMonth) active.add(d.getDate());
+    if (d.getFullYear() === calYear && d.getMonth() === calMonth) {
+      const day = d.getDate();
+      reflByDay.set(day, [...(reflByDay.get(day) ?? []), r]);
+    }
   });
   const today = new Date();
-  if (today.getFullYear() === calYear && today.getMonth() === calMonth) active.add(today.getDate());
+  const todayNum = today.getFullYear() === calYear && today.getMonth() === calMonth
+    ? today.getDate() : null;
+  const dayEntries = selectedDay != null ? reflByDay.get(selectedDay) ?? [] : [];
+
+  function tapDay(d: number) {
+    if (!reflByDay.has(d)) return;
+    setSelectedDay((prev) => (prev === d ? null : d));
+  }
 
   const firstDow = new Date(calYear, calMonth, 1).getDay();
   const startCol = (firstDow + 6) % 7;
@@ -265,15 +279,47 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
           <div className="cal-grid">
             {rows.map((row, ri) => (
               <div key={ri} className="cal-row">
-                {row.map((d, ci) => (
-                  <div key={ci} className={`cal-cell${d !== null && active.has(d) ? ' cal-active' : ''}`}>
-                    {d !== null && active.has(d) ? <span>{d}</span> : d ?? ''}
-                  </div>
-                ))}
+                {row.map((d, ci) => {
+                  if (d === null) return <div key={ci} className="cal-cell" />;
+                  const hasRefl = reflByDay.has(d);
+                  const isToday = d === todayNum;
+                  const cls = [
+                    'cal-cell',
+                    (hasRefl || isToday) && 'cal-active',
+                    isToday && 'cal-today',
+                    hasRefl && 'cal-clickable',
+                    selectedDay === d && 'cal-selected',
+                  ].filter(Boolean).join(' ');
+                  return (
+                    <div key={ci} className={cls} onClick={() => tapDay(d)}>
+                      {hasRefl || isToday ? <span>{d}</span> : d}
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </div>
         </div>
+
+        {/* What happened on the tapped day — same data as the calendar dots */}
+        {selectedDay != null && dayEntries.length > 0 && (
+          <>
+            <div className="toolkit-section-label" style={{ marginTop: 4 }}>
+              {MONTHS[calMonth].toUpperCase()} {selectedDay}
+            </div>
+            {dayEntries.map((r, i) => (
+              <div className="toolkit-refl-entry" key={r.id}>
+                <div className="toolkit-refl-top">
+                  <span className="toolkit-refl-tag" style={{ background: TAG_COLORS[i % TAG_COLORS.length] }}>
+                    {(EXPLORE_ACTS.find((a) => a.id === r.activity_id)?.title ?? r.activity_title).split(':')[0]}
+                  </span>
+                  <span className="toolkit-refl-date">{monthDay(r.created_at)}</span>
+                </div>
+                <div className="toolkit-refl-text">{plainSummary(r.summary).split('\n')[0]}</div>
+              </div>
+            ))}
+          </>
+        )}
 
         {/* ── 3. SAVED ACTIVITIES ───────────────────── */}
         {savedActivities.length > 0 && (
