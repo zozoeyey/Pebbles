@@ -27,10 +27,14 @@ export default function ProfileScreen({
   selectedChallenges, customChallengeText, onChallengesChange,
   selAnswers, onSelAnswers,
 }: Props) {
-  const [custom, setCustom] = useState(customChallengeText);
+  const [draft, setDraft] = useState('');
   const [q1, setQ1] = useState(selAnswers.selDefinition);
   const [q2, setQ2] = useState(selAnswers.emotionHandling);
   const [trackingOff, setTrackingOffState] = useState(isTrackingOff);
+
+  // Custom challenges live as '; '-separated entries in customChallengeText,
+  // shown as removable chips alongside the presets.
+  const customList = customChallengeText.split(';').map((t) => t.trim()).filter(Boolean);
 
   function toggleTracking() {
     const next = !trackingOff;
@@ -42,7 +46,18 @@ export default function ProfileScreen({
     const next = new Set(selectedChallenges);
     if (next.has(id)) next.delete(id);
     else next.add(id);
-    onChallengesChange(next, custom);
+    onChallengesChange(next, customChallengeText);
+  }
+
+  function addCustom() {
+    const text = draft.trim();
+    if (!text) return;
+    onChallengesChange(selectedChallenges, [...customList, text].join('; '));
+    setDraft('');
+  }
+
+  function removeCustom(index: number) {
+    onChallengesChange(selectedChallenges, customList.filter((_, i) => i !== index).join('; '));
   }
 
   return (
@@ -83,6 +98,16 @@ export default function ProfileScreen({
                 {c.label}
               </button>
             ))}
+            {customList.map((text, i) => (
+              <button
+                key={`custom-${i}`}
+                className="ex-chip active"
+                onClick={() => removeCustom(i)}
+                title="Tap to remove"
+              >
+                {text} ✕
+              </button>
+            ))}
           </div>
 
           <div className="profile-field-label">Anything else, in your words</div>
@@ -90,11 +115,15 @@ export default function ProfileScreen({
             type="text"
             className="profile-input"
             placeholder="e.g. gets frustrated with homework…"
-            value={custom}
-            onChange={(e) => setCustom(e.target.value)}
-            onBlur={() => onChallengesChange(selectedChallenges, custom)}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') addCustom(); }}
+            onBlur={addCustom}
           />
-          <div className="profile-hint">Changes here re-tune your suggested activities on the Explore tab.</div>
+          <div className="profile-hint">
+            Press Enter to add it as a chip above — tap a chip to remove it.
+            Changes here re-tune your suggested activities on the Explore tab.
+          </div>
         </div>
 
         <div className="toolkit-section-label" style={{ marginTop: 8 }}>HOW YOU PARENT</div>

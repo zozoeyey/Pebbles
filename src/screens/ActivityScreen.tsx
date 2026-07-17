@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ACT_CONFIGS } from '../data/activities';
 import BackButton from '../components/BackButton';
+import ExitButton from '../components/ExitButton';
 import { useActivityPlayer } from '../hooks/useActivityPlayer';
 import { logEvent } from '../lib/analytics';
 import { addTimeSpent } from '../lib/timeSpent';
@@ -57,6 +58,11 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
     showScreen('detail');
   }
 
+  function handleExit() {
+    stop();
+    showScreen('results');
+  }
+
   function handleGoReflect() {
     stop();
     onGoReflect();
@@ -79,7 +85,7 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
         <div className="act-top-row">
           <BackButton onClick={handleBack} />
           {!readOnly && (
-            <div className="act-mode-toggle">
+            <div className="act-mode-toggle" style={{ margin: '0 auto' }}>
               <button
                 className={`act-mode-btn${mode === 'read' ? ' active' : ''}`}
                 onClick={() => switchMode('read')}
@@ -94,6 +100,7 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
               </button>
             </div>
           )}
+          <ExitButton onClick={handleExit} />
         </div>
 
         {/* Step text — read mode only */}

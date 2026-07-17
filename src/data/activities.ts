@@ -19,7 +19,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     videoThumb: 'assets/impulse control open.svg',
     videoTitle: 'Impulse Control',
     videoDesc:
-      'Stopping mid-dance and holding a pose is impulse control in its purest, most playful form. This quick intro shows how that "freeze" moment builds the pause kids need for big feelings.',
+      'Impulse control is the ability to pause between feeling an urge and acting on it. That tiny pause is what lets kids stop, think, and choose — and like a muscle, it grows with playful practice.',
     whenHelps:
       'Good when your child has lots of energy or finds it hard to stop and pause — a playful way to practice catching a feeling and showing it.',
     olderKids:
@@ -66,7 +66,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     videoThumb: 'assets/it open.svg',
     videoTitle: 'Interoception',
     videoDesc:
-      'Before kids can calm a big feeling, they first have to notice it in their body. This quick intro shows how tuning into those physical signals — a tight chest, clenched fists — builds the self-awareness that makes calming down possible.',
+      "Interoception is the sense of what's happening inside your body — a racing heart, tight shoulders, butterflies in the tummy. Kids who can read those signals catch big feelings early, which is the first step to calming them.",
     olderKids:
       'Older kids can skip the animal imagery: hold each squeeze a little longer, then do a slow head-to-toe body scan and name exactly where they feel tightness when stressed.',
   },
@@ -111,7 +111,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     videoThumb: 'assets/impulse control open.svg',
     videoTitle: 'Impulse Control',
     videoDesc:
-      'Settling a wound-up body is really about impulse control — pausing the urge to keep moving. This quick intro shows how kids build the "stop and settle" skill this activity practices.',
+      'Impulse control is the ability to pause between feeling an urge and acting on it. That tiny pause is what lets kids stop, think, and choose — and like a muscle, it grows with playful practice.',
     whenHelps:
       'Great before a transition or when energy is running high and it is hard to settle down.',
     olderKids:
@@ -160,7 +160,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     videoThumb: 'assets/it open.svg',
     videoTitle: 'Interoception',
     videoDesc:
-      'Deep breathing only calms kids down when they can feel it in their body. This quick intro shows how noticing the belly rise and fall builds that inner awareness.',
+      "Interoception is the sense of what's happening inside your body — a racing heart, tight shoulders, butterflies in the tummy. Kids who can read those signals catch big feelings early, which is the first step to calming them.",
     whenHelps:
       'A go-to reset before bed, after a meltdown, or any time your child needs a quick, quiet way to settle their body.',
   },
@@ -184,7 +184,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     videoThumb: 'assets/it open.svg',
     videoTitle: 'Interoception',
     videoDesc:
-      'Slowing the breath works best when kids can notice what it changes inside them. This quick intro shows how tuning into the body makes calming techniques stick.',
+      "Interoception is the sense of what's happening inside your body — a racing heart, tight shoulders, butterflies in the tummy. Kids who can read those signals catch big feelings early, which is the first step to calming them.",
     whenHelps:
       'Perfect for younger kids who find "take a deep breath" too abstract — pretending to smell a flower gets the same slow breath without instructions.',
   },
@@ -208,7 +208,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     videoThumb: 'assets/impulse control open.svg',
     videoTitle: 'Impulse Control',
     videoDesc:
-      'Making a big bubble takes holding back the urge to blow hard — that pause is impulse control in miniature. This quick intro shows why that skill matters so much.',
+      'Impulse control is the ability to pause between feeling an urge and acting on it. That tiny pause is what lets kids stop, think, and choose — and like a muscle, it grows with playful practice.',
     whenHelps:
       'Great for kids who rush or blow up quickly — the bubble gives instant, playful feedback that slow and gentle works better.',
   },

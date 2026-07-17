@@ -1,0 +1,27 @@
+Table,Data stored,Page,Action
+reflections,"activity_id, activity_title, child_age, transcript, AI summary, audio_path, session_id",Reflection,Parent stops recording (auto-saved after processing)
+reflections,shared = true,Reflection,Parent taps Share to Community
+reflections,likes +1 (like_reflection RPC),Community feed / activity thread,Another parent taps the heart
+onboarding_responses,"session_id, selected_age, selected_challenge, sel_definition, emotion_handling",SEL screen (onboarding),Parent taps Next
+onboarding_responses,same columns updated in place (upsert_onboarding RPC),Profile,"Any edit: age, challenge chips, custom chips, SEL answers"
+events,session_start,any,App opened
+events,activity_selected,Explore,Tap an activity card
+events,activity_viewed,Detail,Detail page opened
+events,activity_started,Activity player,Player opened
+events,activity_completed,Reflection,Complete tapped
+events,activity_saved / activity_unsaved,Explore,Bookmark tapped
+events,reflection_submitted,Reflection,Summary returned after recording
+events,reflection_shared,Reflection,Share to Community tapped
+events,"reflection_liked (payload: reflection id)",Community feed / thread,Heart tapped
+events,"reflection_replied (payload: reflection ref, text, voice flag)",Activity thread,Send on a reply
+events,peer_reflection_opened,Reflection,Peer reflection card expanded
+events,community_activity_opened,Community,Activity thread opened
+reflection_replies,"session_id, reflection_ref, activity_id, reply_text, kind='text'",Community activity thread,Parent sends a text reply
+reflection_replies,"same with kind='voice', reply_text = Whisper transcript, audio_path (private)",Community activity thread,Parent sends a voice reply (process-reply function)
+storage: audio-reflections,Raw reflection audio (webm/m4a),Reflection,Recording processed by process-reflection function
+storage: audio-reflections,Raw voice-reply audio under replies/,Community activity thread,Voice reply processed by process-reply function
+localStorage,pebbles_session_id (anonymous id),device only,First visit
+localStorage,"pebbles_profile (age, challenges, custom text, SEL answers)",device only,Any onboarding/Profile change
+localStorage,pebbles_saved_activities,device only,Bookmark tapped
+localStorage,pebbles_time_spent_secs,device only,Leaving the activity player
+localStorage,pebbles_tracking_off (test-device opt-out),device only,Profile checkbox

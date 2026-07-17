@@ -8,8 +8,9 @@ import { getSessionId } from './session';
  * Event types in use:
  *   session_start, activity_viewed, activity_selected, activity_started,
  *   activity_completed, activity_saved, activity_unsaved,
- *   reflection_submitted, reflection_shared, peer_reflection_opened,
- *   community_activity_opened
+ *   reflection_submitted, reflection_shared, reflection_liked,
+ *   reflection_replied (payload: reflection, text, voice),
+ *   peer_reflection_opened, community_activity_opened
  */
 const OPT_OUT_KEY = 'pebbles_tracking_off';
 

@@ -5,15 +5,25 @@ import { PRESET_CHALLENGES } from '../data/activities';
 interface Props {
   showScreen: (s: Screen) => void;
   showResults: () => void;
+  /** Returns false when skipping is blocked (first visit) — show a message instead. */
+  onSkip: () => boolean;
   onChallengeSelect: (ids: Set<string>, custom: string) => void;
 }
 
-export default function ChallengeScreen({ showScreen, showResults, onChallengeSelect }: Props) {
+export default function ChallengeScreen({ showScreen, onSkip, onChallengeSelect }: Props) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [customText, setCustomText] = useState('');
   const [customSaved, setCustomSaved] = useState('');
   const [showAddOwn, setShowAddOwn] = useState(false);
+  const [skipMsg, setSkipMsg] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleSkip() {
+    if (!onSkip()) {
+      setSkipMsg(true);
+      setTimeout(() => setSkipMsg(false), 4000);
+    }
+  }
 
   const hasSelection = selected.size > 0 || customSaved.length > 0;
 
@@ -53,8 +63,13 @@ export default function ChallengeScreen({ showScreen, showResults, onChallengeSe
               <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '50%' }} /></div>
               <div className="progress-seg" />
             </div>
-            <button className="progress-skip" onClick={showResults}>Skip</button>
+            <button className="progress-skip" onClick={handleSkip}>Skip</button>
           </div>
+          {skipMsg && (
+            <div className="onboard-skip-msg">
+              One quick minute! These few questions help us pick the right activities for your child. 💛
+            </div>
+          )}
           <img src="assets/arc screen 3.svg" className="challenge-arc-img" alt="" />
         </div>
         <div className="onboard-card">

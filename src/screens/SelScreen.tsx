@@ -4,18 +4,28 @@ import { getSessionId } from '../lib/session';
 
 interface Props {
   showResults: () => void;
+  /** Returns false when skipping is blocked (first visit) — show a message instead. */
+  onSkip: () => boolean;
   selectedAge: number | null;
   selectedChallenges: Set<string>;
   customChallengeText: string;
   onSelAnswers: (selDefinition: string, emotionHandling: string) => void;
 }
 
-export default function SelScreen({ showResults, selectedAge, selectedChallenges, customChallengeText, onSelAnswers }: Props) {
+export default function SelScreen({ showResults, onSkip, selectedAge, selectedChallenges, customChallengeText, onSelAnswers }: Props) {
   const [q1, setQ1] = useState('');
   const [q2, setQ2] = useState('');
   const [saving, setSaving] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [skipMsg, setSkipMsg] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  function handleSkip() {
+    if (!onSkip()) {
+      setSkipMsg(true);
+      setTimeout(() => setSkipMsg(false), 4000);
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -70,8 +80,13 @@ export default function SelScreen({ showResults, selectedAge, selectedChallenges
             <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '100%' }} /></div>
             <div className="progress-seg"><div className="progress-seg-fill" style={{ width: '50%' }} /></div>
           </div>
-          <button className="progress-skip" onClick={showResults}>Skip</button>
+          <button className="progress-skip" onClick={handleSkip}>Skip</button>
         </div>
+        {skipMsg && (
+          <div className="onboard-skip-msg">
+            Almost there! Your answers here help us tailor everything for your child. 💛
+          </div>
+        )}
 
         <div className="sel-prelabel">Before we start, watch this video</div>
         <div className="sel-heading">What is Social-Emotional Learning (SEL)?</div>

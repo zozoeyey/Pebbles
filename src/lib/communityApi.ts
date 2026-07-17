@@ -59,6 +59,61 @@ export async function fetchMyReflections(): Promise<MyReflection[]> {
   return (await res.json()) as MyReflection[];
 }
 
+export interface ReflectionReply {
+  id: string;
+  created_at: string;
+  reflection_ref: string;
+  activity_id: string;
+  reply_text: string;
+  kind?: 'text' | 'voice';
+}
+
+/**
+ * Upload a voice reply: audio goes to Storage, Whisper transcribes it, and the
+ * transcript is stored as the public reply text. Returns the transcript.
+ */
+export async function postVoiceReply(reflectionRef: string, activityId: string, audio: Blob): Promise<string> {
+  const form = new FormData();
+  form.append('audio', audio, 'reply.webm');
+  form.append('reflection_ref', reflectionRef);
+  form.append('activity_id', activityId);
+  form.append('session_id', getSessionId());
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/process-reply`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+    body: form,
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const { transcript } = (await res.json()) as { transcript: string };
+  return transcript;
+}
+
+/** Post a public text reply on a reflection (live uuid or seed ref). */
+export async function postReply(reflectionRef: string, activityId: string, text: string): Promise<void> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/reflection_replies`, {
+    method: 'POST',
+    headers: { ...HEADERS, Prefer: 'return=minimal' },
+    body: JSON.stringify({
+      session_id: getSessionId(),
+      reflection_ref: reflectionRef,
+      activity_id: activityId,
+      reply_text: text,
+    }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+/** All replies for one activity's reflections, oldest first. */
+export async function fetchReplies(activityId: string): Promise<ReflectionReply[]> {
+  const cols = 'id,created_at,reflection_ref,activity_id,reply_text,kind';
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/reflection_replies?select=${cols}&activity_id=eq.${encodeURIComponent(activityId)}&order=created_at.asc`,
+    { headers: HEADERS },
+  );
+  if (!res.ok) throw new Error(await res.text());
+  return (await res.json()) as ReflectionReply[];
+}
+
 /** +1 a shared reflection (server-side increment via RPC). */
 export async function likeReflection(id: string): Promise<void> {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/like_reflection`, {

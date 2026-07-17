@@ -187,7 +187,7 @@ export default function ResultsScreen({
           {/* Header */}
           <div className="explore-header">
             <img src="assets/pebbles logo.svg" className="explore-logo" alt="Pebbles" />
-            <AvatarBubble />
+            <AvatarBubble onClick={() => showScreen('profile')} />
           </div>
 
           {/* Search + filter toggle */}

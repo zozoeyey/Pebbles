@@ -4,17 +4,27 @@ import type { Screen } from '../types';
 interface Props {
   showScreen: (s: Screen) => void;
   showResults: () => void;
+  /** Returns false when skipping is blocked (first visit) — show a message instead. */
+  onSkip: () => boolean;
   onAgeSelect: (age: number) => void;
 }
 
 const AGE_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-export default function AgeScreen({ showScreen, showResults, onAgeSelect }: Props) {
+export default function AgeScreen({ showScreen, onSkip, onAgeSelect }: Props) {
   const [selectedAge, setSelectedAge] = useState<number | null>(null);
+  const [skipMsg, setSkipMsg] = useState(false);
 
   function selectAge(age: number) {
     setSelectedAge(age);
     onAgeSelect(age);
+  }
+
+  function handleSkip() {
+    if (!onSkip()) {
+      setSkipMsg(true);
+      setTimeout(() => setSkipMsg(false), 4000);
+    }
   }
 
   return (
@@ -27,8 +37,13 @@ export default function AgeScreen({ showScreen, showResults, onAgeSelect }: Prop
               <div className="progress-seg" />
               <div className="progress-seg" />
             </div>
-            <button className="progress-skip" onClick={showResults}>Skip</button>
+            <button className="progress-skip" onClick={handleSkip}>Skip</button>
           </div>
+          {skipMsg && (
+            <div className="onboard-skip-msg">
+              One quick minute! These few questions help us pick the right activities for your child. 💛
+            </div>
+          )}
           <div className="age-scene">
             <img src="assets/arc.svg" className="onboard-arc" alt="" />
             <img src="assets/char-center.svg" className="age-char-main" alt="" />

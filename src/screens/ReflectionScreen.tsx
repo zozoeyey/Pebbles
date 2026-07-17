@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PEER_REFLECTIONS } from '../data/activities';
 import BackButton from '../components/BackButton';
+import ExitButton from '../components/ExitButton';
 import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { shareReflection } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
@@ -75,8 +76,11 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
   return (
     <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="refl-screen-wrap">
-        {/* Back */}
-        <BackButton onClick={() => showScreen('activity')} />
+        {/* Back / Exit */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <BackButton onClick={() => showScreen('activity')} />
+          <ExitButton onClick={() => { stopRecording(); showScreen('results'); }} />
+        </div>
 
         <div className="refl-heading">How did it go?</div>
         <div className="refl-subtext">Read another parent's reflection, then record your own.</div>
@@ -88,8 +92,8 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
               <div className="refl-peer-avatar">
                 <svg viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
                   <path d={PEBBLE_PATH} fill="#FDD15E"/>
-                  <ellipse cx="52" cy="66" rx="7" ry="9" fill="#555"/>
-                  <ellipse cx="86" cy="66" rx="7" ry="9" fill="#555"/>
+                  <ellipse cx="59" cy="52" rx="7" ry="9" fill="#555"/>
+                  <ellipse cx="79" cy="52" rx="7" ry="9" fill="#555"/>
                 </svg>
               </div>
               <div>
@@ -126,27 +130,20 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
         {(state === 'idle' || state === 'recording') && (
           <div className="refl-record-area">
             <button className="refl-record-btn" onClick={handleRecordClick}>
-              <svg width="160" height="156" viewBox="0 0 138 134" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Blob */}
-                <path
-                  d="M41.9096 18.2441C51.676 -6.08137 86.0271 -6.08137 95.7934 18.2441C98.2588 24.3846 104.024 28.5731 110.609 29.0197C136.655 30.7861 147.33 63.5177 127.274 80.2775C122.198 84.5195 119.998 91.3067 121.614 97.7321C127.999 123.12 100.149 143.291 78.0216 129.397C72.4244 125.882 65.2787 125.882 59.6814 129.397C37.554 143.291 9.70356 123.12 16.0891 97.7321C17.7052 91.3067 15.5047 84.5195 10.4286 80.2775C-9.62669 63.5177 1.04831 30.7861 27.0939 29.0197C33.6791 28.5731 39.4443 24.3846 41.9096 18.2441Z"
-                  fill={isRecording ? '#F9A3C4' : '#FDD15E'}
-                />
-                {/* Eyes */}
-                <ellipse cx="62" cy="46" rx="5" ry="6.5" fill="#555"/>
-                <ellipse cx="76" cy="46" rx="5" ry="6.5" fill="#555"/>
-                {/* Mic or Stop icon, centered around (69, 90) */}
-                {isRecording ? (
-                  <rect x="55" y="76" width="28" height="28" rx="5" fill="#3d3935"/>
-                ) : (
-                  <g>
-                    <rect x="61" y="62" width="16" height="26" rx="8" fill="#3d3935"/>
-                    <path d="M52 88C52 97 60 104 69 104C78 104 86 97 86 88" stroke="#3d3935" strokeWidth="3" strokeLinecap="round" fill="none"/>
-                    <line x1="69" y1="104" x2="69" y2="110" stroke="#3d3935" strokeWidth="3" strokeLinecap="round"/>
-                    <line x1="62" y1="110" x2="76" y2="110" stroke="#3d3935" strokeWidth="3" strokeLinecap="round"/>
-                  </g>
-                )}
-              </svg>
+              <div className={`refl-record-circle${isRecording ? ' recording' : ''}`}>
+                <svg width="44" height="52" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {isRecording ? (
+                    <rect x="8" y="12" width="28" height="28" rx="5" fill="#3d3935"/>
+                  ) : (
+                    <g>
+                      <rect x="14" y="2" width="16" height="26" rx="8" fill="#3d3935"/>
+                      <path d="M5 28C5 37 13 44 22 44C31 44 39 37 39 28" stroke="#3d3935" strokeWidth="3" strokeLinecap="round" fill="none"/>
+                      <line x1="22" y1="44" x2="22" y2="50" stroke="#3d3935" strokeWidth="3" strokeLinecap="round"/>
+                      <line x1="15" y1="50" x2="29" y2="50" stroke="#3d3935" strokeWidth="3" strokeLinecap="round"/>
+                    </g>
+                  )}
+                </svg>
+              </div>
               {timerDisplay && <span className="refl-timer">{timerDisplay}</span>}
             </button>
             <div className="refl-tap-label">

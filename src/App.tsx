@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSavedActivities } from './hooks/useSavedActivities';
 import { logEvent } from './lib/analytics';
+import { syncOnboarding } from './lib/onboardingApi';
 import './styles.css';
 import type { Screen } from './types';
 
@@ -58,6 +59,14 @@ export default function App() {
   const stored = loadProfile();
   // Returning users with a saved profile land on Explore, not onboarding.
   const [screen, setScreen] = useState<Screen>(stored.age != null ? 'results' : 'welcome');
+  // First-timers must finish onboarding; only returning users may skip it.
+  const [hasOnboarded] = useState(stored.age != null);
+
+  function attemptSkip(): boolean {
+    if (!hasOnboarded) return false;
+    showScreen('results');
+    return true;
+  }
   const { saved, toggle: toggleSaved, isSaved } = useSavedActivities();
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
   const [expandActivityId, setExpandActivityId] = useState<string | null>(null);
@@ -85,6 +94,18 @@ export default function App() {
         emotionHandling: selAnswers.emotionHandling,
       } satisfies StoredProfile));
     } catch { /* private mode — profile just won't persist */ }
+    // Mirror profile edits into the onboarding table (skip pre-onboarding emptiness).
+    const hasAnything = selectedAge != null || selectedChallenges.size > 0
+      || customChallengeText.trim() !== '' || selAnswers.selDefinition !== '' || selAnswers.emotionHandling !== '';
+    if (hasAnything) {
+      syncOnboarding({
+        age: selectedAge,
+        challengeIds: [...selectedChallenges],
+        customText: customChallengeText,
+        selDefinition: selAnswers.selDefinition,
+        emotionHandling: selAnswers.emotionHandling,
+      });
+    }
   }, [selectedAge, selectedChallenges, customChallengeText, selAnswers]);
 
   function showScreen(s: Screen) {
@@ -120,6 +141,7 @@ export default function App() {
         <AgeScreen
           showScreen={showScreen}
           showResults={showResults}
+          onSkip={attemptSkip}
           onAgeSelect={setSelectedAge}
         />
       )}
@@ -127,6 +149,7 @@ export default function App() {
         <ChallengeScreen
           showScreen={showScreen}
           showResults={showResults}
+          onSkip={attemptSkip}
           onChallengeSelect={(ids, custom) => {
             setSelectedChallenges(ids);
             setCustomChallengeText(custom);
@@ -136,6 +159,7 @@ export default function App() {
       {screen === 'sel' && (
         <SelScreen
           showResults={showResults}
+          onSkip={attemptSkip}
           selectedAge={selectedAge}
           selectedChallenges={selectedChallenges}
           customChallengeText={customChallengeText}

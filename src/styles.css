@@ -2125,30 +2125,43 @@ html, body {
 }
 
 .refl-prompt-card {
-    background: #d6e475;
-    border-radius: 16px;
-    padding: 12px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    background: white;
+    border-radius: 14px;
+    padding: 4px 16px;
+    box-shadow: 0 0 0.5px rgba(66,71,76,0.32), 0 4px 8px rgba(66,71,76,0.05);
 }
 
 .refl-prompt-q {
-    background: white;
-    border-radius: 10px;
-    padding: 10px 12px;
+    position: relative;
+    padding: 12px 0 12px 20px;
     font-family: 'Montserrat', -apple-system, sans-serif;
     font-size: 13px;
     font-weight: 500;
     color: #3d3935;
+    line-height: 1.5;
+    border-bottom: 1px solid #f1ece2;
 }
+.refl-prompt-q:last-child { border-bottom: none; }
+
+.refl-prompt-q::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: #9CD3F8;
+}
+.refl-prompt-q:nth-child(2)::before { background: #F9A3C4; }
+.refl-prompt-q:nth-child(3)::before { background: #FDD15E; }
 
 .refl-record-area {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: 28px;
 }
 
 .refl-record-btn {
@@ -2163,6 +2176,19 @@ html, body {
     transition: transform 0.1s;
 }
 .refl-record-btn:active { transform: scale(0.95); }
+
+.refl-record-circle {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    border: 3px solid #3d3935;
+    background: #faf8f5; /* match the screen background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+.refl-record-circle.recording { background: #F9A3C4; }
 
 .refl-btn-icon {
     display: flex;
@@ -2610,6 +2636,112 @@ html, body {
     font-size: 13px;
     color: #6b6761;
     margin-top: 4px;
+}
+
+/* ── Community: activity filter dropdown ──── */
+.community-filter-wrap {
+    position: relative;
+    align-self: flex-start;
+    z-index: 20;
+}
+
+.community-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #3d3935;
+    cursor: pointer;
+    box-shadow: 0 0 0.5px rgba(66,71,76,0.32), 0 4px 8px rgba(66,71,76,0.05);
+}
+
+.community-filter-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 210px;
+    max-height: 264px;
+    overflow-y: auto;
+    background: white;
+    border-radius: 14px;
+    padding: 6px;
+    box-shadow: 0 0 0.5px rgba(66,71,76,0.32), 0 8px 24px rgba(66,71,76,0.16);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.community-filter-item {
+    background: none;
+    border: none;
+    border-radius: 9px;
+    padding: 9px 12px;
+    text-align: left;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    color: #3d3935;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.community-filter-item:hover { background: #faf6ef; }
+.community-filter-item.active {
+    background: #d6e475;
+    font-weight: 700;
+}
+
+/* Exit button — right-aligned counterpart to .back-btn */
+.exit-btn {
+    margin-left: auto;
+}
+
+/* ── Onboarding: skip blocked message ─────── */
+.onboard-skip-msg {
+    background: white;
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin: 8px 20px 0;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 12.5px;
+    color: #3d3935;
+    line-height: 1.5;
+    box-shadow: 0 0 0.5px rgba(66,71,76,0.32), 0 4px 12px rgba(66,71,76,0.10);
+    animation: skipmsg-pop 0.25s ease-out;
+}
+@keyframes skipmsg-pop {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Community: replies under reflections ─── */
+.ce-reply {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #faf6ef;
+    border-radius: 10px;
+    border-left: 3px solid #d6e475;
+}
+
+.ce-reply-meta {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 10.5px;
+    color: #9d9da0;
+    margin-bottom: 3px;
+}
+
+.ce-reply-text {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-size: 12.5px;
+    color: #3d3935;
+    line-height: 1.55;
 }
 
 /* ── Community: browse by activity ────────── */

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import BackButton from '../components/BackButton';
 import { EXPLORE_ACTS, COMMUNITY_REFLECTIONS, ACTIVITIES } from '../data/activities';
-import { fetchSharedReflections, likeReflection, timeAgo } from '../lib/communityApi';
+import { fetchSharedReflections, fetchReplies, postReply, postVoiceReply, likeReflection, timeAgo } from '../lib/communityApi';
+import type { ReflectionReply } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
 import type { CommunityReflection, Screen } from '../types';
 
@@ -53,6 +54,17 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
   const [liveRefl, setLiveRefl] = useState<(CommunityReflection & { liveId: string })[]>([]);
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
 
+  // Public replies for this activity, grouped under each reflection.
+  const [replyList, setReplyList] = useState<ReflectionReply[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchReplies(actId)
+      .then((rows) => { if (!cancelled) setReplyList(rows); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [actId]);
+
   useEffect(() => {
     logEvent('community_activity_opened', { activityId: actId });
     let cancelled = false;
@@ -83,6 +95,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
     setLikedIds((prev) => new Set(prev).add(liveId));
     setLiveRefl((prev) => prev.map((r) => (r.liveId === liveId ? { ...r, likes: r.likes + 1 } : r)));
     likeReflection(liveId).catch(() => {});
+    logEvent('reflection_liked', { activityId: actId, payload: { reflection: liveId } });
   }
 
   // Keyed by card index (the list grows when live reflections arrive).
@@ -93,6 +106,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
   // Reply recording refs (one per card)
   const mrRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const replyMimeRef = useRef('audio/webm');
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const secondsRef = useRef(0);
   const activeIdxRef = useRef<number | null>(null);
@@ -150,6 +164,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
       const mr = new MediaRecorder(stream, { mimeType });
       mrRef.current = mr;
       chunksRef.current = [];
+      replyMimeRef.current = mimeType;
       activeIdxRef.current = idx;
 
       mr.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data); };
@@ -177,13 +192,50 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
     chunksRef.current = [];
   }
 
+  function replyRef(idx: number): string {
+    return reflections[idx]?.liveId ?? `seed-${actId}-${idx}`;
+  }
+
   function sendReply(idx: number) {
     const r = getReply(idx);
-    const hasText = r.inputText.trim().length > 0;
+    const text = r.inputText.trim();
     const hasAudio = chunksRef.current.length > 0 && !r.isRecording;
-    if (!hasText && !hasAudio) {
+    if (!text && !hasAudio) {
       alert('Please type a reply or record a voice note first.');
       return;
+    }
+    const ref = replyRef(idx);
+    logEvent('reflection_replied', {
+      activityId: actId,
+      payload: { reflection: ref, text: text || null, voice: hasAudio },
+    });
+    if (text) {
+      // Optimistic append; the row persists for every visitor.
+      setReplyList((prev) => [...prev, {
+        id: `local-${Date.now()}`,
+        created_at: new Date().toISOString(),
+        reflection_ref: ref,
+        activity_id: actId,
+        reply_text: text,
+        kind: 'text',
+      }]);
+      postReply(ref, actId, text).catch(() => {});
+    } else if (hasAudio) {
+      // Voice note: audio is stored and transcribed server-side; the
+      // transcript appears in the thread once it comes back.
+      const audio = new Blob(chunksRef.current, { type: replyMimeRef.current });
+      postVoiceReply(ref, actId, audio)
+        .then((transcript) => {
+          setReplyList((prev) => [...prev, {
+            id: `local-${Date.now()}`,
+            created_at: new Date().toISOString(),
+            reflection_ref: ref,
+            activity_id: actId,
+            reply_text: transcript,
+            kind: 'voice',
+          }]);
+        })
+        .catch(() => {});
     }
     cancelReply(idx);
     setConfirmed((prev) => ({ ...prev, [idx]: true }));
@@ -286,6 +338,16 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
                   Reply sent!
                 </div>
               )}
+
+              {/* Replies from other parents */}
+              {replyList.filter((rp) => rp.reflection_ref === replyRef(idx)).map((rp) => (
+                <div className="ce-reply" key={rp.id}>
+                  <div className="ce-reply-meta">
+                    A parent{rp.kind === 'voice' ? ' · 🎙 voice note' : ''} · {timeAgo(rp.created_at)}
+                  </div>
+                  <div className="ce-reply-text">{rp.reply_text}</div>
+                </div>
+              ))}
             </div>
           ))}
         </div>

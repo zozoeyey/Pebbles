@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import BackButton from '../components/BackButton';
+import ExitButton from '../components/ExitButton';
 import { EXPLORE_ACTS, ACT_CONFIGS } from '../data/activities';
 import { logEvent } from '../lib/analytics';
 import type { Screen } from '../types';
@@ -59,6 +60,7 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
       <div className="detail-v2-wrap">
         <div className="detail-v2-topbar">
           <BackButton onClick={() => showScreen('results')} />
+          <ExitButton onClick={() => showScreen('results')} />
         </div>
         <div className="detail-v2-scroll">
           <div>
