@@ -495,6 +495,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'emotion-charades': {
     title: 'Emotion Charades',
+    audioSrc: 'assets/emotional-charades.mp3',
+    stepTimes: [0, 12.9, 17.9, 24.5, 32.9, 40.2],
     steps: [
       'Write feeling words (or draw simple faces) on slips of paper — happy, sad, angry, scared, surprised, excited — and drop them in a bowl.',
       'Take turns drawing a slip without showing anyone.',
