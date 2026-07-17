@@ -6,7 +6,7 @@
     --text: #1a1a2e;
     --text-muted: #888;
     --surface: #ffffff;
-    --bg: #f4f3fd;
+    --bg: #faf8f5; /* matches every screen surface — no colored safe-area strips */
     --border: #e8e4f8;
     --green: #00b894;
     --orange: #fd9644;
