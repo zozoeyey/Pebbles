@@ -581,6 +581,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'flower-breathing': {
     title: 'Flower Breathing',
+    audioSrc: 'assets/flower-breathing.mp3',
+    stepTimes: [0, 5.8, 11.3, 18.7, 22.9, 29.2],
     steps: [
       'Sit together somewhere comfy and imagine holding a beautiful flower.',
       'What flower is it? What color? Let your child describe it.',
