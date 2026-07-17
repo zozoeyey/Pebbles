@@ -38,6 +38,24 @@ function actSkills(a: ExploreAct): string[] {
   return a.skills;
 }
 
+// Cache AI picks per onboarding-answer set, so suggestions are chosen ONCE and
+// stay stable across navigation and app restarts (no re-rolling when you open a
+// card and come back). Re-fetches only when the parent's answers actually change.
+const AI_CACHE_KEY = 'pebbles_ai_suggestions';
+
+function readSuggestionCache(key: string): string[] | null {
+  try {
+    const raw = localStorage.getItem(AI_CACHE_KEY);
+    if (!raw) return null;
+    const { key: k, ids } = JSON.parse(raw);
+    return k === key && Array.isArray(ids) ? ids : null;
+  } catch { return null; }
+}
+
+function writeSuggestionCache(key: string, ids: string[]) {
+  try { localStorage.setItem(AI_CACHE_KEY, JSON.stringify({ key, ids })); } catch { /* ignore */ }
+}
+
 export default function ResultsScreen({
   showScreen, onSelectActivity, activeTab, isSaved, toggleSaved,
   selectedAge, selectedChallenges, customChallengeText, selAnswers,
@@ -48,18 +66,6 @@ export default function ResultsScreen({
   const [skillVal, setSkillVal] = useState('all');
   const [timeVal, setTimeVal] = useState('all');
 
-  // AI-picked suggestions from the Claude edge function. Null until it returns.
-  const [aiIds, setAiIds] = useState<string[] | null>(null);
-  const [aiState, setAiState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
-
-  useEffect(() => {
-    setSelectedId(null);
-    setSearchTerm('');
-    setFilterOpen(false);
-    setSkillVal('all');
-    setTimeVal('all');
-  }, []);
-
   const childLabel = selectedAge ? `your ${selectedAge}-year-old` : 'your child';
   const hasOnboarding = selectedAge != null || selectedChallenges.size > 0 || customChallengeText.trim() !== '';
 
@@ -67,8 +73,23 @@ export default function ResultsScreen({
   const challengeIds = [...selectedChallenges].sort();
   const onboardKey = `${selectedAge ?? ''}|${challengeIds.join(',')}|${customChallengeText.trim()}|${selAnswers.selDefinition}|${selAnswers.emotionHandling}`;
 
+  // Seed from cache so returning to Explore shows the SAME picks instantly.
+  const cachedIds = readSuggestionCache(onboardKey);
+  const [aiIds, setAiIds] = useState<string[] | null>(cachedIds);
+  const [aiState, setAiState] = useState<'idle' | 'loading' | 'done' | 'error'>(cachedIds ? 'done' : 'idle');
+
+  useEffect(() => {
+    setSearchTerm('');
+    setFilterOpen(false);
+    setSkillVal('all');
+    setTimeVal('all');
+  }, []);
+
   useEffect(() => {
     if (!hasOnboarding) { setAiIds(null); setAiState('idle'); return; }
+    // Already have picks for these exact answers — keep them, don't re-roll.
+    const cached = readSuggestionCache(onboardKey);
+    if (cached) { setAiIds(cached); setAiState('done'); return; }
     let cancelled = false;
     setAiState('loading');
     const labelFor = (id: string) => PRESET_CHALLENGES.find((c) => c.id === id)?.label ?? id;
@@ -85,7 +106,9 @@ export default function ResultsScreen({
         if (cancelled) return;
         const valid = list.filter((s) => EXPLORE_ACTS.some((a) => a.id === s.id)).slice(0, 2);
         if (valid.length === 0) { setAiState('error'); return; }
-        setAiIds(valid.map((s) => s.id));
+        const ids = valid.map((s) => s.id);
+        writeSuggestionCache(onboardKey, ids);
+        setAiIds(ids);
         setAiState('done');
       })
       .catch(() => { if (!cancelled) setAiState('error'); });
