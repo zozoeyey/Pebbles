@@ -516,6 +516,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'whats-my-temperature': {
     title: "What's My Temperature?",
+    audioSrc: 'assets/whats-my-temperature.mp3',
+    stepTimes: [0, 6.8, 13.6, 19.0, 25.1, 32.6],
     steps: [
       'Draw a thermometer together — cool blue at the bottom, warm red at the top.',
       'Cool means calm and relaxed. Hot means a big, strong feeling.',
