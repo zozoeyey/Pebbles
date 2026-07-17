@@ -634,6 +634,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'emotion-portraits': {
     title: 'Emotion Portraits',
+    audioSrc: 'assets/emotional-portraits.mp3',
+    stepTimes: [0, 10.6, 19.3, 27.4, 34.6, 41.5],
     steps: [
       'Set out paper and markers, and pick 4–5 feelings to draw — start with happy, sad, angry, surprised, scared.',
       'Before drawing each one, make the face together in a mirror. What are your eyebrows doing? Your mouth?',
