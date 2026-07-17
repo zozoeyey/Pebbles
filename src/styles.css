@@ -2260,6 +2260,34 @@ html, body {
     width: 100%;
 }
 
+.refl-tab-row {
+    display: flex;
+    gap: 6px;
+    background: #f1ece2;
+    border-radius: 12px;
+    padding: 4px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.refl-tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    padding: 8px;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 12.5px;
+    color: #9b9591;
+    cursor: pointer;
+}
+.refl-tab.active {
+    background: white;
+    color: #3d3935;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
 /* Result actions — one consistent stack: primary, secondary, text link */
 .refl-actions {
     width: 100%;

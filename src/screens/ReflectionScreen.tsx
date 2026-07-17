@@ -32,6 +32,7 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
     state,
     isRecording,
     summary,
+    transcript,
     reflectionId,
     error,
     timerDisplay,
@@ -41,6 +42,7 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
   } = useAudioRecorder(actId, actId, selectedAge);
 
   const [shareState, setShareState] = useState<'idle' | 'sharing' | 'shared' | 'error'>('idle');
+  const [resultTab, setResultTab] = useState<'summary' | 'transcript'>('summary');
   const completedLogged = useRef(false);
 
   // Completing counts once, whichever way they leave after recording.
@@ -174,10 +176,29 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
         {/* Result state */}
         {state === 'result' && (
           <div className="refl-state-box">
+            {/* Toggle between the AI note and the parent's exact words */}
+            {transcript && (
+              <div className="refl-tab-row">
+                <button
+                  className={`refl-tab${resultTab === 'summary' ? ' active' : ''}`}
+                  onClick={() => setResultTab('summary')}
+                >
+                  Summary
+                </button>
+                <button
+                  className={`refl-tab${resultTab === 'transcript' ? ' active' : ''}`}
+                  onClick={() => setResultTab('transcript')}
+                >
+                  What you said
+                </button>
+              </div>
+            )}
             <div className="refl-summary-box">
-              {summaryParagraphs.map((p, i) => (
-                <p key={i} style={{ marginBottom: 6 }}>{p}</p>
-              ))}
+              {resultTab === 'transcript'
+                ? <p>{transcript}</p>
+                : summaryParagraphs.map((p, i) => (
+                    <p key={i} style={{ marginBottom: 6 }}>{p}</p>
+                  ))}
             </div>
 
             <div className="refl-actions">
@@ -191,7 +212,8 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
                     {shareState === 'sharing' ? 'Sharing…' : shareState === 'error' ? 'Try sharing again' : 'Share to Community'}
                   </button>
                   <div className="refl-share-note">
-                    Shared anonymously — just this summary and your child's age. Never your recording.
+                    Sharing posts your <strong>Summary</strong> to Community, anonymously with your
+                    child's age. Your recording and exact words ("What you said") stay private.
                   </div>
                 </>
               )}

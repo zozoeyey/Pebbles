@@ -8,6 +8,8 @@ interface UseAudioRecorderResult {
   state: RecorderState;
   isRecording: boolean;
   summary: string;
+  /** Raw Whisper transcript — the parent's own words, shown for trust. */
+  transcript: string;
   /** DB id of the saved reflection — null until processing succeeds. */
   reflectionId: string | null;
   error: string;
@@ -24,6 +26,7 @@ export function useAudioRecorder(
 ): UseAudioRecorderResult {
   const [state, setState] = useState<RecorderState>('idle');
   const [summary, setSummary] = useState('');
+  const [transcript, setTranscript] = useState('');
   const [reflectionId, setReflectionId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [timerDisplay, setTimerDisplay] = useState('');
@@ -44,6 +47,7 @@ export function useAudioRecorder(
     secondsRef.current = 0;
     setTimerDisplay('');
     setSummary('');
+    setTranscript('');
     setReflectionId(null);
     setError('');
     setState('idle');
@@ -71,8 +75,9 @@ export function useAudioRecorder(
           body: form,
         });
         if (!res.ok) throw new Error(await res.text());
-        const { summary: s, id } = (await res.json()) as { summary: string; id: string | null };
+        const { summary: s, transcript: t, id } = (await res.json()) as { summary: string; transcript: string; id: string | null };
         setSummary(s);
+        setTranscript(t ?? '');
         setReflectionId(id ?? null);
         setState('result');
       } catch (err) {
@@ -129,6 +134,7 @@ export function useAudioRecorder(
     state,
     isRecording: state === 'recording',
     summary,
+    transcript,
     reflectionId,
     error,
     timerDisplay,
