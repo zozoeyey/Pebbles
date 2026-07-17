@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import BackButton from '../components/BackButton';
 import { EXPLORE_ACTS, ACT_CONFIGS } from '../data/activities';
+import { logEvent } from '../lib/analytics';
 import type { Screen } from '../types';
 
 interface Props {
@@ -28,10 +29,11 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
+    if (selectedActivityId) logEvent('activity_viewed', { activityId: selectedActivityId });
     return () => {
       if (videoRef.current) videoRef.current.pause();
     };
-  }, []);
+  }, [selectedActivityId]);
 
   const actMaybe = EXPLORE_ACTS.find((a) => a.id === selectedActivityId);
   if (!actMaybe) return null;

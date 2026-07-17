@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { PRESET_CHALLENGES } from '../data/activities';
+import { getSessionId } from '../lib/session';
+import { isTrackingOff, setTrackingOff } from '../lib/analytics';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
 import AvatarBubble from '../components/AvatarBubble';
@@ -28,6 +30,13 @@ export default function ProfileScreen({
   const [custom, setCustom] = useState(customChallengeText);
   const [q1, setQ1] = useState(selAnswers.selDefinition);
   const [q2, setQ2] = useState(selAnswers.emotionHandling);
+  const [trackingOff, setTrackingOffState] = useState(isTrackingOff);
+
+  function toggleTracking() {
+    const next = !trackingOff;
+    setTrackingOff(next);
+    setTrackingOffState(next);
+  }
 
   function toggleChallenge(id: string) {
     const next = new Set(selectedChallenges);
@@ -115,7 +124,15 @@ export default function ProfileScreen({
           <button className="profile-redo-btn" onClick={() => showScreen('welcome')}>
             Redo onboarding
           </button>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14, cursor: 'pointer', fontFamily: "'Montserrat',sans-serif", fontSize: 12, color: '#6b6761', fontWeight: 500 }}>
+            <input type="checkbox" checked={trackingOff} onChange={toggleTracking} />
+            This is a test device — don't count my usage
+          </label>
           <div className="profile-hint" style={{ marginTop: 10 }}>
+            Anonymous ID: <strong>{getSessionId()}</strong> — Pebbles collects anonymous
+            usage data under this ID to improve the app. No names or emails are stored.
+          </div>
+          <div className="profile-hint" style={{ marginTop: 8 }}>
             Activities adapted from UC Berkeley's Greater Good in Education, Everyday Mental
             Health Classroom Resource, and Coping Skills for Kids.
           </div>

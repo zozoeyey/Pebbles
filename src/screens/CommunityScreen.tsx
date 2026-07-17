@@ -1,20 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
-import AvatarBubble from '../components/AvatarBubble';
+import AvatarBubble, { PEBBLE_PATH } from '../components/AvatarBubble';
+import { EXPLORE_ACTS, COMMUNITY_REFLECTIONS } from '../data/activities';
 import { fetchSharedReflections, likeReflection, timeAgo } from '../lib/communityApi';
 import type { SharedReflection } from '../lib/communityApi';
 
-const PEBBLE_PATH =
-  'M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z';
-
 const HEART_PATH =
   'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z';
-
-interface Props {
-  showScreen: (s: Screen) => void;
-  onExpandCard: (activityId: string) => void;
-}
 
 const BUBBLE_COLORS: [string, string][] = [
   ['#fdd15e', '#9CD3F8'],
@@ -22,6 +15,11 @@ const BUBBLE_COLORS: [string, string][] = [
   ['#F9A3C4', '#FDD15E'],
   ['#9CD3F8', '#d6e475'],
 ];
+
+interface Props {
+  showScreen: (s: Screen) => void;
+  onExpandCard: (activityId: string) => void;
+}
 
 // A reflection a parent chose to share, fetched from Supabase.
 function LiveCard({ r, index }: { r: SharedReflection; index: number }) {
@@ -55,7 +53,7 @@ function LiveCard({ r, index }: { r: SharedReflection; index: number }) {
       </div>
       <div className="community-activity-tag">Activity: {r.activity_title}</div>
       <p className="community-card-text" style={{ whiteSpace: 'pre-line' }}>
-        {r.summary.replace(/^[-•*]\s*/gm, '')}
+        {r.summary.replace(/\*/g, '').replace(/^[-•]\s*/gm, '')}
       </p>
       <div className="community-card-footer">
         <div
@@ -80,9 +78,19 @@ export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
     let cancelled = false;
     fetchSharedReflections()
       .then((rows) => { if (!cancelled) setLive(rows); })
-      .catch(() => {}); // feed still shows sample cards if the fetch fails
+      .catch(() => {}); // browse list still works offline via seeded counts
     return () => { cancelled = true; };
   }, []);
+
+  // Reflections per activity: live shared rows + the seeded examples.
+  const liveCounts = new Map<string, number>();
+  live.forEach((r) => liveCounts.set(r.activity_id, (liveCounts.get(r.activity_id) ?? 0) + 1));
+  const activities = EXPLORE_ACTS
+    .map((a) => ({
+      act: a,
+      count: (liveCounts.get(a.id) ?? 0) + (COMMUNITY_REFLECTIONS[a.id]?.length ?? 0),
+    }))
+    .sort((x, y) => y.count - x.count);
 
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -91,77 +99,43 @@ export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
         <div className="community-header-row">
           <div>
             <div className="community-heading">Community</div>
-            <div className="community-subheading">See what other parents are reflecting on</div>
+            <div className="community-subheading">See what other parents tried, activity by activity</div>
           </div>
           <AvatarBubble />
         </div>
 
-        {/* Live shared reflections (newest first) */}
-        {live.map((r, i) => <LiveCard key={r.id} r={r} index={i} />)}
-
-        {/* Card 1 */}
-        <div className="community-card">
-          <div className="community-card-head">
-            <div className="community-avatar-bub" style={{ background: '#fdd15e' }}>
-              <svg width="30" height="30" viewBox="0 0 138 138" fill="none">
-                <path d={PEBBLE_PATH} fill="#9CD3F8"/>
-                <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
-                <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+        {/* Browse by activity — tap to see all its reflections */}
+        <div className="ce-section-label" style={{ marginTop: 4 }}>BY ACTIVITY</div>
+        <div className="community-activity-list">
+          {activities.map(({ act, count }, i) => (
+            <div key={act.id} className="community-activity-row" onClick={() => onExpandCard(act.id)}>
+              <div className="community-avatar-bub" style={{ background: BUBBLE_COLORS[i % BUBBLE_COLORS.length][0], width: 38, height: 38, borderRadius: 19, flexShrink: 0 }}>
+                <svg width="22" height="22" viewBox="0 0 138 138" fill="none">
+                  <path d={PEBBLE_PATH} fill={BUBBLE_COLORS[i % BUBBLE_COLORS.length][1]}/>
+                  <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
+                  <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
+                </svg>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="community-activity-row-title">{act.title.split(':')[0]}</div>
+                <div className="community-activity-row-meta">
+                  {act.skills[0]} · {count === 0 ? 'No reflections yet — be the first!' : `${count} reflection${count === 1 ? '' : 's'}`}
+                </div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9d9da0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                <path d="M9 18l6-6-6-6"/>
               </svg>
             </div>
-            <div>
-              <div className="community-card-name">Parent (child age 8)</div>
-              <div className="community-card-time">2h ago</div>
-            </div>
-          </div>
-          <div className="community-activity-tag">Activity: Freeze Feelings</div>
-          <p className="community-card-text">
-            The activity created space for more open conversation than usual, with the child sharing feelings they typically don't express—showing how intentional slowing down unlocked emotional sharing.
-          </p>
-          <div className="community-card-footer">
-            <div className="community-card-likes">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6761" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d={HEART_PATH}/>
-              </svg>
-              24 likes
-            </div>
-            <div className="community-card-see" onClick={() => onExpandCard('freeze-feelings')} style={{ cursor: 'pointer' }}>
-              See full reflection →
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Card 2 */}
-        <div className="community-card">
-          <div className="community-card-head">
-            <div className="community-avatar-bub" style={{ background: '#d6e475' }}>
-              <svg width="30" height="30" viewBox="0 0 138 138" fill="none">
-                <path d={PEBBLE_PATH} fill="#F9A3C4"/>
-                <ellipse cx="61.5" cy="34" rx="7" ry="9" fill="#666"/>
-                <ellipse cx="80.5" cy="34" rx="7" ry="9" fill="#666"/>
-              </svg>
-            </div>
-            <div>
-              <div className="community-card-name">Parent (child age 5)</div>
-              <div className="community-card-time">2h ago</div>
-            </div>
-          </div>
-          <div className="community-activity-tag">Activity: Emotional Playbook</div>
-          <p className="community-card-text">
-            Maya was able to name basic emotions easily and even added her own ("frustrated" when things don't go her way); she seemed especially engaged when we connected the scenario to something that actually happened at school.
-          </p>
-          <div className="community-card-footer">
-            <div className="community-card-likes">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6761" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d={HEART_PATH}/>
-              </svg>
-              18 likes
-            </div>
-            <div className="community-card-see" onClick={() => onExpandCard('emotional-intelligence-playbook')} style={{ cursor: 'pointer' }}>
-              See full reflection →
-            </div>
-          </div>
-        </div>
+        {/* Latest shared reflections across all activities */}
+        {live.length > 0 && (
+          <>
+            <div className="ce-section-label" style={{ marginTop: 16 }}>RECENT REFLECTIONS</div>
+            {live.slice(0, 5).map((r, i) => <LiveCard key={r.id} r={r} index={i} />)}
+          </>
+        )}
       </div>
 
       {/* Bottom nav */}

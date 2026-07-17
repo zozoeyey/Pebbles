@@ -5,9 +5,9 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     id: 'freeze-feelings',
     title: 'Freeze Feelings: An SEL Kernels Brain Game',
     time: '15 mins',
-    skills: ['Identifying emotions', 'Self-regulation'],
+    skills: ['Impulse control', 'Interoception'],
     timeVal: '10to20',
-    ages: 'Ages 4–7',
+    ages: 'Ages 3–7',
     refs: '18 reflections',
     desc: 'Kids move around and freeze when an emotion is called out — a playful way to connect movement with feeling words.',
     detailDesc:
@@ -15,10 +15,11 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     materials: ['Music to dance to (any upbeat songs work!)'],
     tip: 'Model each feeling yourself, especially for younger children — exaggerate your facial expressions and body pose to help them understand.',
     url: 'https://ggie.berkeley.edu/practice/freeze-feelings-an-sel-kernels-brain-game/#tab__2',
-    videoUrl: 'assets/video.mp4',
-    videoTitle: 'Identifying Emotions',
+    videoUrl: 'assets/Impulse-Control.mp4',
+    videoThumb: 'assets/impulse control open.svg',
+    videoTitle: 'Impulse Control',
     videoDesc:
-      'Helping kids name their feelings is one of the most powerful things a parent can do — and this activity puts that idea into motion.',
+      'Stopping mid-dance and holding a pose is impulse control in its purest, most playful form. This quick intro shows how that "freeze" moment builds the pause kids need for big feelings.',
     whenHelps:
       'Good when your child has lots of energy or finds it hard to stop and pause — a playful way to practice catching a feeling and showing it.',
     olderKids:
@@ -30,7 +31,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     time: '15 mins',
     skills: ['Identifying emotions'],
     timeVal: '10to20',
-    ages: 'Ages 4–9',
+    ages: 'Ages 3–9',
     refs: '12 reflections',
     desc: 'Kids take turns acting out emotions for others to guess — a fun, active way to recognize and name feelings.',
     detailDesc:
@@ -53,7 +54,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     time: '10 mins',
     skills: ['Interoception'],
     timeVal: '10to20',
-    ages: 'Ages 4–9',
+    ages: 'Ages 3–9',
     refs: '18 reflections',
     desc: 'Kids squeeze and release different muscle groups to feel the difference between tension and calm in their bodies.',
     detailDesc:
@@ -73,7 +74,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     id: 'whats-my-temperature',
     title: "What's My Temperature?",
     time: '15 mins',
-    skills: ['Interoception', 'Identifying emotions'],
+    skills: ['Identifying emotions'],
     timeVal: '10to20',
     ages: 'Ages 5–10',
     refs: '14 reflections',
@@ -83,11 +84,10 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     materials: ['A printed or hand-drawn thermometer', 'Markers or crayons'],
     tip: "Share your own temperature first ('I'm feeling like a 7 — a little frazzled'). Naming your own intensity out loud makes it safe for them to do the same.",
     url: 'https://smho-smso.ca/emhc/identification-and-management-of-emotions/gauging/whats-my-temperature/',
-    videoUrl: 'assets/Interoception.mp4',
-    videoThumb: 'assets/it open.svg',
-    videoTitle: 'Interoception',
+    videoUrl: 'assets/video.mp4',
+    videoTitle: 'Identifying Emotions',
     videoDesc:
-      'Gauging how strong a feeling is starts with noticing it in the body. This quick intro on interoception shows kids how to read those internal signals — the first step to checking their own "temperature."',
+      'Naming a feeling is step one — naming how BIG it is comes next. This quick intro shows why putting words (and numbers) on emotions gives kids power over them.',
     whenHelps:
       'Useful when your child feels things intensely but struggles to explain how much — a quick check-in they can use anywhere.',
     olderKids:
@@ -97,9 +97,9 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     id: 'wiggle-cool-down',
     title: 'Wiggle Cool Down: An SEL Kernels Brain Game',
     time: '5 mins',
-    skills: ['Self-regulation', 'Interoception'],
+    skills: ['Impulse control'],
     timeVal: 'under10',
-    ages: 'Ages 4–7',
+    ages: 'Ages 3–7',
     refs: '9 reflections',
     desc: 'Kids shake out extra energy, then follow a short sequence of calming moves to settle their bodies and brains and get ready to focus.',
     detailDesc:
@@ -121,7 +121,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     id: 'musical-drawings',
     title: 'Musical Drawings: Turning Mistakes into Art',
     time: '25 mins',
-    skills: ['Self-regulation'],
+    skills: ['Identifying emotions'],
     timeVal: '20to30',
     ages: 'Ages 5–10',
     refs: '6 reflections',
@@ -131,11 +131,10 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     materials: ['Paper', 'Markers or crayons', 'A few songs with different moods'],
     tip: 'Model it yourself — make an obvious "oops" mark and turn it into something on purpose. Focus on expression and reflection, not on making it look perfect.',
     url: 'https://www.eduref.org/lessons/interdisciplinary/int0091',
-    videoUrl: 'assets/Impulse-Control.mp4',
-    videoThumb: 'assets/impulse control open.svg',
-    videoTitle: 'Impulse Control',
+    videoUrl: 'assets/video.mp4',
+    videoTitle: 'Identifying Emotions',
     videoDesc:
-      'Rolling with a "mistake" instead of reacting to it takes impulse control — pausing that first frustrated urge. This quick intro sets up the calm, flexible mindset this activity practices.',
+      'Frustration at a "mistake" is a feeling kids can learn to spot and name mid-moment. This quick intro shows how naming emotions — like the ones music and mess-ups stir up — takes away their sting.',
     whenHelps:
       'Good for a child who gets frustrated or gives up when things are not perfect — a low-stakes way to practice rolling with it.',
     olderKids:
@@ -145,9 +144,9 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     id: 'balloon-breathing',
     title: 'Balloon Breathing',
     time: '5 mins',
-    skills: ['Interoception', 'Self-regulation'],
+    skills: ['Interoception', 'Impulse control'],
     timeVal: 'under10',
-    ages: 'Ages 4–8',
+    ages: 'Ages 3–8',
     refs: '8 reflections',
     desc: 'Kids breathe in slowly to fill their belly like a balloon, then let it deflate — a simple way to feel what a deep, calming breath is like.',
     detailDesc:
@@ -169,9 +168,9 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     id: 'flower-breathing',
     title: 'Flower Breathing',
     time: '5 mins',
-    skills: ['Interoception'],
+    skills: ['Interoception', 'Impulse control'],
     timeVal: 'under10',
-    ages: 'Ages 4–7',
+    ages: 'Ages 3–7',
     refs: '7 reflections',
     desc: 'Kids imagine smelling a flower — a slow breath in through the nose, then a soft sigh out — turning deep breathing into pretend play.',
     detailDesc:
@@ -193,9 +192,9 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     id: 'bubble-breathing',
     title: 'Bubble Breathing',
     time: '5 mins',
-    skills: ['Self-regulation', 'Interoception'],
+    skills: ['Impulse control', 'Interoception'],
     timeVal: 'under10',
-    ages: 'Ages 4–8',
+    ages: 'Ages 3–8',
     refs: '5 reflections',
     desc: 'Kids blow real or imaginary bubbles with a slow, steady breath — blow too hard and the bubble pops, so gentle wins.',
     detailDesc:
@@ -739,11 +738,6 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
       'assets/steps/musical-drawings-6.svg',
     ],
   },
-};
-
-export const TOOLKIT_ACTIVE_DATES: Record<string, number[]> = {
-  '2026-05': [8, 12, 17, 18, 19],
-  '2026-04': [3, 10, 14, 22],
 };
 
 // Onboarding challenges parents can pick from. Shared by the onboarding screen and

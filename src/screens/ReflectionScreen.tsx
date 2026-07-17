@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PEER_REFLECTIONS } from '../data/activities';
 import BackButton from '../components/BackButton';
 import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { shareReflection } from '../lib/communityApi';
+import { logEvent } from '../lib/analytics';
 import type { Screen } from '../types';
 
 interface Props {
@@ -40,12 +41,18 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
 
   const [shareState, setShareState] = useState<'idle' | 'sharing' | 'shared' | 'error'>('idle');
 
+  useEffect(() => {
+    if (state === 'result') logEvent('reflection_submitted', { activityId: actId });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+
   async function handleShare() {
     if (!reflectionId) return;
     setShareState('sharing');
     try {
       await shareReflection(reflectionId);
       setShareState('shared');
+      logEvent('reflection_shared', { activityId: actId });
     } catch (e) {
       console.error(e);
       setShareState('error');
@@ -76,7 +83,7 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
 
         {/* Peer card — collapsible */}
         <div className="refl-peer-card">
-          <button className="refl-peer-toggle" onClick={() => setPeerOpen(o => !o)}>
+          <button className="refl-peer-toggle" onClick={() => setPeerOpen(o => { if (!o) logEvent('peer_reflection_opened', { activityId: actId }); return !o; })}>
             <div className="refl-peer-toggle-left">
               <div className="refl-peer-avatar">
                 <svg viewBox="0 0 138 138" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
@@ -203,7 +210,7 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
             )}
 
             <button className="refl-reset-btn" onClick={resetRecorder}>Record again</button>
-            <button className="refl-complete-btn" onClick={() => showScreen('results')}>Complete</button>
+            <button className="refl-complete-btn" onClick={() => { logEvent('activity_completed', { activityId: actId }); showScreen('results'); }}>Complete</button>
           </div>
         )}
 

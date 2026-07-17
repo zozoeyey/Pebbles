@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ACT_CONFIGS } from '../data/activities';
 import BackButton from '../components/BackButton';
 import { useActivityPlayer } from '../hooks/useActivityPlayer';
+import { logEvent } from '../lib/analytics';
+import { addTimeSpent } from '../lib/timeSpent';
 import type { ActConfig, Screen } from '../types';
 
 interface Props {
@@ -27,6 +29,12 @@ export default function ActivityScreen({ showScreen, selectedActivityId, onGoRef
 
   const [mode, setMode] = useState<'listen' | 'read'>(readOnly ? 'read' : 'listen');
   const [readStep, setReadStep] = useState(0);
+
+  useEffect(() => {
+    logEvent('activity_started', { activityId: id });
+    const startedAt = Date.now();
+    return () => addTimeSpent((Date.now() - startedAt) / 1000);
+  }, [id]);
 
   const {
     isPlaying,

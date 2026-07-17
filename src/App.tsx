@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSavedActivities } from './hooks/useSavedActivities';
+import { logEvent } from './lib/analytics';
 import './styles.css';
 import type { Screen } from './types';
 
@@ -68,6 +69,11 @@ export default function App() {
     selDefinition: stored.selDefinition,
     emotionHandling: stored.emotionHandling,
   });
+
+  // One event per app open — "sessions/week" = distinct session-days in SQL.
+  useEffect(() => {
+    logEvent('session_start');
+  }, []);
 
   useEffect(() => {
     try {

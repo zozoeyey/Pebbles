@@ -15,17 +15,15 @@ interface Props {
   onSaveCustom: (activity: CustomActivity) => void;
 }
 
-const SKILL_OPTIONS = ['Identifying emotions', 'Self-perception', 'Impulse & body control', 'Self-regulation', 'Social connection'];
+const SKILL_OPTIONS = ['Identifying emotions', 'Interoception', 'Impulse control'];
 
 function mockAiStructure(description: string): CustomActivity {
   const lower = description.toLowerCase();
 
   const skill =
-    lower.includes('calm') || lower.includes('breath') || lower.includes('relax') ? 'Self-regulation'
-    : lower.includes('body') || lower.includes('move') || lower.includes('stretch') ? 'Impulse & body control'
-    : lower.includes('feel') || lower.includes('emotion') || lower.includes('name') ? 'Identifying emotions'
-    : lower.includes('together') || lower.includes('share') || lower.includes('talk') ? 'Social connection'
-    : 'Self-perception';
+    lower.includes('calm') || lower.includes('breath') || lower.includes('relax') || lower.includes('body') ? 'Interoception'
+    : lower.includes('stop') || lower.includes('wait') || lower.includes('move') || lower.includes('slow') ? 'Impulse control'
+    : 'Identifying emotions';
 
   const firstLine = description.split(/[.!?\n]/)[0].trim();
   const title = firstLine.length > 6 && firstLine.length < 60

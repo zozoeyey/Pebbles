@@ -1,7 +1,16 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import BackButton from '../components/BackButton';
 import { EXPLORE_ACTS, COMMUNITY_REFLECTIONS, ACTIVITIES } from '../data/activities';
-import type { Screen } from '../types';
+import { fetchSharedReflections, likeReflection, timeAgo } from '../lib/communityApi';
+import { logEvent } from '../lib/analytics';
+import type { CommunityReflection, Screen } from '../types';
+
+const LIVE_COLORS: [string, string][] = [
+  ['#fdd15e', '#9CD3F8'],
+  ['#d6e475', '#F9A3C4'],
+  ['#F9A3C4', '#FDD15E'],
+  ['#9CD3F8', '#d6e475'],
+];
 
 const PEBBLE_PATH =
   'M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z';
@@ -37,11 +46,49 @@ interface Props {
 export default function CommunityExpandScreen({ showScreen, expandActivityId }: Props) {
   const actId = expandActivityId || 'freeze-feelings';
   const act = EXPLORE_ACTS.find((a) => a.id === actId) || ACTIVITIES.find((a) => a.id === actId);
-  const reflections = COMMUNITY_REFLECTIONS[actId] || [];
   const shortTitle = act ? act.title.split(':')[0] : actId;
 
-  const [replies, setReplies] = useState<ReplyState[]>(reflections.map(() => makeDefaultReply()));
-  const [confirmed, setConfirmed] = useState<boolean[]>(reflections.map(() => false));
+  // Live shared reflections for this activity, mapped into the card shape.
+  // `liveId` marks them likeable; the seeded examples below have none.
+  const [liveRefl, setLiveRefl] = useState<(CommunityReflection & { liveId: string })[]>([]);
+  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    logEvent('community_activity_opened', { activityId: actId });
+    let cancelled = false;
+    fetchSharedReflections(50, actId)
+      .then((rows) => {
+        if (cancelled) return;
+        setLiveRefl(rows.map((r, i) => ({
+          liveId: r.id,
+          age: r.child_age ?? 0,
+          time: timeAgo(r.created_at),
+          bg: LIVE_COLORS[i % LIVE_COLORS.length][0],
+          charFill: LIVE_COLORS[i % LIVE_COLORS.length][1],
+          text: r.summary.replace(/\*/g, '').replace(/^[-•]\s*/gm, ''),
+          likes: r.likes,
+        })));
+      })
+      .catch(() => {}); // seeded examples still render
+    return () => { cancelled = true; };
+  }, [actId]);
+
+  const reflections: (CommunityReflection & { liveId?: string })[] = [
+    ...liveRefl,
+    ...(COMMUNITY_REFLECTIONS[actId] || []),
+  ];
+
+  function handleLike(liveId: string) {
+    if (likedIds.has(liveId)) return;
+    setLikedIds((prev) => new Set(prev).add(liveId));
+    setLiveRefl((prev) => prev.map((r) => (r.liveId === liveId ? { ...r, likes: r.likes + 1 } : r)));
+    likeReflection(liveId).catch(() => {});
+  }
+
+  // Keyed by card index (the list grows when live reflections arrive).
+  const [replies, setReplies] = useState<Record<number, ReplyState>>({});
+  const [confirmed, setConfirmed] = useState<Record<number, boolean>>({});
+  const getReply = (idx: number) => replies[idx] ?? makeDefaultReply();
 
   // Reply recording refs (one per card)
   const mrRef = useRef<MediaRecorder | null>(null);
@@ -51,21 +98,25 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
   const activeIdxRef = useRef<number | null>(null);
 
   function updateReply(idx: number, patch: Partial<ReplyState>) {
-    setReplies((prev) => prev.map((r, i) => (i === idx ? { ...r, ...patch } : r)));
+    setReplies((prev) => ({ ...prev, [idx]: { ...(prev[idx] ?? makeDefaultReply()), ...patch } }));
   }
 
   function toggleReply(idx: number) {
-    const isOpen = replies[idx].open;
+    const isOpen = getReply(idx).open;
     // Close all others first
-    setReplies((prev) =>
-      prev.map((r, i) => {
+    setReplies((prev) => {
+      const next: Record<number, ReplyState> = {};
+      for (const [k, r] of Object.entries(prev)) {
+        const i = Number(k);
         if (i !== idx && r.open) {
           if (activeIdxRef.current === i) stopRecordingFor(i);
-          return makeDefaultReply();
+          next[i] = makeDefaultReply();
+        } else {
+          next[i] = r;
         }
-        return r;
-      }),
-    );
+      }
+      return next;
+    });
     if (!isOpen) {
       updateReply(idx, { open: true });
     }
@@ -122,12 +173,12 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
 
   function cancelReply(idx: number) {
     if (activeIdxRef.current === idx) stopRecordingFor(idx);
-    setReplies((prev) => prev.map((r, i) => (i === idx ? makeDefaultReply() : r)));
+    setReplies((prev) => ({ ...prev, [idx]: makeDefaultReply() }));
     chunksRef.current = [];
   }
 
   function sendReply(idx: number) {
-    const r = replies[idx];
+    const r = getReply(idx);
     const hasText = r.inputText.trim().length > 0;
     const hasAudio = chunksRef.current.length > 0 && !r.isRecording;
     if (!hasText && !hasAudio) {
@@ -135,8 +186,8 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
       return;
     }
     cancelReply(idx);
-    setConfirmed((prev) => prev.map((v, i) => (i === idx ? true : v)));
-    setTimeout(() => setConfirmed((prev) => prev.map((v, i) => (i === idx ? false : v))), 2500);
+    setConfirmed((prev) => ({ ...prev, [idx]: true }));
+    setTimeout(() => setConfirmed((prev) => ({ ...prev, [idx]: false })), 2500);
   }
 
   return (
@@ -158,7 +209,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
                 {act.skills[0] ?? ''}
               </span>
               <span className="ce-tag" style={{ background: '#fdd15e' }}>
-                {'refs' in act ? act.refs : `${reflections.length} reflections`}
+                {`${reflections.length} reflection${reflections.length === 1 ? '' : 's'}`}
               </span>
             </div>
           </div>
@@ -185,8 +236,12 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
               <div className="community-activity-tag">Activity: {shortTitle}</div>
               <p className="community-card-text">{r.text}</p>
               <div className="community-card-footer">
-                <div className="community-card-likes">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6761" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <div
+                  className="community-card-likes"
+                  onClick={r.liveId ? () => handleLike(r.liveId!) : undefined}
+                  style={r.liveId && !likedIds.has(r.liveId) ? { cursor: 'pointer' } : undefined}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill={r.liveId && likedIds.has(r.liveId) ? '#F9A3C4' : 'none'} stroke="#6b6761" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d={HEART_PATH}/>
                   </svg>
                   {r.likes} likes
@@ -197,7 +252,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
               </div>
 
               {/* Reply area */}
-              {replies[idx]?.open && (
+              {getReply(idx).open && (
                 <div className="reply-area open">
                   <textarea
                     className="reply-input"

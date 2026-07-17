@@ -38,7 +38,7 @@ export interface ExploreAct {
   id: string;
   title: string;
   time: string;
-  /** Core SEL tags: 'Identifying emotions' | 'Interoception' | 'Self-regulation'. First one is primary. */
+  /** Core SEL tags: 'Identifying emotions' | 'Interoception' | 'Impulse control'. First one is primary. */
   skills: string[];
   timeVal: string;
   /** Display age range, e.g. 'Ages 4–7'. */

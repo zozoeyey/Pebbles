@@ -1,4 +1,5 @@
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
+import { getSessionId } from './session';
 
 export interface SharedReflection {
   id: string;
@@ -26,15 +27,36 @@ export async function shareReflection(id: string): Promise<void> {
   if (!res.ok) throw new Error(await res.text());
 }
 
-/** Newest shared reflections for the community feed. */
-export async function fetchSharedReflections(limit = 20): Promise<SharedReflection[]> {
+/** Newest shared reflections — all of them, or just one activity's. */
+export async function fetchSharedReflections(limit = 50, activityId?: string): Promise<SharedReflection[]> {
   const cols = 'id,created_at,activity_id,activity_title,child_age,summary,likes';
+  const actFilter = activityId ? `&activity_id=eq.${encodeURIComponent(activityId)}` : '';
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/reflections?select=${cols}&shared=eq.true&order=created_at.desc&limit=${limit}`,
+    `${SUPABASE_URL}/rest/v1/reflections?select=${cols}&shared=eq.true${actFilter}&order=created_at.desc&limit=${limit}`,
     { headers: HEADERS },
   );
   if (!res.ok) throw new Error(await res.text());
   return (await res.json()) as SharedReflection[];
+}
+
+export interface MyReflection {
+  id: string;
+  created_at: string;
+  activity_id: string;
+  activity_title: string;
+  summary: string;
+  shared: boolean;
+}
+
+/** This device's own reflections (shared or not) — powers the Toolkit. */
+export async function fetchMyReflections(): Promise<MyReflection[]> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_my_reflections`, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({ p_session_id: getSessionId() }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return (await res.json()) as MyReflection[];
 }
 
 /** +1 a shared reflection (server-side increment via RPC). */

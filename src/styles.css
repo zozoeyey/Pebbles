@@ -2612,6 +2612,40 @@ html, body {
     margin-top: 4px;
 }
 
+/* ── Community: browse by activity ────────── */
+.community-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.community-activity-row {
+    background: white;
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.community-activity-row-title {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: #3d3935;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.community-activity-row-meta {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-size: 11px;
+    color: #9d9da0;
+    margin-top: 2px;
+}
+
 /* ── Profile ─────────────────────────────── */
 .profile-card {
     background: white;
@@ -2667,6 +2701,7 @@ html, body {
 .toolkit-stat-row {
     display: flex;
     gap: 7px;
+    flex-shrink: 0;
 }
 
 .toolkit-stat-card {
@@ -2722,6 +2757,7 @@ html, body {
     background: white;
     border-radius: 12px;
     overflow: hidden;
+    flex-shrink: 0; /* overflow:hidden lets flex squash this to nothing otherwise */
     box-shadow: 0 0 0.5px rgba(66,71,76,0.32), 0 4px 8px rgba(66,71,76,0.05), 0 4px 40px #eee;
 }
 

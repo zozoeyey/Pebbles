@@ -77,9 +77,9 @@ Deno.serve(async (req) => {
       `1. AGE FIT (hard rule): only pick activities whose age range includes the child's age, ` +
       `or is at most 1 year off. Unknown age: prefer broad ranges.\n` +
       `2. CHALLENGE MATCH: map the challenge to skills — trouble naming feelings → Identifying emotions; ` +
-      `big reactions / meltdowns → Self-regulation + Interoception; tantrums during transitions → Self-regulation; ` +
-      `hard to calm down → Interoception + Self-regulation; low confidence / gives up easily → activities about ` +
-      `rolling with mistakes (Self-regulation) or recognizing feelings behind self-doubt (Identifying emotions).\n` +
+      `big reactions / meltdowns → Impulse control + Interoception; tantrums during transitions → Impulse control; ` +
+      `hard to calm down → Interoception + Impulse control; low confidence / gives up easily → activities about ` +
+      `rolling with mistakes (Impulse control) or recognizing feelings behind self-doubt (Identifying emotions).\n` +
       `3. PARENT READINESS: if the parent seems new to SEL or describes only distraction/discipline for big ` +
       `emotions, start with short, playful, in-the-moment activities (breathing, movement games). If they already ` +
       `name feelings together, step up to reflective ones (temperature check, mood diary, feelings circle).\n` +
@@ -95,7 +95,9 @@ Deno.serve(async (req) => {
       `\nAvailable activities:\n${catalog}\n\n${rubric}\n\n` +
       `Choose the ${wantN} activities that best fit THIS child, following the rubric. ` +
       `For each, write one warm, specific sentence (max ~20 words) telling the parent why it fits — ` +
-      `reference their child's situation, not generic benefits. Rank best first. ` +
+      `reference their child's situation, not generic benefits. ` +
+      `Plain conversational text only: no markdown, no asterisks, and no prefix labels like ` +
+      `"Perfect for right now:" — just a natural sentence. Rank best first. ` +
       `Only choose from the activity ids listed above.`;
 
     const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {

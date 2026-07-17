@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { EXPLORE_ACTS, PRESET_CHALLENGES } from '../data/activities';
 import { fetchAiSuggestions } from '../lib/suggestActivities';
+import { logEvent } from '../lib/analytics';
 import type { AiSuggestion } from '../lib/suggestActivities';
 import type { Screen, ExploreAct } from '../types';
 import BottomNav from '../components/BottomNav';
@@ -27,10 +28,10 @@ function parseAges(ages: string): [number, number] | null {
 // Maps each onboarding challenge to the SEL skills/tags that help with it.
 const CHALLENGE_SKILLS: Record<string, string[]> = {
   naming: ['Identifying emotions'],
-  meltdowns: ['Self-regulation', 'Interoception'],
-  transitions: ['Self-regulation'],
-  calming: ['Interoception', 'Self-regulation'],
-  confidence: ['Self-regulation'], // rolling with mistakes (e.g. Musical Drawings) is the closest fit
+  meltdowns: ['Impulse control', 'Interoception'],
+  transitions: ['Impulse control'],
+  calming: ['Interoception', 'Impulse control'],
+  confidence: ['Identifying emotions'], // naming the feelings behind self-doubt (e.g. Musical Drawings) is the closest fit
 };
 
 function actSkills(a: ExploreAct): string[] {
@@ -49,7 +50,6 @@ export default function ResultsScreen({
 
   // AI-picked suggestions from the Claude edge function. Null until it returns.
   const [aiIds, setAiIds] = useState<string[] | null>(null);
-  const [aiReasons, setAiReasons] = useState<Record<string, string>>({});
   const [aiState, setAiState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
 
   useEffect(() => {
@@ -86,7 +86,6 @@ export default function ResultsScreen({
         const valid = list.filter((s) => EXPLORE_ACTS.some((a) => a.id === s.id)).slice(0, 2);
         if (valid.length === 0) { setAiState('error'); return; }
         setAiIds(valid.map((s) => s.id));
-        setAiReasons(Object.fromEntries(valid.map((s) => [s.id, s.reason])));
         setAiState('done');
       })
       .catch(() => { if (!cancelled) setAiState('error'); });
@@ -143,7 +142,10 @@ export default function ResultsScreen({
   }
 
   function toggleCard(id: string) {
-    setSelectedId((prev) => (prev === id ? null : id));
+    setSelectedId((prev) => {
+      if (prev !== id) logEvent('activity_selected', { activityId: id });
+      return prev === id ? null : id;
+    });
   }
 
   function tryAct(e: React.MouseEvent, id: string) {
@@ -162,16 +164,19 @@ export default function ResultsScreen({
     setSelectedId(null);
   }
 
-  const renderCard = (a: ExploreAct, note?: string) => (
+  const renderCard = (a: ExploreAct) => (
     <ExploreCard
       key={a.id}
       act={a}
-      note={note}
       selected={selectedId === a.id}
       saved={isSaved(a.id)}
       onToggle={() => toggleCard(a.id)}
       onTry={(e) => tryAct(e, a.id)}
-      onSave={(e) => { e.stopPropagation(); toggleSaved(a.id); }}
+      onSave={(e) => {
+        e.stopPropagation();
+        logEvent(isSaved(a.id) ? 'activity_unsaved' : 'activity_saved', { activityId: a.id });
+        toggleSaved(a.id);
+      }}
     />
   );
 
@@ -219,7 +224,7 @@ export default function ResultsScreen({
               <div className="filter-sec">
                 <div className="filter-sec-label">SEL Skills</div>
                 <div className="filter-chips-wrap">
-                  {['all', 'Identifying emotions', 'Interoception', 'Self-regulation'].map((val, i) => (
+                  {['all', 'Identifying emotions', 'Interoception', 'Impulse control'].map((val, i) => (
                     <button
                       key={val}
                       className={`ex-chip${skillVal === val ? ' active' : ''}`}
@@ -271,7 +276,7 @@ export default function ResultsScreen({
               <div className="explore-section-label">Suggested Activities</div>
               {suggestSubtitle && <div className="explore-section-sub">{suggestSubtitle}</div>}
               <div className="explore-list">
-                {suggested.map((a) => renderCard(a, aiActive ? aiReasons[a.id] : undefined))}
+                {suggested.map((a) => renderCard(a))}
               </div>
 
               <div className="explore-section-label" style={{ marginTop: 22 }}>All Activities</div>
@@ -287,9 +292,8 @@ export default function ResultsScreen({
   );
 }
 
-function ExploreCard({ act, note, selected, saved, onToggle, onTry, onSave }: {
+function ExploreCard({ act, selected, saved, onToggle, onTry, onSave }: {
   act: ExploreAct;
-  note?: string;
   selected: boolean;
   saved: boolean;
   onToggle: () => void;
@@ -320,7 +324,6 @@ function ExploreCard({ act, note, selected, saved, onToggle, onTry, onSave }: {
         ))}
         <span className="ex-tag ex-tag-ref">{act.refs}</span>
       </div>
-      {note && <div className="ex-card-note">✨ {note}</div>}
       {selected && <div className="ex-card-desc">{act.desc}</div>}
       {selected && (
         <div className="ex-card-action">

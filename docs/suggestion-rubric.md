@@ -29,10 +29,10 @@ One activity can match on any of its tags (`skills` array).
 | Challenge chip | Wanted skills |
 |---|---|
 | Trouble naming feelings | Identifying emotions |
-| Big reactions | Self-regulation, Interoception |
-| Tantrums during transition | Self-regulation |
-| Hard to calm down | Interoception, Self-regulation |
-| Low confidence or self-doubt | Self-regulation (mistake-tolerance, e.g. Musical Drawings), Identifying emotions |
+| Big reactions | Impulse control, Interoception |
+| Tantrums during transition | Impulse control |
+| Hard to calm down | Interoception, Impulse control |
+| Low confidence or self-doubt | Impulse control (mistake-tolerance, e.g. Musical Drawings), Identifying emotions |
 
 Local heuristic scoring: **+1 per matched skill**, plus **+1** if any custom-text/emotion-handling word (>3 letters) appears in the activity's title/description.
 
@@ -56,18 +56,19 @@ overestimate: no group logistics). Rule of thumb used: movement/breathing games
 
 | Activity | Ages | Skills | Time |
 |---|---|---|---|
-| Freeze Feelings | 4–7 | Identifying emotions, Self-regulation | 15 min |
-| Emotion Charades | 4–9 | Identifying emotions | 15 min |
-| Tense and Relax | 4–9 | Interoception | 10 min |
-| What's My Temperature? | 5–10 | Interoception, Identifying emotions | 15 min |
-| Wiggle Cool Down | 4–7 | Self-regulation, Interoception | 5 min |
-| Musical Drawings | 5–10 | Self-regulation | 25 min |
-| Balloon Breathing | 4–8 | Interoception, Self-regulation | 5 min |
-| Flower Breathing | 4–7 | Interoception | 5 min |
-| Bubble Breathing | 4–8 | Self-regulation, Interoception | 5 min |
+| Freeze Feelings | 3–7 | Impulse control, Interoception | 15 min |
+| Emotion Charades | 3–9 | Identifying emotions | 15 min |
+| Tense and Relax | 3–9 | Interoception | 10 min |
+| What's My Temperature? | 5–10 | Identifying emotions | 15 min |
+| Wiggle Cool Down | 3–7 | Impulse control | 5 min |
+| Musical Drawings | 5–10 | Identifying emotions | 25 min |
+| Balloon Breathing | 3–8 | Interoception, Impulse control | 5 min |
+| Flower Breathing | 3–7 | Interoception, Impulse control | 5 min |
+| Bubble Breathing | 3–8 | Impulse control, Interoception | 5 min |
 | Feelings Circle | 3–8 | Identifying emotions | 10 min |
 | Emotion Portraits | 5–9 | Identifying emotions | 25 min |
 | Mood Diary | 7–11 | Identifying emotions, Interoception | 5 min/day |
 
-Tag balance: Identifying emotions ×6, Interoception ×7, Self-regulation ×5.
-Age coverage: 3 (Feelings Circle) through 11 (Mood Diary); densest 4–9.
+Tags follow the team activity spreadsheet (July 2026 retag).
+Tag balance: Identifying emotions ×6, Interoception ×6, Impulse control ×5.
+Age coverage: 3 through 11 (Mood Diary); densest 3–9.
