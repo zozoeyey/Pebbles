@@ -448,6 +448,96 @@ export const PEER_REFLECTIONS: Record<string, PeerReflection> = {
     ],
     attribution: 'Parent of a 7-year-old',
   },
+  'emotion-charades': {
+    paragraphs: [
+      'Tried Emotion Charades with Theo (6) after dinner using slips of paper in a cereal bowl.',
+      'What went well: he loved being the actor and got surprisingly good at "surprised" and "nervous"; guessing mine turned into a giggling contest.',
+      'What could have gone better: I picked a couple of feelings that were too abstract ("disappointed") and he just froze, so I had to swap them out.',
+      'Hope for the future: start with the big, easy feelings and only add trickier ones once he\'s warmed up and confident.',
+    ],
+    attribution: 'Parent of a 6-year-old',
+  },
+  'whats-my-temperature': {
+    paragraphs: [
+      "Did What's My Temperature with Priya (8) on a rough morning before school.",
+      'What went well: the thermometer gave her a way to say she was "at an 8" when she couldn\'t find the words; naming it out loud already took some heat out of it.',
+      'What could have gone better: I jumped straight to "how do we cool down" instead of just letting her sit at 8 for a minute first.',
+      "Hope for the future: check our temperatures together at calm moments too, not only when she's already melting down.",
+    ],
+    attribution: 'Parent of an 8-year-old',
+  },
+  'wiggle-cool-down': {
+    paragraphs: [
+      'Tried the Wiggle Cool Down with Sam (5) when he was bouncing off the walls before bed.',
+      'What went well: the countdown from ten was the magic part — he loved the silly wiggling at the start and actually got quiet by the time we hit three.',
+      'What could have gone better: the first round I rushed the numbers, so we did it again slower and that made all the difference.',
+      'Hope for the future: use it as our regular wind-down before stories instead of waiting until he\'s already overtired.',
+    ],
+    attribution: 'Parent of a 5-year-old',
+  },
+  'musical-drawings': {
+    paragraphs: [
+      'Did Musical Drawings with Nora (7) on a rainy afternoon with markers and a couple of playlists.',
+      'What went well: she got the idea fast and turned a scribble she hated into a "storm cloud"; watching her decide a mistake was on purpose was the whole point.',
+      'What could have gone better: I kept wanting to fix her lines, and I had to sit on my hands and let it be messy.',
+      'Hope for the future: keep modeling my own "oops" marks so she sees me roll with mistakes too.',
+    ],
+    attribution: 'Parent of a 7-year-old',
+  },
+  'balloon-breathing': {
+    paragraphs: [
+      'Tried Balloon Breathing with Eli (4) at bedtime with his hands on his belly.',
+      'What went well: putting a stuffed animal on his tummy made the "balloon" real — he loved watching it ride up and down and did five breaths without wandering off.',
+      'What could have gone better: my first explanation was too wordy; he just needed me to show him, not describe it.',
+      'Hope for the future: make this our go-to reset after meltdowns, not just at bedtime.',
+    ],
+    attribution: 'Parent of a 4-year-old',
+  },
+  'flower-breathing': {
+    paragraphs: [
+      'Did Flower Breathing with Mia (5) using a real daisy from the yard.',
+      'What went well: the pretend "smell the flower" made the slow breath completely natural — no need to explain "breathe deeply", she just did it.',
+      'What could have gone better: I forgot the long exhale at first; adding "blow out the candle" on the way out made it click.',
+      "Hope for the future: keep a little flower by her bed so she can do it on her own when she's upset.",
+    ],
+    attribution: 'Parent of a 5-year-old',
+  },
+  'bubble-breathing': {
+    paragraphs: [
+      'Tried Bubble Breathing with Jonah (6) out in the backyard.',
+      'What went well: letting him blow fast first and pop everything got the giggles out; then he figured out on his own that slow and gentle made the giant bubbles.',
+      'What could have gone better: I turned it into a lecture about "slow breathing" too soon and lost him — the bubbles taught it better than I did.',
+      'Hope for the future: try the pretend, no-wand version indoors so it becomes a calm-down he can use anywhere.',
+    ],
+    attribution: 'Parent of a 6-year-old',
+  },
+  'feelings-circle': {
+    paragraphs: [
+      'Started a Feelings Circle with Ava (5) and her little brother at dinner.',
+      'What went well: keeping the rule "all feelings are okay" meant she admitted she was "jealous" of her brother\'s day, which she\'d never have said otherwise.',
+      'What could have gone better: I pushed her to explain why when she wasn\'t ready, and she clammed up — passing needs to really be allowed.',
+      "Hope for the future: do it every night so it becomes normal, not a big deal only when something's wrong.",
+    ],
+    attribution: 'Parent of a 5-year-old',
+  },
+  'emotion-portraits': {
+    paragraphs: [
+      'Did Emotion Portraits with Leo (7) at the kitchen table with a little mirror.',
+      'What went well: making the faces in the mirror before drawing was the best part — he really studied what his eyebrows do when he\'s angry.',
+      'What could have gone better: I focused too much on the drawings looking "good" instead of the feelings behind them.',
+      "Hope for the future: hang his portraits up so he can point to one on days he can't find the words.",
+    ],
+    attribution: 'Parent of a 7-year-old',
+  },
+  'mood-diary': {
+    paragraphs: [
+      'Started a Mood Diary with Zoe (9) — she decorated a little notebook to make it hers.',
+      'What went well: the one-minute, three-things format kept it from feeling like homework, and after a week she spotted that she\'s always grumpy right before dinner.',
+      'What could have gone better: I checked it like I was grading it a couple of times, which made her defensive.',
+      'Hope for the future: treat our weekly read-through like detectives hunting for patterns, and let it be totally hers.',
+    ],
+    attribution: 'Parent of a 9-year-old',
+  },
 };
 
 export const ACT_CONFIGS: Record<string, ActConfig> = {

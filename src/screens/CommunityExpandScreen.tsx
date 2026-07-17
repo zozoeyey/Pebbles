@@ -4,6 +4,7 @@ import { EXPLORE_ACTS, ACTIVITIES } from '../data/activities';
 import { fetchSharedReflections, fetchReplies, getLikedIds, postReply, postVoiceReply, likeReflection, unlikeReflection, timeAgo } from '../lib/communityApi';
 import type { ReflectionReply } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
+import ReflectionText from '../components/ReflectionText';
 import type { CommunityReflection, Screen } from '../types';
 
 const LIVE_COLORS: [string, string][] = [
@@ -289,7 +290,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
                 </div>
               </div>
               <div className="community-activity-tag">Activity: {shortTitle}</div>
-              <p className="community-card-text">{r.text}</p>
+              <ReflectionText text={r.text} className="community-card-text" />
               <div className="community-card-footer">
                 <div
                   className="community-card-likes"

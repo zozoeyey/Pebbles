@@ -6,6 +6,7 @@ import type { MyReflection } from '../lib/communityApi';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
 import AvatarBubble from '../components/AvatarBubble';
+import ReflectionText from '../components/ReflectionText';
 
 const PEBBLE_PATH =
   'M101.2 0C121.524 0 138 16.4759 138 36.7998C138 50.657 130.339 62.7231 119.023 69C130.339 75.2769 138 87.3429 138 101.2C138 121.524 121.524 138 101.2 138H36.7998C16.4759 138 0 121.524 0 101.2C4.49801e-05 87.3433 7.66 75.277 18.9756 69C7.66 62.723 4.77943e-05 50.6567 0 36.7998C0 16.4759 16.4759 0 36.7998 0H101.2Z';
@@ -16,11 +17,6 @@ const MONTHS = [
 ];
 
 const TAG_COLORS = ['#9CD3F8', '#d6e475', '#F9A3C4', '#FDD15E'];
-
-/** Claude summaries sometimes contain markdown bullets/bold — show plain text. */
-function plainSummary(s: string): string {
-  return s.replace(/\*/g, '').replace(/^[-•]\s*/gm, '');
-}
 
 function SectionHeader({ label, count, expanded, onToggle }: {
   label: string; count: number; expanded: boolean; onToggle: () => void;
@@ -322,7 +318,7 @@ export default function ToolkitScreen({ showScreen, savedIds, onSelectActivity }
                     </span>
                     <span className="toolkit-refl-date">{monthDay(r.created_at)}</span>
                   </div>
-                  <div className="toolkit-refl-text">{plainSummary(r.summary).split('\n')[0]}</div>
+                  <ReflectionText text={r.summary} className="toolkit-refl-text" />
                 </div>
               ))
             ) : (

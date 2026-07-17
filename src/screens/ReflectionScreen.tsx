@@ -5,6 +5,7 @@ import ExitButton from '../components/ExitButton';
 import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { shareReflection } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
+import ReflectionText from '../components/ReflectionText';
 import type { Screen } from '../types';
 
 interface Props {
@@ -77,11 +78,6 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
       startRecording();
     }
   }
-
-  const summaryParagraphs = summary
-    .split('\n')
-    .filter((l) => l.trim())
-    .map((l) => l.replace(/^[-•*]\s*/, ''));
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -196,9 +192,7 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
             <div className="refl-summary-box">
               {resultTab === 'transcript'
                 ? <p>{transcript}</p>
-                : summaryParagraphs.map((p, i) => (
-                    <p key={i} style={{ marginBottom: 6 }}>{p}</p>
-                  ))}
+                : <ReflectionText text={summary} />}
             </div>
 
             <div className="refl-actions">

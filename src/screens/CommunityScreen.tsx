@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
 import AvatarBubble, { PEBBLE_PATH } from '../components/AvatarBubble';
+import ReflectionText from '../components/ReflectionText';
 import { EXPLORE_ACTS, ACTIVITIES } from '../data/activities';
 import { fetchSharedReflections, getLikedIds, getMySharedIds, likeReflection, unlikeReflection, timeAgo } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
@@ -61,7 +62,7 @@ function PostCard({ post, index, mine, liked, onLike, onSeeAll }: {
         </div>
       </div>
       <div className="community-activity-tag">Activity: {post.activityTitle}</div>
-      <p className="community-card-text" style={{ whiteSpace: 'pre-line' }}>{post.text}</p>
+      <ReflectionText text={post.text} className="community-card-text" />
       <div className="community-card-footer">
         <div
           className="community-card-likes"
