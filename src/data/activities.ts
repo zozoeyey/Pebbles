@@ -653,6 +653,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'mood-diary': {
     title: 'Mood Diary',
+    audioSrc: 'assets/mood-diary.mp3',
+    stepTimes: [0, 7.5, 13.9, 23.7, 29.3, 36.7],
     steps: [
       'Pick a notebook together and decorate the cover — it should feel like theirs, not homework.',
       'Choose a regular moment for a one-minute entry, like right before bed.',
