@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
 import AvatarBubble, { PEBBLE_PATH } from '../components/AvatarBubble';
-import ReflectionText from '../components/ReflectionText';
+import ReflectionText, { splitReflection } from '../components/ReflectionText';
 import { EXPLORE_ACTS, ACTIVITIES } from '../data/activities';
 import { fetchSharedReflections, getLikedIds, getMySharedIds, likeReflection, unlikeReflection, timeAgo } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
@@ -39,11 +39,14 @@ function activityTitle(id: string): string {
   return (act?.title ?? id).split(':')[0];
 }
 
-function PostCard({ post, index, mine, liked, onLike, onSeeAll }: {
-  post: Post; index: number; mine: boolean; liked: boolean; onLike: () => void; onSeeAll: () => void;
+function PostCard({ post, index, mine, liked, showSeeAll, onLike, onSeeAll }: {
+  post: Post; index: number; mine: boolean; liked: boolean; showSeeAll: boolean; onLike: () => void; onSeeAll: () => void;
 }) {
   const [bg, fill] = BUBBLE_COLORS[index % BUBBLE_COLORS.length];
   const likeable = Boolean(post.liveId);
+  // Collapse long labeled reflections to the first 2 lines with a Show more.
+  const [expanded, setExpanded] = useState(false);
+  const collapsible = splitReflection(post.text).length > 2;
   return (
     <div className="community-card">
       <div className="community-card-head">
@@ -62,7 +65,16 @@ function PostCard({ post, index, mine, liked, onLike, onSeeAll }: {
         </div>
       </div>
       <div className="community-activity-tag">Activity: {post.activityTitle}</div>
-      <ReflectionText text={post.text} className="community-card-text" />
+      <ReflectionText
+        text={post.text}
+        className="community-card-text"
+        max={collapsible && !expanded ? 2 : undefined}
+      />
+      {collapsible && (
+        <button className="community-showmore" onClick={() => setExpanded((v) => !v)}>
+          {expanded ? 'Show less' : 'Show more'}
+        </button>
+      )}
       <div className="community-card-footer">
         <div
           className="community-card-likes"
@@ -74,9 +86,11 @@ function PostCard({ post, index, mine, liked, onLike, onSeeAll }: {
           </svg>
           {post.likes} likes
         </div>
-        <div className="community-card-see" onClick={onSeeAll} style={{ cursor: 'pointer' }}>
-          See all for this activity →
-        </div>
+        {showSeeAll && (
+          <div className="community-card-see" onClick={onSeeAll} style={{ cursor: 'pointer' }}>
+            See all for this activity →
+          </div>
+        )}
       </div>
     </div>
   );
@@ -192,6 +206,7 @@ export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
               index={i}
               mine={mine.has(p.key)}
               liked={Boolean(p.liveId && likedIds.has(p.liveId))}
+              showSeeAll={filterId === 'all'}
               onLike={() => handleLike(p)}
               onSeeAll={() => onExpandCard(p.activityId)}
             />

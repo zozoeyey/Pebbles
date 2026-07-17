@@ -4,8 +4,19 @@
 const LABEL_RE =
   /^(What went well|What could have gone better|Hope for the future|What I'd try differently|Activity engagement|Focus on mechanics over sensation|Key takeaway):/;
 
-export default function ReflectionText({ text, className }: { text: string; className?: string }) {
-  const paras = text.replace(/\*/g, '').split('\n').map((l) => l.trim()).filter(Boolean);
+/** Split a reflection/summary into its display paragraphs. */
+export function splitReflection(text: string): string[] {
+  return text.replace(/\*/g, '').split('\n').map((l) => l.trim()).filter(Boolean);
+}
+
+export default function ReflectionText({ text, className, max }: {
+  text: string;
+  className?: string;
+  /** Render at most this many paragraphs (for collapsed cards). */
+  max?: number;
+}) {
+  const all = splitReflection(text);
+  const paras = max != null ? all.slice(0, max) : all;
   return (
     <div className={className}>
       {paras.map((p, i) => {
