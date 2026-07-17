@@ -39,7 +39,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     materials: ['Slips of paper', 'A pen or marker', 'A bowl or hat to draw from'],
     tip: 'Start with big, easy emotions like happy and angry, and exaggerate your own turns. Save trickier feelings like jealous or nervous for once they\'re warmed up.',
     url: 'https://smho-smso.ca/emhc/identification-and-management-of-emotions/recognizing/emotion-charades/',
-    videoUrl: 'assets/video.mp4',
+    videoUrl: 'assets/identifying-emotions.mp4',
     videoTitle: 'Identifying Emotions',
     videoDesc:
       'Guessing a feeling from a face or a pose is exactly how kids learn to read emotions in real life. This quick intro shows why naming feelings is such a powerful skill to practice.',
@@ -84,7 +84,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     materials: ['A printed or hand-drawn thermometer', 'Markers or crayons'],
     tip: "Share your own temperature first ('I'm feeling like a 7 — a little frazzled'). Naming your own intensity out loud makes it safe for them to do the same.",
     url: 'https://smho-smso.ca/emhc/identification-and-management-of-emotions/gauging/whats-my-temperature/',
-    videoUrl: 'assets/video.mp4',
+    videoUrl: 'assets/identifying-emotions.mp4',
     videoTitle: 'Identifying Emotions',
     videoDesc:
       'Naming a feeling is step one — naming how BIG it is comes next. This quick intro shows why putting words (and numbers) on emotions gives kids power over them.',
@@ -131,7 +131,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     materials: ['Paper', 'Markers or crayons', 'A few songs with different moods'],
     tip: 'Model it yourself — make an obvious "oops" mark and turn it into something on purpose. Focus on expression and reflection, not on making it look perfect.',
     url: 'https://www.eduref.org/lessons/interdisciplinary/int0091',
-    videoUrl: 'assets/video.mp4',
+    videoUrl: 'assets/identifying-emotions.mp4',
     videoTitle: 'Identifying Emotions',
     videoDesc:
       'Frustration at a "mistake" is a feeling kids can learn to spot and name mid-moment. This quick intro shows how naming emotions — like the ones music and mess-ups stir up — takes away their sting.',
@@ -228,7 +228,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     olderKids:
       'Older kids can add the why ("I feel proud because…"), stretch for more precise words (annoyed vs. furious, nervous vs. excited), and notice how a feeling changed over the day.',
     url: 'https://ggie.berkeley.edu/practice/feelings-circle-for-kindergarten-sel-kernel/#tab__2',
-    videoUrl: 'assets/video.mp4',
+    videoUrl: 'assets/identifying-emotions.mp4',
     videoTitle: 'Identifying Emotions',
     videoDesc:
       'A daily feelings check-in is the simplest way to grow emotional vocabulary. This quick intro shows why naming feelings out loud matters so much.',
@@ -251,7 +251,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     olderKids:
       'Older kids can draw trickier blends — nervous-but-excited, disappointed-but-okay — and add a comic-strip panel showing what happened right before the face.',
     url: 'https://smho-smso.ca/emhc/identification-and-management-of-emotions/recognizing/emotion-portraits/',
-    videoUrl: 'assets/video.mp4',
+    videoUrl: 'assets/identifying-emotions.mp4',
     videoTitle: 'Identifying Emotions',
     videoDesc:
       'Reading a face is a skill, and drawing faces is sneaky-good practice. This quick intro shows how recognizing expressions helps kids name their own feelings.',
@@ -274,7 +274,7 @@ export const EXPLORE_ACTS: ExploreAct[] = [
     olderKids:
       'This one already suits older kids best. Kids 9+ can rate intensity 1–10, track more than one feeling a day, and write what they tried when a big feeling hit — and whether it helped.',
     url: 'https://smho-smso.ca/emhc/identification-and-management-of-emotions/understanding/mood-diary/',
-    videoUrl: 'assets/video.mp4',
+    videoUrl: 'assets/identifying-emotions.mp4',
     videoTitle: 'Identifying Emotions',
     videoDesc:
       'Naming a feeling in the moment is step one; noticing your patterns over time is the superpower. This quick intro covers the naming skill the diary builds on.',

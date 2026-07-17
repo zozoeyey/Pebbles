@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
         max_tokens: 400,
         messages: [{
           role: 'user',
-          content: `A parent just tried the "${activityTitle}" SEL activity with their ${childAge ?? 'young'}-year-old child and recorded this spoken reflection:\n\n"${transcript}"\n\nWrite 1–3 short bullet points summarizing what happened, how the child responded, and any notable moments. Be concise and warm. Start each bullet with •\n\nRules: ALWAYS produce bullet points, never anything else. If the reflection is very short or vague, write one gentle bullet restating what the parent said — do not ask for more details, do not address the parent directly, do not apologize. Your output goes directly into their journal.`,
+          content: `A parent just tried the "${activityTitle}" activity with their ${childAge ?? 'young'}-year-old child and recorded this spoken reflection:\n\n"${transcript}"\n\nRewrite it as a short, warm journal note in the PARENT'S OWN VOICE — first person, the way they'd write it themselves ("I…", "we…", "my son/daughter…"). Keep it to 1–2 flowing sentences of plain prose: no bullet points, no headings, no labels.\n\nRules:\n- Write as the parent, never in the third person. Never say "the parent" or "the child" — say "I", "we", or the child's name if they mentioned it.\n- Stay grounded in what they actually said; don't invent details or add advice.\n- If the recording is very short or vague, just tidy what they said into one natural sentence. Never ask for more, never apologize, never address them as "you".\n- Output only the note itself — no preamble.`,
         }],
       }),
     });
