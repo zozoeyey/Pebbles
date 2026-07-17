@@ -18,6 +18,7 @@ import CommunityScreen from './screens/CommunityScreen';
 import CommunityExpandScreen from './screens/CommunityExpandScreen';
 import CreateActivityScreen from './screens/CreateActivityScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import IntroScreen from './screens/IntroScreen';
 
 const SCREEN_TITLES: Record<Screen, string> = {
   welcome: 'Pebbles',
@@ -33,6 +34,7 @@ const SCREEN_TITLES: Record<Screen, string> = {
   'community-expand': 'Pebbles – Community',
   'create-activity': 'Pebbles – Create',
   profile: 'Pebbles – Profile',
+  intro: 'Pebbles – How it works',
 };
 
 // Onboarding answers persist across visits so a returning parent keeps their
@@ -158,7 +160,7 @@ export default function App() {
       )}
       {screen === 'sel' && (
         <SelScreen
-          showResults={showResults}
+          showResults={() => showScreen('intro')}
           onSkip={attemptSkip}
           selectedAge={selectedAge}
           selectedChallenges={selectedChallenges}
@@ -224,6 +226,9 @@ export default function App() {
           showScreen={showScreen}
           onSaveCustom={() => showScreen('toolkit')}
         />
+      )}
+      {screen === 'intro' && (
+        <IntroScreen showScreen={showScreen} />
       )}
       {screen === 'profile' && (
         <ProfileScreen

@@ -124,9 +124,36 @@ export async function fetchReplies(activityId: string): Promise<ReflectionReply[
   return (await res.json()) as ReflectionReply[];
 }
 
+const LIKED_KEY = 'pebbles_liked_ids';
+
+/** Reflections this device has liked — persists so hearts stay filled. */
+export function getLikedIds(): Set<string> {
+  try { return new Set(JSON.parse(localStorage.getItem(LIKED_KEY) ?? '[]')); } catch { return new Set(); }
+}
+
+function persistLiked(ids: Set<string>) {
+  try { localStorage.setItem(LIKED_KEY, JSON.stringify([...ids])); } catch { /* ignore */ }
+}
+
 /** +1 a shared reflection (server-side increment via RPC). */
 export async function likeReflection(id: string): Promise<void> {
+  const ids = getLikedIds();
+  ids.add(id);
+  persistLiked(ids);
   const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/like_reflection`, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({ reflection_id: id }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+/** Take a like back (floors at zero server-side). */
+export async function unlikeReflection(id: string): Promise<void> {
+  const ids = getLikedIds();
+  ids.delete(id);
+  persistLiked(ids);
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/unlike_reflection`, {
     method: 'POST',
     headers: HEADERS,
     body: JSON.stringify({ reflection_id: id }),

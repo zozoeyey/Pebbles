@@ -3,7 +3,7 @@ import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
 import AvatarBubble, { PEBBLE_PATH } from '../components/AvatarBubble';
 import { EXPLORE_ACTS, ACTIVITIES } from '../data/activities';
-import { fetchSharedReflections, getMySharedIds, likeReflection, timeAgo } from '../lib/communityApi';
+import { fetchSharedReflections, getLikedIds, getMySharedIds, likeReflection, unlikeReflection, timeAgo } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
 
 const HEART_PATH =
@@ -42,7 +42,7 @@ function PostCard({ post, index, mine, liked, onLike, onSeeAll }: {
   post: Post; index: number; mine: boolean; liked: boolean; onLike: () => void; onSeeAll: () => void;
 }) {
   const [bg, fill] = BUBBLE_COLORS[index % BUBBLE_COLORS.length];
-  const likeable = Boolean(post.liveId) && !liked;
+  const likeable = Boolean(post.liveId);
   return (
     <div className="community-card">
       <div className="community-card-head">
@@ -83,7 +83,7 @@ function PostCard({ post, index, mine, liked, onLike, onSeeAll }: {
 
 export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
   const [livePosts, setLivePosts] = useState<Post[]>([]);
-  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
+  const [likedIds, setLikedIds] = useState<Set<string>>(getLikedIds);
   const [filterId, setFilterId] = useState('all');
   const [filterOpen, setFilterOpen] = useState(false);
 
@@ -124,12 +124,19 @@ export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
     });
 
   function handleLike(post: Post) {
-    if (!post.liveId || likedIds.has(post.liveId)) return;
+    if (!post.liveId) return;
     const id = post.liveId;
-    setLikedIds((prev) => new Set(prev).add(id));
-    setLivePosts((prev) => prev.map((p) => (p.liveId === id ? { ...p, likes: p.likes + 1 } : p)));
-    likeReflection(id).catch(() => {});
-    logEvent('reflection_liked', { activityId: post.activityId, payload: { reflection: id } });
+    const unliking = likedIds.has(id);
+    setLikedIds((prev) => {
+      const next = new Set(prev);
+      unliking ? next.delete(id) : next.add(id);
+      return next;
+    });
+    setLivePosts((prev) => prev.map((p) =>
+      p.liveId === id ? { ...p, likes: Math.max(0, p.likes + (unliking ? -1 : 1)) } : p,
+    ));
+    (unliking ? unlikeReflection(id) : likeReflection(id)).catch(() => {});
+    logEvent(unliking ? 'reflection_unliked' : 'reflection_liked', { activityId: post.activityId, payload: { reflection: id } });
   }
 
   return (

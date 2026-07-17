@@ -150,9 +150,14 @@ export default function ProfileScreen({
 
         <div className="toolkit-section-label" style={{ marginTop: 8 }}>APP</div>
         <div className="profile-card" style={{ marginBottom: 12 }}>
-          <button className="profile-redo-btn" onClick={() => showScreen('welcome')}>
-            Redo onboarding
-          </button>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <button className="profile-redo-btn" onClick={() => showScreen('intro')}>
+              How Pebbles works
+            </button>
+            <button className="profile-redo-btn" onClick={() => showScreen('welcome')}>
+              Redo onboarding
+            </button>
+          </div>
           <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14, cursor: 'pointer', fontFamily: "'Montserrat',sans-serif", fontSize: 12, color: '#6b6761', fontWeight: 500 }}>
             <input type="checkbox" checked={trackingOff} onChange={toggleTracking} />
             This is a test device — don't count my usage

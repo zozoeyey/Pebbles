@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import BackButton from '../components/BackButton';
 import { EXPLORE_ACTS, ACTIVITIES } from '../data/activities';
-import { fetchSharedReflections, fetchReplies, postReply, postVoiceReply, likeReflection, timeAgo } from '../lib/communityApi';
+import { fetchSharedReflections, fetchReplies, getLikedIds, postReply, postVoiceReply, likeReflection, unlikeReflection, timeAgo } from '../lib/communityApi';
 import type { ReflectionReply } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
 import type { CommunityReflection, Screen } from '../types';
@@ -52,7 +52,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
   // Live shared reflections for this activity, mapped into the card shape.
   // `liveId` marks them likeable; the seeded examples below have none.
   const [liveRefl, setLiveRefl] = useState<(CommunityReflection & { liveId: string })[]>([]);
-  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
+  const [likedIds, setLikedIds] = useState<Set<string>>(getLikedIds);
 
   // Public replies for this activity, grouped under each reflection.
   const [replyList, setReplyList] = useState<ReflectionReply[]>([]);
@@ -88,11 +88,17 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
   const reflections: (CommunityReflection & { liveId?: string })[] = liveRefl;
 
   function handleLike(liveId: string) {
-    if (likedIds.has(liveId)) return;
-    setLikedIds((prev) => new Set(prev).add(liveId));
-    setLiveRefl((prev) => prev.map((r) => (r.liveId === liveId ? { ...r, likes: r.likes + 1 } : r)));
-    likeReflection(liveId).catch(() => {});
-    logEvent('reflection_liked', { activityId: actId, payload: { reflection: liveId } });
+    const unliking = likedIds.has(liveId);
+    setLikedIds((prev) => {
+      const next = new Set(prev);
+      unliking ? next.delete(liveId) : next.add(liveId);
+      return next;
+    });
+    setLiveRefl((prev) => prev.map((r) =>
+      r.liveId === liveId ? { ...r, likes: Math.max(0, r.likes + (unliking ? -1 : 1)) } : r,
+    ));
+    (unliking ? unlikeReflection(liveId) : likeReflection(liveId)).catch(() => {});
+    logEvent(unliking ? 'reflection_unliked' : 'reflection_liked', { activityId: actId, payload: { reflection: liveId } });
   }
 
   // Keyed by card index (the list grows when live reflections arrive).
@@ -288,7 +294,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
                 <div
                   className="community-card-likes"
                   onClick={r.liveId ? () => handleLike(r.liveId!) : undefined}
-                  style={r.liveId && !likedIds.has(r.liveId) ? { cursor: 'pointer' } : undefined}
+                  style={r.liveId ? { cursor: 'pointer' } : undefined}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill={r.liveId && likedIds.has(r.liveId) ? '#F9A3C4' : 'none'} stroke="#6b6761" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d={HEART_PATH}/>
