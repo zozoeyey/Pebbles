@@ -560,6 +560,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'balloon-breathing': {
     title: 'Balloon Breathing',
+    audioSrc: 'assets/balloon-breathing.mp3',
+    stepTimes: [0, 6.7, 12.3, 19.8, 25.0, 31.3],
     steps: [
       'Sit comfortably or lie down, and place both hands gently on your belly.',
       'Imagine your belly is a balloon in your favorite color.',
@@ -678,6 +680,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'musical-drawings': {
     title: 'Musical Drawings',
+    audioSrc: 'assets/musical-drawings.mp3',
+    stepTimes: [0, 5.4, 14.6, 20.0, 28.4, 34.4],
     steps: [
       'Grab paper and markers, and pick a song with a clear mood.',
       'Start the music and let your marker move however the music feels — fast, slow, loopy, or sharp.',
