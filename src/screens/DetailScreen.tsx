@@ -80,7 +80,7 @@ export default function DetailScreen({ showScreen, selectedActivityId, onStartAc
                 <>
                   <div
                     className="bub-cream-area"
-                    style={act.videoThumb ? { background: `url('${act.videoThumb}') center center / cover no-repeat` } : undefined}
+                    style={act.videoThumb ? { background: `#f5efe3 url('${act.videoThumb}') center center / contain no-repeat` } : undefined}
                   >
                     <button className="bub-play-ring" onClick={() => setVideoPlaying(true)}>{PLAY_ICON}</button>
                   </div>

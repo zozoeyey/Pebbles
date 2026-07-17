@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PEER_REFLECTIONS } from '../data/activities';
 import BackButton from '../components/BackButton';
 import ExitButton from '../components/ExitButton';
@@ -41,6 +41,14 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
   } = useAudioRecorder(actId, actId, selectedAge);
 
   const [shareState, setShareState] = useState<'idle' | 'sharing' | 'shared' | 'error'>('idle');
+  const completedLogged = useRef(false);
+
+  // Completing counts once, whichever way they leave after recording.
+  function logCompleted() {
+    if (completedLogged.current) return;
+    completedLogged.current = true;
+    logEvent('activity_completed', { activityId: actId });
+  }
 
   useEffect(() => {
     if (state === 'result') logEvent('reflection_submitted', { activityId: actId });
@@ -172,42 +180,34 @@ export default function ReflectionScreen({ showScreen, selectedActivityId, selec
               ))}
             </div>
 
-            {/* Share to community — opt-in, only once the summary is visible */}
-            {reflectionId && shareState !== 'shared' && (
-              <div className="refl-share-box">
-                <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, color: '#3d3935' }}>
-                  Share this with other parents?
-                </div>
-                <div style={{ fontFamily: "'Montserrat',sans-serif", fontSize: 11.5, color: '#6b6761', margin: '4px 0 10px', lineHeight: 1.6 }}>
-                  Only this summary is shared — anonymously, with your child's age. Never your recording.
-                </div>
-                <button
-                  className="refl-complete-btn"
-                  style={{ marginTop: 0 }}
-                  disabled={shareState === 'sharing'}
-                  onClick={handleShare}
-                >
-                  {shareState === 'sharing' ? 'Sharing…' : shareState === 'error' ? 'Try sharing again' : 'Share to Community'}
+            <div className="refl-actions">
+              {reflectionId && shareState !== 'shared' && (
+                <>
+                  <button
+                    className="refl-btn-primary"
+                    disabled={shareState === 'sharing'}
+                    onClick={handleShare}
+                  >
+                    {shareState === 'sharing' ? 'Sharing…' : shareState === 'error' ? 'Try sharing again' : 'Share to Community'}
+                  </button>
+                  <div className="refl-share-note">
+                    Shared anonymously — just this summary and your child's age. Never your recording.
+                  </div>
+                </>
+              )}
+              {shareState === 'shared' && (
+                <button className="refl-btn-primary" onClick={() => { logCompleted(); showScreen('community'); }}>
+                  Shared 💛 · See it in Community →
                 </button>
-              </div>
-            )}
-            {shareState === 'shared' && (
-              <div className="refl-share-box" style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, color: '#3d3935' }}>
-                  Shared — thank you! 💛
-                </div>
-                <button
-                  className="refl-complete-btn"
-                  style={{ marginTop: 10 }}
-                  onClick={() => showScreen('community')}
-                >
-                  See it in Community →
-                </button>
-              </div>
-            )}
-
-            <button className="refl-reset-btn" onClick={resetRecorder}>Record again</button>
-            <button className="refl-complete-btn" onClick={() => { logEvent('activity_completed', { activityId: actId }); showScreen('results'); }}>Complete</button>
+              )}
+              <button
+                className="refl-btn-secondary"
+                onClick={() => { logCompleted(); showScreen('results'); }}
+              >
+                Complete
+              </button>
+              <button className="refl-link-btn" onClick={resetRecorder}>Record again</button>
+            </div>
           </div>
         )}
 

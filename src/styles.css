@@ -48,12 +48,16 @@ html, body {
     width: 100%;
     max-width: 480px;
     margin: 0 auto;
-    height: 100dvh;
+    height: 100vh;  /* fallback for older Safari */
+    height: 100dvh; /* tracks iOS URL-bar collapse */
     background: var(--bg);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    /* Keep content clear of the notch and home indicator (PWA/standalone) */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ── TOP BAR ─────────────────────────────────── */
@@ -1786,12 +1790,14 @@ html, body {
 /* ── ACTIVITY PLAYER SCREEN ────────────────────── */
 .act-wrap {
     flex: 1;
+    min-height: 0;
     background: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 44px 24px 32px;
-    gap: 20px;
+    padding: 24px 24px 24px;
+    gap: 16px;
+    overflow-y: auto; /* fallback: scroll rather than clip on short screens */
 }
 
 .act-back-row {
@@ -1914,9 +1920,13 @@ html, body {
 }
 
 .act-blob {
-    width: 280px;
+    /* Shrinks with the viewport so the controls below never get pushed off. */
+    width: min(280px, 75vw);
+    max-height: 100%;
     height: auto;
-    flex-shrink: 0;
+    object-fit: contain;
+    flex-shrink: 1;
+    min-height: 0;
 }
 
 .act-controls {
@@ -2236,14 +2246,61 @@ html, body {
     width: 100%;
 }
 
-.refl-share-box {
+/* Result actions — one consistent stack: primary, secondary, text link */
+.refl-actions {
     width: 100%;
-    background: #f5efe3;
-    border: 1.5px solid #e8dfcc;
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-top: 12px;
-    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.refl-btn-primary {
+    width: 100%;
+    background: #3d3935;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 13px;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+}
+.refl-btn-primary:disabled { opacity: 0.6; cursor: default; }
+
+.refl-btn-secondary {
+    width: 100%;
+    background: transparent;
+    color: #3d3935;
+    border: 2px solid #3d3935;
+    border-radius: 24px;
+    padding: 11px;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.refl-share-note {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-size: 11px;
+    color: #9d9da0;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.refl-link-btn {
+    background: none;
+    border: none;
+    color: #6b6761;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 4px;
+    align-self: center;
 }
 
 .refl-reset-btn {
@@ -2696,9 +2753,37 @@ html, body {
     font-weight: 700;
 }
 
-/* Exit button — right-aligned counterpart to .back-btn */
+/* Exit button — black circle with an X, right-aligned */
 .exit-btn {
     margin-left: auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #3d3935;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0;
+    transition: transform 0.1s;
+}
+.exit-btn:active { transform: scale(0.92); }
+
+/* Stat text always reads above the decorative pebbles */
+.toolkit-stat-num, .toolkit-stat-num-row, .toolkit-stat-label {
+    position: relative;
+    z-index: 1;
+}
+
+/* Small phones: shrink the decorative blobs so they never cover the numbers */
+@media (max-width: 374px) {
+    .toolkit-stat-deco {
+        width: 44px !important;
+        height: 44px !important;
+    }
+    .toolkit-stat-card { padding: 8px 16px; }
 }
 
 /* ── Onboarding: skip blocked message ─────── */
@@ -2847,6 +2932,7 @@ html, body {
     justify-content: center;
     gap: 10px;
     position: relative;
+    min-width: 0;
     overflow: hidden;
 }
 

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import type { Screen } from '../types';
 import BottomNav from '../components/BottomNav';
 import AvatarBubble, { PEBBLE_PATH } from '../components/AvatarBubble';
-import { EXPLORE_ACTS, ACTIVITIES, COMMUNITY_REFLECTIONS } from '../data/activities';
-import { fetchSharedReflections, likeReflection, timeAgo } from '../lib/communityApi';
+import { EXPLORE_ACTS, ACTIVITIES } from '../data/activities';
+import { fetchSharedReflections, getMySharedIds, likeReflection, timeAgo } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
 
 const HEART_PATH =
@@ -38,8 +38,8 @@ function activityTitle(id: string): string {
   return (act?.title ?? id).split(':')[0];
 }
 
-function PostCard({ post, index, liked, onLike, onSeeAll }: {
-  post: Post; index: number; liked: boolean; onLike: () => void; onSeeAll: () => void;
+function PostCard({ post, index, mine, liked, onLike, onSeeAll }: {
+  post: Post; index: number; mine: boolean; liked: boolean; onLike: () => void; onSeeAll: () => void;
 }) {
   const [bg, fill] = BUBBLE_COLORS[index % BUBBLE_COLORS.length];
   const likeable = Boolean(post.liveId) && !liked;
@@ -55,7 +55,7 @@ function PostCard({ post, index, liked, onLike, onSeeAll }: {
         </div>
         <div>
           <div className="community-card-name">
-            Parent{post.childAge ? ` (child age ${post.childAge})` : ''}
+            {mine ? 'You' : 'Parent'}{post.childAge ? ` (child age ${post.childAge})` : ''}
           </div>
           <div className="community-card-time">{post.time}</div>
         </div>
@@ -113,22 +113,15 @@ export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
     return () => { cancelled = true; };
   }, []);
 
-  const seedPosts: Post[] = Object.entries(COMMUNITY_REFLECTIONS).flatMap(([actId, list]) =>
-    list.map((r, i) => ({
-      key: `${actId}-seed-${i}`,
-      activityId: actId,
-      activityTitle: activityTitle(actId),
-      childAge: r.age,
-      time: r.time,
-      text: r.text,
-      likes: r.likes,
-    })),
-  );
-
-  // Most popular first; live posts win ties so real parents surface.
-  const posts = [...livePosts, ...seedPosts]
+  // Your own shares pin to the top (so a fresh share is instantly visible),
+  // then everyone else's, most popular first.
+  const mine = new Set(getMySharedIds());
+  const posts = livePosts
     .filter((p) => filterId === 'all' || p.activityId === filterId)
-    .sort((a, b) => b.likes - a.likes || (a.liveId ? -1 : 1));
+    .sort((a, b) => {
+      const am = mine.has(a.key) ? 1 : 0, bm = mine.has(b.key) ? 1 : 0;
+      return bm - am || b.likes - a.likes;
+    });
 
   function handleLike(post: Post) {
     if (!post.liveId || likedIds.has(post.liveId)) return;
@@ -189,6 +182,7 @@ export default function CommunityScreen({ showScreen, onExpandCard }: Props) {
               key={p.key}
               post={p}
               index={i}
+              mine={mine.has(p.key)}
               liked={Boolean(p.liveId && likedIds.has(p.liveId))}
               onLike={() => handleLike(p)}
               onSeeAll={() => onExpandCard(p.activityId)}

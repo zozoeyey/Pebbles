@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import BackButton from '../components/BackButton';
-import { EXPLORE_ACTS, COMMUNITY_REFLECTIONS, ACTIVITIES } from '../data/activities';
+import { EXPLORE_ACTS, ACTIVITIES } from '../data/activities';
 import { fetchSharedReflections, fetchReplies, postReply, postVoiceReply, likeReflection, timeAgo } from '../lib/communityApi';
 import type { ReflectionReply } from '../lib/communityApi';
 import { logEvent } from '../lib/analytics';
@@ -85,10 +85,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
     return () => { cancelled = true; };
   }, [actId]);
 
-  const reflections: (CommunityReflection & { liveId?: string })[] = [
-    ...liveRefl,
-    ...(COMMUNITY_REFLECTIONS[actId] || []),
-  ];
+  const reflections: (CommunityReflection & { liveId?: string })[] = liveRefl;
 
   function handleLike(liveId: string) {
     if (likedIds.has(liveId)) return;
@@ -193,7 +190,7 @@ export default function CommunityExpandScreen({ showScreen, expandActivityId }: 
   }
 
   function replyRef(idx: number): string {
-    return reflections[idx]?.liveId ?? `seed-${actId}-${idx}`;
+    return reflections[idx]?.liveId ?? `unknown-${actId}-${idx}`;
   }
 
   function sendReply(idx: number) {

@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
         max_tokens: 400,
         messages: [{
           role: 'user',
-          content: `A parent just tried the "${activityTitle}" SEL activity with their ${childAge ?? 'young'}-year-old child and recorded this spoken reflection:\n\n"${transcript}"\n\nWrite 2–3 short bullet points summarizing what happened, how the child responded, and any notable moments. Be concise and warm. Start each bullet with •`,
+          content: `A parent just tried the "${activityTitle}" SEL activity with their ${childAge ?? 'young'}-year-old child and recorded this spoken reflection:\n\n"${transcript}"\n\nWrite 1–3 short bullet points summarizing what happened, how the child responded, and any notable moments. Be concise and warm. Start each bullet with •\n\nRules: ALWAYS produce bullet points, never anything else. If the reflection is very short or vague, write one gentle bullet restating what the parent said — do not ask for more details, do not address the parent directly, do not apologize. Your output goes directly into their journal.`,
         }],
       }),
     });

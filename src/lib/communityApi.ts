@@ -17,14 +17,24 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
-/** Mark a reflection as shared with the community. */
+const MY_SHARED_KEY = 'pebbles_my_shared_ids';
+
+/** Ids of reflections this device shared — lets Community pin "your" posts. */
+export function getMySharedIds(): string[] {
+  try { return JSON.parse(localStorage.getItem(MY_SHARED_KEY) ?? '[]'); } catch { return []; }
+}
+
+/** Mark a reflection as shared with the community (RPC — see share_rpc migration). */
 export async function shareReflection(id: string): Promise<void> {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/reflections?id=eq.${id}`, {
-    method: 'PATCH',
-    headers: { ...HEADERS, Prefer: 'return=minimal' },
-    body: JSON.stringify({ shared: true }),
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/share_reflection`, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({ reflection_id: id }),
   });
   if (!res.ok) throw new Error(await res.text());
+  try {
+    localStorage.setItem(MY_SHARED_KEY, JSON.stringify([...getMySharedIds(), id].slice(-20)));
+  } catch { /* ignore */ }
 }
 
 /** Newest shared reflections — all of them, or just one activity's. */
