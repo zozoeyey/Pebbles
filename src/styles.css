@@ -18,6 +18,12 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+/* iOS Safari auto-zooms into inputs with font-size < 16px — keep all text
+   entry at 16px so focusing the search/profile/reply fields never zooms. */
+input[type="text"], input:not([type]), textarea, select {
+    font-size: 16px !important;
+}
+
 html, body {
     height: 100%;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
