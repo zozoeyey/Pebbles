@@ -39,7 +39,7 @@ const STEPS: TourStep[] = [
     screen: 'reflection',
     selector: '.refl-record-btn',
     title: 'Record how it went',
-    text: "Afterwards, talk for 30 seconds — what went well, what surprised you. We turn it into a tidy journal note, and you choose: share it anonymously, or keep it private.",
+    text: "Afterwards, talk about how it went — what worked, what surprised you, as much or as little as you like. We turn it into a tidy journal note, and you choose: share it anonymously, or keep it private.",
   },
   {
     screen: 'community',
