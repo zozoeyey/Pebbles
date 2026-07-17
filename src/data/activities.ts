@@ -602,6 +602,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'bubble-breathing': {
     title: 'Bubble Breathing',
+    audioSrc: 'assets/bubble-breathing.mp3',
+    stepTimes: [0, 6.7, 14.0, 19.1, 25.6, 32.0],
     steps: [
       'Grab your bubbles and find a good spot — outside or over a towel works well.',
       'First, let them blow however they want. Watch what happens with fast, hard puffs!',
@@ -621,6 +623,8 @@ export const ACT_CONFIGS: Record<string, ActConfig> = {
   },
   'feelings-circle': {
     title: 'Feelings Circle',
+    audioSrc: 'assets/feeling-circles.mp3',
+    stepTimes: [0, 5.9, 14.2, 23.5, 29.4, 37.3],
     steps: [
       'Sit in a circle (or around the table) where everyone can see each other.',
       'Explain the one rule: everyone gets a turn, all feelings are okay, and passing is allowed.',
