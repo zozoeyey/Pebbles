@@ -2798,82 +2798,93 @@ html, body {
     .toolkit-stat-card { padding: 8px 16px; }
 }
 
-/* ── Intro walkthrough ────────────────────── */
-.intro-wrap {
-    flex: 1;
-    min-height: 0;
-    background: #faf8f5;
-    display: flex;
-    flex-direction: column;
+/* ── Coach-mark tour ──────────────────────── */
+.tour-root {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
 }
 
-.intro-art {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 24px 8px;
-}
-.intro-art img {
-    max-width: min(240px, 60vw);
-    max-height: 100%;
-    object-fit: contain;
+.tour-spot {
+    position: fixed;
+    border-radius: 16px;
+    box-shadow: 0 0 0 9999px rgba(30, 27, 24, 0.62);
+    transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease;
+    pointer-events: none;
 }
 
-.intro-card {
+.tour-dim {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 27, 24, 0.62);
+}
+
+.tour-tip {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(calc(100vw - 40px), 400px);
     background: white;
-    border-radius: 28px 28px 0 0;
-    padding: 26px 24px calc(24px + env(safe-area-inset-bottom));
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 10px;
+    border-radius: 18px;
+    padding: 16px 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    transition: top 0.25s ease, bottom 0.25s ease;
 }
 
-.intro-step-label {
+.tour-tip-count {
     font-family: 'Montserrat', -apple-system, sans-serif;
     font-weight: 700;
-    font-size: 10.5px;
+    font-size: 10px;
     letter-spacing: 0.08em;
     color: #9d9da0;
+    margin-bottom: 4px;
 }
 
-.intro-title {
+.tour-tip-title {
     font-family: 'Montserrat', -apple-system, sans-serif;
     font-weight: 700;
-    font-size: 21px;
+    font-size: 16px;
     color: #3d3935;
+    margin-bottom: 4px;
 }
 
-.intro-text {
+.tour-tip-text {
     font-family: 'Montserrat', -apple-system, sans-serif;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 12.5px;
     color: #6b6761;
-    line-height: 1.65;
-    max-width: 320px;
+    line-height: 1.6;
 }
 
-.intro-dots {
+.tour-tip-row {
     display: flex;
-    gap: 7px;
-    margin: 6px 0 8px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
 }
-.intro-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
+
+.tour-skip {
+    background: none;
     border: none;
-    background: #e8e2d6;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #9d9da0;
+    text-decoration: underline;
     cursor: pointer;
-    padding: 0;
-    transition: background 0.15s, width 0.15s;
+    padding: 4px;
 }
-.intro-dot.active {
+
+.tour-next {
     background: #3d3935;
-    width: 20px;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 9px 22px;
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
 }
 
 /* ── Onboarding: skip blocked message ─────── */

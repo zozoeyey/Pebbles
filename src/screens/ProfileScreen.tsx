@@ -18,6 +18,7 @@ interface Props {
   onChallengesChange: (ids: Set<string>, custom: string) => void;
   selAnswers: { selDefinition: string; emotionHandling: string };
   onSelAnswers: (selDefinition: string, emotionHandling: string) => void;
+  onStartTour: () => void;
 }
 
 // Everything here edits the onboarding answers that drive suggestions.
@@ -25,7 +26,7 @@ interface Props {
 export default function ProfileScreen({
   showScreen, activeTab, selectedAge, onAgeChange,
   selectedChallenges, customChallengeText, onChallengesChange,
-  selAnswers, onSelAnswers,
+  selAnswers, onSelAnswers, onStartTour,
 }: Props) {
   const [draft, setDraft] = useState('');
   const [q1, setQ1] = useState(selAnswers.selDefinition);
@@ -151,7 +152,7 @@ export default function ProfileScreen({
         <div className="toolkit-section-label" style={{ marginTop: 8 }}>APP</div>
         <div className="profile-card" style={{ marginBottom: 12 }}>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="profile-redo-btn" onClick={() => showScreen('intro')}>
+            <button className="profile-redo-btn" onClick={onStartTour}>
               How Pebbles works
             </button>
             <button className="profile-redo-btn" onClick={() => showScreen('welcome')}>

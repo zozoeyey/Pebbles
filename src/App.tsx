@@ -18,7 +18,7 @@ import CommunityScreen from './screens/CommunityScreen';
 import CommunityExpandScreen from './screens/CommunityExpandScreen';
 import CreateActivityScreen from './screens/CreateActivityScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import IntroScreen from './screens/IntroScreen';
+import TourOverlay from './components/TourOverlay';
 
 const SCREEN_TITLES: Record<Screen, string> = {
   welcome: 'Pebbles',
@@ -34,7 +34,6 @@ const SCREEN_TITLES: Record<Screen, string> = {
   'community-expand': 'Pebbles – Community',
   'create-activity': 'Pebbles – Create',
   profile: 'Pebbles – Profile',
-  intro: 'Pebbles – How it works',
 };
 
 // Onboarding answers persist across visits so a returning parent keeps their
@@ -63,6 +62,13 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>(stored.age != null ? 'results' : 'welcome');
   // First-timers must finish onboarding; only returning users may skip it.
   const [hasOnboarded] = useState(stored.age != null);
+  // Coach-mark tour over the live Explore screen (after onboarding, or replayed).
+  const [tourActive, setTourActive] = useState(false);
+
+  function startTour() {
+    showScreen('results');
+    setTourActive(true);
+  }
 
   function attemptSkip(): boolean {
     if (!hasOnboarded) return false;
@@ -160,7 +166,7 @@ export default function App() {
       )}
       {screen === 'sel' && (
         <SelScreen
-          showResults={() => showScreen('intro')}
+          showResults={startTour}
           onSkip={attemptSkip}
           selectedAge={selectedAge}
           selectedChallenges={selectedChallenges}
@@ -227,9 +233,6 @@ export default function App() {
           onSaveCustom={() => showScreen('toolkit')}
         />
       )}
-      {screen === 'intro' && (
-        <IntroScreen showScreen={showScreen} />
-      )}
       {screen === 'profile' && (
         <ProfileScreen
           showScreen={showScreen}
@@ -244,8 +247,10 @@ export default function App() {
           }}
           selAnswers={selAnswers}
           onSelAnswers={(selDefinition, emotionHandling) => setSelAnswers({ selDefinition, emotionHandling })}
+          onStartTour={startTour}
         />
       )}
+      <TourOverlay active={tourActive} onDone={() => setTourActive(false)} />
     </div>
   );
 }

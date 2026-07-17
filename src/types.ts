@@ -11,8 +11,7 @@ export type Screen =
   | 'community'
   | 'community-expand'
   | 'create-activity'
-  | 'profile'
-  | 'intro';
+  | 'profile';
 
 export interface Activity {
   id: string;
