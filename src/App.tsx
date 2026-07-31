@@ -62,8 +62,6 @@ export default function App() {
   const stored = loadProfile();
   // Returning users with a saved profile land on Explore, not onboarding.
   const [screen, setScreen] = useState<Screen>(stored.age != null ? 'results' : 'welcome');
-  // First-timers must finish onboarding; only returning users may skip it.
-  const [hasOnboarded] = useState(stored.age != null);
   // Coach-mark tour over the live Explore screen (after onboarding, or replayed).
   const [tourActive, setTourActive] = useState(false);
 
@@ -80,8 +78,8 @@ export default function App() {
     showScreen('results');
   }
 
+  // Onboarding is always skippable (e.g. expo demos) — jump straight to Explore.
   function attemptSkip(): boolean {
-    if (!hasOnboarded) return false;
     showScreen('results');
     return true;
   }
